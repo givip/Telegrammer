@@ -1,19 +1,35 @@
 // swift-tools-version:4.0
+// The swift-tools-version declares the minimum version of Swift required to build this package.
+
 import PackageDescription
 
 let package = Package(
     name: "Telegrammer",
+    products: [
+        // Products define the executables and libraries produced by a package, and make them visible to other packages.
+        .library(
+            name: "Telegrammer",
+            targets: ["Telegrammer"]),
+    ],
     dependencies: [
-        // 💧 A server-side Swift web framework.
-        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0-rc"),
-
-        // 🔵 Swift ORM (queries, models, relations, etc) built on SQLite 3.
-        .package(url: "https://github.com/vapor/fluent-sqlite.git", from: "3.0.0-rc"),
+        // Dependencies declare other packages that this package depends on.
+        // .package(url: /* package url */, from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-nio.git", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-nio-ssl.git", from: "1.0.0"),
+        
+        .package(url: "https://github.com/vapor/core.git", from: "3.0.0-rc.2"),
+        .package(url: "https://github.com/vapor/http.git", .revision("f33be984")),
+        .package(url: "https://github.com/vapor/crypto.git", from: "3.0.0-rc.2"),
+        .package(url: "https://github.com/vapor/multipart.git", from: "3.0.0"),
     ],
     targets: [
-        .target(name: "App", dependencies: ["FluentSQLite", "Vapor"]),
-        .target(name: "Run", dependencies: ["App"]),
-        .testTarget(name: "AppTests", dependencies: ["App"]),
+        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
+        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
+        .target(
+            name: "Telegrammer",
+            dependencies: ["HTTP", "Multipart", "Crypto", "Debugging"]),
+        .testTarget(
+            name: "Telegrammer-Tests",
+            dependencies: ["Telegrammer"]),
     ]
 )
-
