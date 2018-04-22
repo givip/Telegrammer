@@ -9,22 +9,23 @@ import Foundation
 
 public struct EntityFilter: Filter {
     
-    let entityType: MessageEntityType
+    let entityTypes: Set<MessageEntityType>
     
-    public init(type: MessageEntityType) {
-        self.entityType = type
+    public init(types: [MessageEntityType]) {
+        self.entityTypes = Set(types)
     }
     
     public var name: String = "entity"
     
     public func filter(message: Message) -> Bool {
         guard let entities = message.entities else { return false }
-        return entities.contains(where: { $0.type == entityType })
+        let incomingTypes = entities.map({ $0.type })
+        return !entityTypes.intersection(incomingTypes).isEmpty
     }
 }
 
 public extension Filters {
-    static func entity(type: MessageEntityType) -> Filters {
-        return Filters(filter: EntityFilter(type: type))
+    static func entity(types: [MessageEntityType]) -> Filters {
+        return Filters(filter: EntityFilter(types: types))
     }
 }
