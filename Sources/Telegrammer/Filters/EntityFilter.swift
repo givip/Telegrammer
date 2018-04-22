@@ -11,8 +11,8 @@ public struct EntityFilter: Filter {
     
     let entityType: MessageEntityType
     
-    public init(entityType: MessageEntityType) {
-        self.entityType = entityType
+    public init(type: MessageEntityType) {
+        self.entityType = type
     }
     
     public var name: String = "entity"
@@ -24,5 +24,7 @@ public struct EntityFilter: Filter {
 }
 
 public extension Filters {
-    static var entity = Filters(filter: EntityFilter())
+    static func entity(type: MessageEntityType) -> Filters {
+        return Filters(filter: EntityFilter(type: type))
+    }
 }
