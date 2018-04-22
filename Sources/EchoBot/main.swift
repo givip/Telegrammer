@@ -6,14 +6,21 @@ guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
     exit(1)
 }
 
-guard let bot = try? Bot(token: token, host: "api.telegram.org", port: 443) else {
-    exit(2)
+var bot: Bot!
+
+do {
+    bot = try Bot(token: token, host: "api.telegram.org", port: 443)
+} catch {
+    print(error.localizedDescription)
+    exit(1)
 }
 
 var userEchoModes: [Int64: Bool] = [:]
 
 func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
+    
     guard let user = update.message?.from else { return }
+    
     var onText = ""
     if let on = userEchoModes[user.id] {
         onText = on ? "OFF" : "ON"
@@ -22,6 +29,7 @@ func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker
         onText = "ON"
         userEchoModes[user.id] = true
     }
+
     let params = Bot.SendMessageParams(chatId: .chat(update.message!.chat.id), text: "Echo mode turned \(onText)")
     _ = try! bot.sendMessage(params: params)
 }

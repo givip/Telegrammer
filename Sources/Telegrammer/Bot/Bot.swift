@@ -5,9 +5,10 @@
 //  Created by Givi Pataridze on 25.02.2018.
 //
 
-import NIO
-import HTTP
 import Foundation
+import HTTP
+import HeliumLogger
+import LoggerAPI
 
 public final class Bot {
     
@@ -16,16 +17,26 @@ public final class Bot {
     let boundary: String
     
     public init(token: String, host: String, port: Int) throws {
+        if let mode = Enviroment.get("debug"), mode == "true" {
+            Log.logger = HeliumLogger(.verbose)
+            Log.info("Application is in debug mode, with verbose logging")
+        }
+        
         self.requestWorker = MultiThreadedEventLoopGroup(numThreads: 1)
         self.client = try BotClient(host: host, port: port, token: token, worker: self.requestWorker)
         self.boundary = String.random(ofLength: 20)
+        Log.info("Initialized Bot instance")
     }
     
     func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
+        
+        Log.verbose(logMessage(container))
+        
         if let result = container.result {
             return Future.map(on: self.requestWorker, { result })
         } else {
             let error = logError(container)
+            Log.error(error.localizedDescription)
             throw error
         }
     }
@@ -60,12 +71,29 @@ public final class Bot {
     }
     
     func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> String {
+        
+        var resultString = "[]"
+        
+        if let result = container.result {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            do {
+                let data = try encoder.encode(result)
+                if let json = String(data: data, encoding: .utf8) {
+                    resultString = json
+                }
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        
         return """
-        Received response \(Date())
+        
+        Received response
+        Code: \(container.errorCode ?? 0)
         Status OK: \(container.ok)
         Description: \(container.description ?? "Empty")
-        Result: \(String(describing: container.result))
-        Code: \(container.errorCode ?? 0)
+        Result: \(resultString)
         
         """
     }

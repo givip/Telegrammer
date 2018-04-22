@@ -74,7 +74,6 @@ public final class Updater {
             let updates = try self.bot.getUpdates(params: requestBody).wait()
             if !updates.isEmpty {
                 dispatcher.enqueue(updates: updates)
-                print(updates)
                 if let last = updates.last {
                     requestBody.offset = last.updateId + 1
                 }

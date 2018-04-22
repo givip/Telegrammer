@@ -9,14 +9,22 @@ import Foundation
 
 public struct LanguageFilter: Filter {
     
+    var lang: String
+    
+    public init(lang: String) {
+        self.lang = lang
+    }
+    
     public var name: String = "language"
     
     public func filter(message: Message) -> Bool {
-        //TODO: Implement
-        return false
+        guard let languageCode = message.from?.languageCode else { return true }
+        return languageCode.starts(with: lang)
     }
 }
 
 public extension Filters {
-    static var language = Filters(filter: LanguageFilter())
+    static func language(_ lang: String) -> Filters {
+        return Filters(filter: LanguageFilter(lang: lang))
+    }
 }

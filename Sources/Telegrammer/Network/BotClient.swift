@@ -7,6 +7,7 @@
 
 import Foundation
 import HTTP
+import LoggerAPI
 
 public class BotClient {
     
@@ -35,6 +36,9 @@ public class BotClient {
         let url = apiUrl(endpoint: endpoint)
         let httpRequest = HTTPRequest(method: .POST, url: url, headers: headers, body: body)
         let promise = worker.eventLoop.newPromise(HTTPResponse.self)
+        
+        Log.info("Sending request:\n\(httpRequest.description)")
+        
         worker.eventLoop.execute {
             let result = self.client.send(httpRequest)
             result.whenSuccess({ (response) in

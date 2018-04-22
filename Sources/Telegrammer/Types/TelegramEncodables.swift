@@ -10,7 +10,7 @@ import Multipart
 
 protocol JSONEncodable: Encodable {}
 
-extension JSONEncodable {
+extension JSONEncodable {    
 	func encodeBody() throws -> Data {
 		return try JSONEncoder().encode(self)
 	}
