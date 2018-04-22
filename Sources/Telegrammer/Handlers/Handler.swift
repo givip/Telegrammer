@@ -7,7 +7,7 @@
 
 import HTTP
 
-public typealias HandlerCallback = (_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?, _ user: User?, _ chat: Chat?) -> Void
+public typealias HandlerCallback = (_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) -> Void
 
 public typealias ErrorHandlerCallback = (_ bot: Bot, _ update: Update, _ error: TelegramError?) -> Void
 

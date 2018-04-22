@@ -13,10 +13,12 @@ public final class Bot {
     
     public let client: BotClient
     let requestWorker: Worker
+    let boundary: String
     
     public init(token: String, host: String, port: Int) throws {
         self.requestWorker = MultiThreadedEventLoopGroup(numThreads: 1)
         self.client = try BotClient(host: host, port: port, token: token, worker: self.requestWorker)
+        self.boundary = String.random(ofLength: 20)
     }
     
     func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
@@ -35,10 +37,10 @@ public final class Bot {
             return HTTPBody(data: try object.encodeBody())
         }
         
-        //        if let object = object as? MultipartEncodable {
-        //            let boundaryBytes = boundary.utf8.map { $0 }
-        //            return HTTPBody(data: try object.encodeBody(boundary: boundaryBytes))
-        //        }
+        if let object = object as? MultipartEncodable {
+            let boundaryBytes = boundary.utf8.map { $0 }
+            return HTTPBody(data: try object.encodeBody(boundary: boundaryBytes))
+        }
         
         return HTTPBody()
     }
@@ -50,9 +52,10 @@ public final class Bot {
             return HTTPHeaders.contentJson
         }
         
-        //        if object is MultipartEncodable {
-        //            return HTTPHeaders.typeFormData(boundary: boundary)
-        //        }
+        if object is MultipartEncodable {
+            return HTTPHeaders.typeFormData(boundary: boundary)
+        }
+        
         return HTTPHeaders()
     }
     

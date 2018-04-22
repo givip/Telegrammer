@@ -50,6 +50,6 @@ public class MessageHandler: Handler {
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update, dispatcher.updateQueue, dispatcher.jobQueue, nil, nil)
+        callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
     }
 }

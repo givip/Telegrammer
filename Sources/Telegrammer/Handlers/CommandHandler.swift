@@ -15,7 +15,7 @@ public class CommandHandler: Handler {
     let editedUpdates: Bool
     
     public init(commands: [String],
-                filters: Filters = Filters.all,
+                filters: Filters = Filters.command,
                 callback: @escaping HandlerCallback,
                 editedUpdates: Bool = false) {
         self.commands = Set(commands)
@@ -38,6 +38,6 @@ public class CommandHandler: Handler {
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update, dispatcher.updateQueue, dispatcher.jobQueue, nil, nil)
+        callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
     }
 }

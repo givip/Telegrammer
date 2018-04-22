@@ -7,41 +7,12 @@
 
 import Foundation
 
-public enum FileInfo: Uploadable {
+public enum FileInfo: Encodable {
 	
 	case fileId(String)
 	case url(String)
 	case file(InputFile)
-	
-	var data: Data {
-		switch self {
-		case .fileId(let id):
-			return id.convertToData()
-		case .url(let url):
-			return url.convertToData()
-		case .file(let file):
-			return file.data
-		}
-	}
-	
-	var filename: String? {
-		switch self {
-		case .file(let file):
-			return file.filename
-		default:
-			return nil
-		}
-	}
-	
-	var mimeType: String? {
-		switch self {
-		case .file(let file):
-			return file.mimeType
-		default:
-			return nil
-		}
-	}
-	
+
 	public func encode(to encoder: Encoder) throws {
 		var container = encoder.singleValueContainer()
 		switch self {
