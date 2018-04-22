@@ -1,6 +1,6 @@
 //
 //  Dispatcher.swift
-//  telegrammer-nio
+//  Telegrammer
 //
 //  Created by Givi Pataridze on 09.04.2018.
 //

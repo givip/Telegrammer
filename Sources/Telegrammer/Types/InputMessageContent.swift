@@ -1,6 +1,6 @@
 //
 //  InputMessageContent.swift
-//  telegrammer-nio
+//  Telegrammer
 //
 //  Created by Givi Pataridze on 10.04.2018.
 //

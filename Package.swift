@@ -7,14 +7,10 @@ let package = Package(
     name: "Telegrammer",
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
-        .library(
-            name: "Telegrammer",
-            targets: ["Telegrammer"]),
+        .library(name: "Telegrammer", targets: ["Telegrammer"]),
+        .executable(name: "EchoBot", targets: ["EchoBot"]),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
-        
         .package(url: "https://github.com/vapor/core.git", from: "3.1.0"),
         .package(url: "https://github.com/vapor/http.git", from: "3.0.0"),
         .package(url: "https://github.com/vapor/crypto.git", from: "3.1.0"),
@@ -26,6 +22,8 @@ let package = Package(
         .target(
             name: "Telegrammer",
             dependencies: ["HTTP", "Multipart", "Crypto", "Debugging"]),
+        .target(name: "EchoBot",
+                dependencies: ["Telegrammer"]),
         .testTarget(
             name: "Telegrammer-Tests",
             dependencies: ["Telegrammer"]),

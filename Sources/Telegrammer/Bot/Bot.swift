@@ -1,6 +1,6 @@
 //
 //  Bot.swift
-//  telegrammer-nio
+//  Telegrammer
 //
 //  Created by Givi Pataridze on 25.02.2018.
 //
