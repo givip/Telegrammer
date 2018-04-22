@@ -19,10 +19,10 @@ public class BotClient {
         self.token = token
         self.worker = worker
         self.callbackWorker = MultiThreadedEventLoopGroup(numThreads: 1)
-        self.client = try HTTPClient.connect(scheme: .tls, hostname: host, on: self.worker).wait()
+        self.client = try HTTPClient.connect(scheme: .https, hostname: host, on: self.worker).wait()
     }
     
-    /// Sends request to api.telegram.org, and receive TelegramCotainer object
+    /// Sends request to api.telegram.org, and receive TelegramContainer object
     ///
     /// - Parameters:
     ///   - endpoint: Telegram method endpoint
