@@ -12,8 +12,8 @@ public struct CommandFilter: Filter {
     public var name: String = "command"
     
     public func filter(message: Message) -> Bool {
-        guard let text = message.text else { return false }
-        return text.starts(with: "/")
+        guard let entity = message.entities else { return false }
+        return entity.contains(where: { $0.type == .botCommand })
     }
 }
 

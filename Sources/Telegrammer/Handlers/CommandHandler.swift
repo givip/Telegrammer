@@ -32,9 +32,15 @@ public class CommandHandler: Handler {
         }
             
         guard let message = update.message else { return false }
-        guard filters.check(message) else { return false }
         guard let text = message.text else { return false }
-        return commands.contains { text.hasPrefix("/\($0)") } //FIXME: must handle /start_ not /startOther
+        guard filters.check(message) else { return false }
+        guard let entities = message.entities else { return false }
+        let types = entities.compactMap { (entity) -> String? in
+            let nsRange = NSRange(location: entity.offset, length: entity.length)
+            guard let range = Range(nsRange, in: text) else { return nil }
+            return String(text[range])
+        }
+        return !commands.intersection(types).isEmpty
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) {

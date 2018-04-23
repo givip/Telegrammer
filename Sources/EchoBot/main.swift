@@ -44,7 +44,7 @@ func echo(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
 do {
     let dispatcher = Dispatcher(bot: bot)
     
-    let commandHandler = CommandHandler(commands: ["echo"], callback: echoModeSwitch)
+    let commandHandler = CommandHandler(commands: ["/echo"], callback: echoModeSwitch)
     dispatcher.add(handler: commandHandler)
     
     let echoHandler = MessageHandler(filters: Filters.text, callback: echo)
