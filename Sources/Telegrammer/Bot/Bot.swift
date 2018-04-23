@@ -16,13 +16,13 @@ public final class Bot {
     let requestWorker: Worker
     let boundary: String
     
-    public init(token: String, host: String, port: Int) throws {
+    public init(token: String, host: String, port: Int, numThreads: Int = 4) throws {
         if let mode = Enviroment.get("debug"), mode == "true" {
             Log.logger = HeliumLogger(.verbose)
             Log.info("Application is in debug mode, with verbose logging")
         }
         
-        self.requestWorker = MultiThreadedEventLoopGroup(numThreads: 1)
+        self.requestWorker = MultiThreadedEventLoopGroup(numThreads: numThreads)
         self.client = try BotClient(host: host, port: port, token: token, worker: self.requestWorker)
         self.boundary = String.random(ofLength: 20)
         Log.info("Initialized Bot instance")

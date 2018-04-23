@@ -34,10 +34,10 @@ public final class Updater {
     ///Webhooks
     
     
-    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker? = nil) {
+    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
-        self.worker = worker ?? MultiThreadedEventLoopGroup(numThreads: 1)
+        self.worker = worker
         self.running = false
     }
     
@@ -80,8 +80,8 @@ public final class Updater {
             }
             self.scheduleLongpolling(with: requestBody)
         } catch {
-            //Handle error
-            print(error.localizedDescription)
+            running = false
+            self.pollingPromise?.fail(error: error)
         }
     }
     
@@ -92,6 +92,7 @@ public final class Updater {
     }
     
     public func stop() {
+        running = false
         worker.eventLoop.execute {
             self.pollingPromise?.succeed()
         }
