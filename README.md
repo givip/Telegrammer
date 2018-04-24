@@ -15,7 +15,7 @@ Telegram Bot Framework written in Swift 4.1 with SwiftNIO network framework
 <a href="#contributing">Contributing</a> &bull;
 <a href="#installing-and-usage">Installing and Usage</a> &bull;
 <a href="#documentation">Documentation</a> &bull;
-<a href="#demo">Demo</a> &bull;
+<a href="#demo-bots">Demo bots</a> &bull;
 <a href="#author">Author</a> &bull;
 </p>
 
