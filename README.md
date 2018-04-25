@@ -3,6 +3,7 @@
 # Telegrammer
 Telegram Bot Framework written in Swift 4.1 with SwiftNIO network framework
 
+[![Build](https://circleci.com/gh/givip/Telegrammer/tree/master.svg?style=shield&circle-token=04a84114573c1c6b3039ef82b88e54f1f6b8c512)
 [![Version](https://img.shields.io/badge/version-0.1.4-blue.svg)](https://github.com/givip/Telegrammer/releases)
 [![Language](https://img.shields.io/badge/language-Swift%204.1-orange.svg)](https://swift.org/download/)
 [![Platform](https://img.shields.io/badge/platform-Linux%20/%20macOS-ffc713.svg)](https://swift.org/download/)
