@@ -18,11 +18,8 @@ let package = Package(
     targets: [
         .target(
             name: "Telegrammer",
-            dependencies: ["HTTP", "Multipart", "Crypto"]),
+            dependencies: ["HTTP", "Multipart", "Crypto", "HeliumLogger"]),
         .target(name: "EchoBot",
-                dependencies: ["Telegrammer", "HeliumLogger"]),
-        .testTarget(
-            name: "Telegrammer-Tests",
-            dependencies: ["Telegrammer"]),
+                dependencies: ["Telegrammer"])
     ]
 )
