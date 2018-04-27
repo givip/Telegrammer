@@ -1,5 +1,7 @@
 
 import Telegrammer
+import HeliumLogger
+import LoggerAPI
 import HTTP
 
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
@@ -38,7 +40,11 @@ func echo(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
     guard let user = update.message?.from else { return }
     guard let on = userEchoModes[user.id], on == true else { return }
     let params = Bot.SendMessageParams(chatId: .chat(update.message!.chat.id), text: update.message!.text!)
-    _ = try! bot.sendMessage(params: params)
+    do {
+        _ = try bot.sendMessage(params: params)
+    } catch {
+        Log.error(error.localizedDescription)
+    }
 }
 
 do {
