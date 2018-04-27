@@ -1,1 +1,1 @@
-web: EchoBot serve
+web: EchoBot
