@@ -21,7 +21,8 @@ var userEchoModes: [Int64: Bool] = [:]
 
 func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
     
-    guard let user = update.message?.from else { return }
+    guard let message = update.message else { return }
+    guard let user = message.from else { return }
     
     var onText = ""
     if let on = userEchoModes[user.id] {
@@ -32,14 +33,16 @@ func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker
         userEchoModes[user.id] = true
     }
 
-    let params = Bot.SendMessageParams(chatId: .chat(update.message!.chat.id), text: "Echo mode turned \(onText)")
+    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
     _ = try! bot.sendMessage(params: params)
 }
 
 func echo(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
-    guard let user = update.message?.from else { return }
+    guard let message = update.message else { return }
+    guard let user = message.from else { return }
     guard let on = userEchoModes[user.id], on == true else { return }
-    let params = Bot.SendMessageParams(chatId: .chat(update.message!.chat.id), text: update.message!.text!)
+    
+    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: message.text!)
     do {
         _ = try bot.sendMessage(params: params)
     } catch {
