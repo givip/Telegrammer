@@ -46,6 +46,8 @@ Contributing
 
 See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
 
+Join to [Telegram developers chat](https://t.me/joinchat/AzGW3kkUjLoK2dr3CZFrFQ)
+
 Installing and Usage
 ---------------
 
