@@ -10,15 +10,13 @@ import HTTP
 
 public class Longpolling: Connection {
 	
-	public enum LongpollingDefaults {
-		public static let pollInterval              = TimeAmount.seconds(0)
-		public static let timeout                   = 10
-		public static let clean                     = false
-		public static let bootstrapRetries: Int?    = nil
-		public static let readLatency               = TimeAmount.seconds(2)
-		public static let allowedUpdates: [String]? = nil
-		public static let limit: Int?               = nil
-	}
+	public static let PollInterval              = TimeAmount.seconds(0)
+	public static let Timeout                   = 10
+	public static let Clean                     = false
+	public static let BootstrapRetries: Int?    = nil
+	public static let ReadLatency               = TimeAmount.seconds(2)
+	public static let AllowedUpdates: [String]? = nil
+	public static let Limit: Int?               = nil
 	
 	public var bot: Bot
 	public var dispatcher: Dispatcher
@@ -26,7 +24,7 @@ public class Longpolling: Connection {
 	public var running: Bool
 	
 	private var lastUpdate: Update?
-	private var pollingInterval = LongpollingDefaults.pollInterval
+	private var pollingInterval = PollInterval
 	private var pollingPromise: Promise<Void>?
 	
 	public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 1)) {
@@ -36,13 +34,13 @@ public class Longpolling: Connection {
 		self.running = false
 	}
 	
-	public func start(timeout: Int = LongpollingDefaults.timeout,
-					  pollInterval: TimeAmount = LongpollingDefaults.pollInterval,
-					  clean: Bool = LongpollingDefaults.clean,
-					  bootstrapRetries: Int? = LongpollingDefaults.bootstrapRetries,
-					  readLatency: TimeAmount = LongpollingDefaults.readLatency,
-					  allowedUpdates: [String]? = LongpollingDefaults.allowedUpdates,
-					  limit: Int? = LongpollingDefaults.limit) throws -> Future<Void> {
+	public func start(timeout: Int = Timeout,
+					  pollInterval: TimeAmount = PollInterval,
+					  clean: Bool = Clean,
+					  bootstrapRetries: Int? = BootstrapRetries,
+					  readLatency: TimeAmount = ReadLatency,
+					  allowedUpdates: [String]? = AllowedUpdates,
+					  limit: Int? = Limit) throws -> Future<Void> {
 		self.running = true
 		self.pollingInterval = pollInterval
 		
