@@ -20,7 +20,7 @@ do {
 var userEchoModes: [Int64: Bool] = [:]
 
 func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
-    
+
     guard let message = update.message else { return }
     guard let user = message.from else { return }
     
@@ -34,20 +34,15 @@ func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker
     }
 
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
-    _ = try! bot.sendMessage(params: params)
+    _ = try? bot.sendMessage(params: params)
 }
 
 func echo(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
-    guard let message = update.message else { return }
+	guard let message = update.message else { return }
     guard let user = message.from else { return }
     guard let on = userEchoModes[user.id], on == true else { return }
-    
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: message.text!)
-    do {
-        _ = try bot.sendMessage(params: params)
-    } catch {
-        Log.error(error.localizedDescription)
-    }
+    _ = try? bot.sendMessage(params: params)
 }
 
 do {
@@ -58,8 +53,8 @@ do {
     
     let echoHandler = MessageHandler(filters: Filters.text, callback: echo)
     dispatcher.add(handler: echoHandler)
-    
-    _ = try Updater(bot: bot, dispatcher: dispatcher).longpolling().wait()
+	
+	try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
 
 } catch {
     print(error.localizedDescription)
