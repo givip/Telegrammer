@@ -7,6 +7,7 @@
 
 
 import Foundation
+import COperatingSystem
 
 public extension String {
     
@@ -59,10 +60,10 @@ public extension Int {
     
     public static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int {
         #if os(Linux)
-            return lower + (random() % (upper - lower + 1))
-		#else
-            return lower + Int(arc4random_uniform(UInt32(upper - lower + 1)))
-		#endif
+        return Int(COperatingSystem.random() % (upper - lower + 1))
+        #else
+        return Int(arc4random_uniform(UInt32(upper - lower + 1)))
+        #endif
     }
 }
 
