@@ -260,7 +260,6 @@ def generate_model_file(f, node)
 
 		out.write  "public final class #{type_name}: Codable {\n"\
 			"    \n"\
-			"    enum CodingKeys: String, CodingKey {\n"
 
 		all_init_params = {}
 
@@ -283,22 +282,25 @@ def generate_model_file(f, node)
 			correct_var_type_init = correct_var_type[-1] == "?" ? correct_var_type + " = nil" : correct_var_type
 			var_name_camel = var_name.camel_case_lower
 
-			keys_block        << "        case #{var_name_camel} = \"#{var_name}\"\n"
-			vars_block        << "    public var #{var_name_camel}: #{correct_var_type}\n"
+			keys_block        << "#{TWO}case #{var_name_camel} = \"#{var_name}\"\n"
+			vars_block        << "#{ONE}public var #{var_name_camel}: #{correct_var_type}\n"
 			init_params_block << "#{var_name_camel}: #{correct_var_type_init}, "
-			init_block        << "        self.#{var_name_camel} = #{var_name_camel}\n"
+			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
-
-		out.write  "#{keys_block}"\
-			"    }\n"\
-			"\n"\
-			"#{vars_block}"\
-			"\n"\
-			"    public init (#{init_params_block.chomp(', ')}) {\n"\
-			"#{init_block}"\
-			"    }\n"\
-			"\n"\
-			"}\n"\
+        
+        if keys_block != "" then
+            out.write  "#{ONE}enum CodingKeys: String, CodingKey {\n"\
+            "#{keys_block}"\
+            "#{ONE}}\n"\
+            "\n"\
+            "#{vars_block}"\
+            "\n"\
+            "#{ONE}public init (#{init_params_block.chomp(', ')}) {\n"\
+            "#{init_block}"\
+            "#{ONE}}\n"\
+            "\n"
+        end
+        out.write  "}\n"\
 			"\n"
 	}
 end

@@ -9,12 +9,5 @@
 
 public final class InputMedia: Codable {
     
-    enum CodingKeys: String, CodingKey {
-    }
-
-
-    public init () {
-    }
-
 }
 

@@ -11,12 +11,5 @@
 
 public final class InputMessageContent: Codable {
     
-    enum CodingKeys: String, CodingKey {
-    }
-
-
-    public init () {
-    }
-
 }
 

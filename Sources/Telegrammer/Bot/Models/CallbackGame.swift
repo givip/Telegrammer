@@ -7,12 +7,5 @@
 
 public final class CallbackGame: Codable {
     
-    enum CodingKeys: String, CodingKey {
-    }
-
-
-    public init () {
-    }
-
 }
 
