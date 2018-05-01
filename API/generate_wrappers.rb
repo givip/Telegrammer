@@ -464,7 +464,7 @@ def main
 			next unless title.split.count == 1
 
 			# These types are complex and created manually:
-			next unless !['InlineQueryResult', 'InputFile'].include?(title)
+			next unless !['InlineQueryResult', 'InputFile', 'InputMedia', 'InputMessageContent'].include?(title)
 
 			kind = (title.chars.first == title.chars.first.upcase) ? :type : :method
 
