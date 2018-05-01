@@ -66,6 +66,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func sendVideo(params: SendVideoParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

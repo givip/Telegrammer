@@ -63,6 +63,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func sendAudio(params: SendAudioParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

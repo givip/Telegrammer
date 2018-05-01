@@ -32,6 +32,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func sendChatAction(params: SendChatActionParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

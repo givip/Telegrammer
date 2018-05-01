@@ -406,6 +406,7 @@ def generate_method(f, node)
 
 	if all_params.empty? then
 		params_block = "(params: #{method_name_capitalized}? = nil)"
+        out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}() throws -> Future<#{result_type}> {\n"
 	else
 	
@@ -432,6 +433,7 @@ def generate_method(f, node)
 		else
 			params_block = "(params: #{method_name_capitalized}? = nil)"
 		end
+        out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
 
 		out.write "#{TWO}let body = try httpBody(for: params)\n"

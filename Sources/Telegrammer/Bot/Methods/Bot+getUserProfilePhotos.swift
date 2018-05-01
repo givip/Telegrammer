@@ -34,6 +34,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getUserProfilePhotos(params: GetUserProfilePhotosParams) throws -> Future<UserProfilePhotos> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

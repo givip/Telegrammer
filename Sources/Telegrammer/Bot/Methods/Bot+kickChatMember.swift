@@ -35,6 +35,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func kickChatMember(params: KickChatMemberParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

@@ -26,6 +26,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getChatMembersCount(params: GetChatMembersCountParams) throws -> Future<Int> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

@@ -36,6 +36,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func deleteMessage(params: DeleteMessageParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

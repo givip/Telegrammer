@@ -26,6 +26,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getChatAdministrators(params: GetChatAdministratorsParams) throws -> Future<[ChatMember]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

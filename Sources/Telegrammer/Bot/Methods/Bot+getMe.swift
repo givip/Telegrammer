@@ -12,6 +12,7 @@ public extension Bot {
     ///
     /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getme>
 
+    @discardableResult
     public func getMe() throws -> Future<User> {
         let response: Future<TelegramContainer<User>>
         response = try client.respond(endpoint: "getMe", body: HTTPBody(), headers: HTTPHeaders())

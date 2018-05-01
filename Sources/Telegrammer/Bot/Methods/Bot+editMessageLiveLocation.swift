@@ -46,6 +46,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func editMessageLiveLocation(params: EditMessageLiveLocationParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

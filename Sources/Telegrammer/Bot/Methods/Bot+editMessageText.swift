@@ -50,6 +50,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func editMessageText(params: EditMessageTextParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

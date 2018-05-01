@@ -30,6 +30,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func uploadStickerFile(params: UploadStickerFileParams) throws -> Future<File> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

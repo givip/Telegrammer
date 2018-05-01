@@ -40,6 +40,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func setWebhook(params: SetWebhookParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

@@ -38,6 +38,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func forwardMessage(params: ForwardMessageParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

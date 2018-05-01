@@ -26,6 +26,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getStickerSet(params: GetStickerSetParams) throws -> Future<StickerSet> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

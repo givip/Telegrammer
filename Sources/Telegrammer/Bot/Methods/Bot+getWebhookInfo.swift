@@ -12,6 +12,7 @@ public extension Bot {
     ///
     /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getwebhookinfo>
 
+    @discardableResult
     public func getWebhookInfo() throws -> Future<Bool> {
         let response: Future<TelegramContainer<Bool>>
         response = try client.respond(endpoint: "getWebhookInfo", body: HTTPBody(), headers: HTTPHeaders())

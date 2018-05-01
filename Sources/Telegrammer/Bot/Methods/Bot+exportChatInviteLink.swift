@@ -26,6 +26,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func exportChatInviteLink(params: ExportChatInviteLinkParams) throws -> Future<String> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

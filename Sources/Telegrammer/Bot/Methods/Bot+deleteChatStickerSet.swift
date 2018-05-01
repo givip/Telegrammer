@@ -26,6 +26,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func deleteChatStickerSet(params: DeleteChatStickerSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

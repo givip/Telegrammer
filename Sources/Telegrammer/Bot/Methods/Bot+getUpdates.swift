@@ -39,6 +39,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getUpdates(params: GetUpdatesParams? = nil) throws -> Future<[Update]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

@@ -30,6 +30,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func setChatDescription(params: SetChatDescriptionParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

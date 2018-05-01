@@ -12,6 +12,7 @@ public extension Bot {
     ///
     /// [- SeeAlso: ]<https://core.telegram.org/bots/api#deletewebhook>
 
+    @discardableResult
     public func deleteWebhook() throws -> Future<Bool> {
         let response: Future<TelegramContainer<Bool>>
         response = try client.respond(endpoint: "deleteWebhook", body: HTTPBody(), headers: HTTPHeaders())

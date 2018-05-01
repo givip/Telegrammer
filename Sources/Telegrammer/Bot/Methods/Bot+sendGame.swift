@@ -42,6 +42,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func sendGame(params: SendGameParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)

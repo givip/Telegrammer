@@ -39,6 +39,7 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getGameHighScores(params: GetGameHighScoresParams) throws -> Future<[GameHighScore]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
