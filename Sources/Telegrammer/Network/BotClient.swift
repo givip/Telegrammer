@@ -11,16 +11,20 @@ import LoggerAPI
 
 public class BotClient {
     
+    let host: String
+    let port: Int
+    
     let token: String
-    let client: HTTPClient
+    var client: HTTPClient?
     let worker: Worker
     let callbackWorker: Worker
     
     public init(host: String, port: Int, token: String, worker: Worker) throws {
+        self.host = host
+        self.port = port
         self.token = token
         self.worker = worker
         self.callbackWorker = MultiThreadedEventLoopGroup(numThreads: 1)
-        self.client = try HTTPClient.connect(scheme: .https, hostname: host, on: self.worker).wait()
     }
     
     /// Sends request to api.telegram.org, and receive TelegramContainer object
@@ -32,22 +36,42 @@ public class BotClient {
     ///   - client: custom client, if not metioned, uses default
     /// - Returns: Container with response
     /// - Throws: Errors
-    func respond<T: Decodable>(endpoint: String, body: HTTPBody, headers: HTTPHeaders) throws -> Future<TelegramContainer<T>> {
+    func respond<T: Codable>(endpoint: String, body: HTTPBody, headers: HTTPHeaders) throws -> Future<TelegramContainer<T>> {
         let url = apiUrl(endpoint: endpoint)
         let httpRequest = HTTPRequest(method: .POST, url: url, headers: headers, body: body)
-        let promise = worker.eventLoop.newPromise(HTTPResponse.self)
+        
+        let promise = worker.eventLoop.newPromise(TelegramContainer<T>.self)
         
         Log.info("Sending request:\n\(httpRequest.description)")
         
         worker.eventLoop.execute {
-            let result = self.client.send(httpRequest)
-            result.whenSuccess({ (response) in
-                promise.succeed(result: response)
+            self.send(request: httpRequest).whenSuccess({ (container) in
+                promise.succeed(result: container)
             })
         }
-        return promise.futureResult.map(to: TelegramContainer<T>.self, { (response) -> TelegramContainer<T> in
-            return try self.decode(response: response)
-        })
+        return promise.futureResult
+    }
+    
+    private func send<T: Codable>(request: HTTPRequest) -> Future<TelegramContainer<T>> {
+        var futureClient: Future<HTTPClient>
+        if let existingClient = client {
+            futureClient = Future<HTTPClient>.map(on: worker, { existingClient })
+        } else {
+            futureClient = HTTPClient
+                .connect(scheme: .https, hostname: host, port: port, on: worker, onError: { (error) in
+                    self.client = nil
+                })
+                .do({ (freshClient) in
+                    self.client = freshClient
+                })
+        }
+        return futureClient
+            .then { (client) -> Future<HTTPResponse> in
+                return client.send(request)
+            }
+            .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
+                return try self.decode(response: response)
+        }
     }
     
     func decode<T: Encodable>(response: HTTPResponse) throws -> TelegramContainer<T> {
