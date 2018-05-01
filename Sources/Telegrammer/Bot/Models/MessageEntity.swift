@@ -15,13 +15,13 @@ public final class MessageEntity: Codable {
         case user = "user"
     }
 
-    public var type: String
+    public var type: MessageEntityType
     public var offset: Int
     public var length: Int
     public var url: String?
     public var user: User?
 
-    public init (type: String, offset: Int, length: Int, url: String? = nil, user: User? = nil) {
+    public init (type: MessageEntityType, offset: Int, length: Int, url: String? = nil, user: User? = nil) {
         self.type = type
         self.offset = offset
         self.length = length

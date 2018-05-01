@@ -170,7 +170,7 @@ def fetch_description(current_node)
 end
 
 def convert_type(var_name, var_desc, var_type, type_name, var_optional)
-    if type_name == "type" then
+    if var_name == "type" then
         if var_desc.include?("Type of chat") then
             return "ChatType"
         end
