@@ -68,3 +68,11 @@ public class Dispatcher {
         }
     }
 }
+
+extension Dispatcher: HTTPServerResponder {
+	public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
+		return Future.map(on: worker, { () -> HTTPResponse in
+			return HTTPResponse()
+		})
+	}
+}

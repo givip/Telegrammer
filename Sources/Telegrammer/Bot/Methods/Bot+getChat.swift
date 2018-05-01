@@ -26,9 +26,10 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getChat(params: GetChatParams) throws -> Future<Chat> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Chat>>
         response = try client.respond(endpoint: "getChat", body: body, headers: headers)
         return response.flatMap(to: Chat.self) { try self.wrap($0) }

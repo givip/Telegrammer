@@ -7,7 +7,7 @@ Bundler.require(:default)
 require 'fileutils'
 
 HTML_FILE = 'api.html'
-API_DIR = '../Sources/telegrammer-nio/Bot'
+API_DIR = '../Sources/Telegrammer/Bot'
 API_FILE = 'api.txt'
 
 TYPE_HEADER = <<EOT
@@ -170,11 +170,20 @@ def fetch_description(current_node)
 end
 
 def convert_type(var_name, var_desc, var_type, type_name, var_optional)
+    if var_name == "type" then
+        if var_desc.include?("Type of chat") then
+            return "ChatType"
+        end
+        if var_desc.include?("Type of the entity") then
+            return "MessageEntityType"
+        end
+    end
+    
 	case [var_type, var_optional]
 	when ['String', true]
 		return "String?"
 	when ['String', false]
-		return "String"
+        return "String"
 	when ['Integer', true]
 		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
 							(type_name == 'User' && var_name == 'id')
@@ -251,7 +260,6 @@ def generate_model_file(f, node)
 
 		out.write  "public final class #{type_name}: Codable {\n"\
 			"    \n"\
-			"    enum CodingKeys: String, CodingKey {\n"
 
 		all_init_params = {}
 
@@ -274,22 +282,25 @@ def generate_model_file(f, node)
 			correct_var_type_init = correct_var_type[-1] == "?" ? correct_var_type + " = nil" : correct_var_type
 			var_name_camel = var_name.camel_case_lower
 
-			keys_block        << "        case #{var_name_camel} = \"#{var_name}\"\n"
-			vars_block        << "    public var #{var_name_camel}: #{correct_var_type}\n"
+			keys_block        << "#{TWO}case #{var_name_camel} = \"#{var_name}\"\n"
+			vars_block        << "#{ONE}public var #{var_name_camel}: #{correct_var_type}\n"
 			init_params_block << "#{var_name_camel}: #{correct_var_type_init}, "
-			init_block        << "        self.#{var_name_camel} = #{var_name_camel}\n"
+			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
-
-		out.write  "#{keys_block}"\
-			"    }\n"\
-			"\n"\
-			"#{vars_block}"\
-			"\n"\
-			"    public init (#{init_params_block.chomp(', ')}) {\n"\
-			"#{init_block}"\
-			"    }\n"\
-			"\n"\
-			"}\n"\
+        
+        if keys_block != "" then
+            out.write  "#{ONE}enum CodingKeys: String, CodingKey {\n"\
+            "#{keys_block}"\
+            "#{ONE}}\n"\
+            "\n"\
+            "#{vars_block}"\
+            "\n"\
+            "#{ONE}public init (#{init_params_block.chomp(', ')}) {\n"\
+            "#{init_block}"\
+            "#{ONE}}\n"\
+            "\n"
+        end
+        out.write  "}\n"\
 			"\n"
 	}
 end
@@ -395,6 +406,7 @@ def generate_method(f, node)
 
 	if all_params.empty? then
 		params_block = "(params: #{method_name_capitalized}? = nil)"
+        out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}() throws -> Future<#{result_type}> {\n"
 	else
 	
@@ -421,10 +433,11 @@ def generate_method(f, node)
 		else
 			params_block = "(params: #{method_name_capitalized}? = nil)"
 		end
+        out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
 
 		out.write "#{TWO}let body = try httpBody(for: params)\n"
-		out.write "#{TWO}let headers = try httpHeaders(for: params)\n"
+		out.write "#{TWO}let headers = httpHeaders(for: params)\n"
 		body_param = ", body: body, headers: headers"
 	end
 	

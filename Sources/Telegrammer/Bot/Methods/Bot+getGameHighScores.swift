@@ -39,9 +39,10 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getGameHighScores(params: GetGameHighScoresParams) throws -> Future<[GameHighScore]> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<[GameHighScore]>>
         response = try client.respond(endpoint: "getGameHighScores", body: body, headers: headers)
         return response.flatMap(to: [GameHighScore].self) { try self.wrap($0) }

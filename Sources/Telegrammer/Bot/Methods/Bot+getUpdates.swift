@@ -39,9 +39,10 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func getUpdates(params: GetUpdatesParams? = nil) throws -> Future<[Update]> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<[Update]>>
         response = try client.respond(endpoint: "getUpdates", body: body, headers: headers)
         return response.flatMap(to: [Update].self) { try self.wrap($0) }

@@ -31,9 +31,10 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func setChatPhoto(params: SetChatPhotoParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>
         response = try client.respond(endpoint: "setChatPhoto", body: body, headers: headers)
         return response.flatMap(to: Bool.self) { try self.wrap($0) }

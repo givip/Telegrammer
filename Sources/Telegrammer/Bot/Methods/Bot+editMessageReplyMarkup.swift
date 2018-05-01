@@ -38,9 +38,10 @@ public extension Bot {
         }
     }
 
+    @discardableResult
     public func editMessageReplyMarkup(params: EditMessageReplyMarkupParams? = nil) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<MessageOrBool>>
         response = try client.respond(endpoint: "editMessageReplyMarkup", body: body, headers: headers)
         return response.flatMap(to: MessageOrBool.self) { try self.wrap($0) }
