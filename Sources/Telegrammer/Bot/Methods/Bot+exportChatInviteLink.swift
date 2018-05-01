@@ -28,7 +28,7 @@ public extension Bot {
 
     public func exportChatInviteLink(params: ExportChatInviteLinkParams) throws -> Future<String> {
         let body = try httpBody(for: params)
-        let headers = try httpHeaders(for: params)
+        let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<String>>
         response = try client.respond(endpoint: "exportChatInviteLink", body: body, headers: headers)
         return response.flatMap(to: String.self) { try self.wrap($0) }

@@ -24,7 +24,7 @@ public final class Chat: Codable {
     }
 
     public var id: Int64
-    public var type: ChatType
+    public var type: String
     public var title: String?
     public var username: String?
     public var firstName: String?
@@ -37,7 +37,7 @@ public final class Chat: Codable {
     public var stickerSetName: String?
     public var canSetStickerSet: Bool?
 
-    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, allMembersAreAdministrators: Bool? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
+    public init (id: Int64, type: String, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, allMembersAreAdministrators: Bool? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
         self.id = id
         self.type = type
         self.title = title

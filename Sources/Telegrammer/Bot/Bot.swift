@@ -56,7 +56,7 @@ public final class Bot {
         return HTTPBody()
     }
     
-    func httpHeaders(for object: Encodable?) throws -> HTTPHeaders {
+    func httpHeaders(for object: Encodable?) -> HTTPHeaders {
         guard let object = object else { return HTTPHeaders() }
         
         if object is JSONEncodable {

@@ -7,7 +7,7 @@ Bundler.require(:default)
 require 'fileutils'
 
 HTML_FILE = 'api.html'
-API_DIR = '../Sources/telegrammer-nio/Bot'
+API_DIR = '../Sources/Telegrammer/Bot'
 API_FILE = 'api.txt'
 
 TYPE_HEADER = <<EOT
@@ -170,11 +170,20 @@ def fetch_description(current_node)
 end
 
 def convert_type(var_name, var_desc, var_type, type_name, var_optional)
+    if type_name == "type" then
+        if var_desc.include?("Type of chat") then
+            return "ChatType"
+        end
+        if var_desc.include?("Type of the entity") then
+            return "MessageEntityType"
+        end
+    end
+    
 	case [var_type, var_optional]
 	when ['String', true]
 		return "String?"
 	when ['String', false]
-		return "String"
+        return "String"
 	when ['Integer', true]
 		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
 							(type_name == 'User' && var_name == 'id')
@@ -424,7 +433,7 @@ def generate_method(f, node)
 		out.write "#{ONE}public func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
 
 		out.write "#{TWO}let body = try httpBody(for: params)\n"
-		out.write "#{TWO}let headers = try httpHeaders(for: params)\n"
+		out.write "#{TWO}let headers = httpHeaders(for: params)\n"
 		body_param = ", body: body, headers: headers"
 	end
 	

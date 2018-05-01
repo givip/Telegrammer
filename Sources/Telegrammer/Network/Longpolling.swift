@@ -11,7 +11,7 @@ import HTTP
 public class Longpolling: Connection {
 	
 	public static let PollInterval              = TimeAmount.seconds(0)
-	public static let Timeout                   = 10
+	public static let Timeout                   = 2
 	public static let Clean                     = false
 	public static let BootstrapRetries: Int?    = nil
 	public static let ReadLatency               = TimeAmount.seconds(2)
