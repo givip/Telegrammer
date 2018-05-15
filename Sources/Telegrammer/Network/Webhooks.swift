@@ -41,7 +41,7 @@ class Webhooks: Connection {
 
 		let params = Bot.SetWebhookParams(url: urlPath, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
 		
-		_ = try bot.setWebhook(params: params).whenSuccess( { (result) in
+		try bot.setWebhook(params: params).whenSuccess( { (result) in
 			self.listenWebhooks(on: host, port: port)
 		})
 	}
