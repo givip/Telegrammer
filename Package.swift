@@ -10,7 +10,7 @@ let package = Package(
         .executable(name: "EchoBot", targets: ["EchoBot"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/givip/http.git", from: "3.0.0"),
+        .package(url: "https://github.com/vapor/http.git", from: "3.0.0"),
         .package(url: "https://github.com/vapor/crypto.git", from: "3.1.0"),
         .package(url: "https://github.com/vapor/multipart.git", from: "3.0.0"),
         .package(url: "https://github.com/IBM-Swift/HeliumLogger.git", from: "1.7.0")
