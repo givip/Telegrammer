@@ -8,6 +8,7 @@ let package = Package(
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
         .executable(name: "EchoBot", targets: ["EchoBot"]),
+        .executable(name: "ServerTest", targets: ["ServerTest"]),
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/http.git", from: "3.0.0"),
@@ -20,6 +21,8 @@ let package = Package(
             name: "Telegrammer",
             dependencies: ["HTTP", "Multipart", "Crypto", "HeliumLogger"]),
         .target(name: "EchoBot",
+                dependencies: ["Telegrammer"]),
+        .target(name: "ServerTest",
                 dependencies: ["Telegrammer"])
     ]
 )

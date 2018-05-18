@@ -31,19 +31,19 @@ class Webhooks: Connection {
 	
 	public func start(on host: String,
 					  port: Int,
-					  urlPath: String,
-					  cert: InputFile,
-					  secret: InputFile,
+//                      urlPath: String,
+//                      cert: InputFile,
+//                      secret: InputFile,
 					  readLatency: TimeAmount = ReadLatency,
 					  clean: Bool = Clean,
 					  maxConnections: Int = MaxConnections) throws {
-		self.running = true
-
-		let params = Bot.SetWebhookParams(url: urlPath, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
+//        self.running = true
+//
+//        let params = Bot.SetWebhookParams(url: urlPath, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
 		
-		try bot.setWebhook(params: params).whenSuccess( { (result) in
+//        try bot.setWebhook(params: params).whenSuccess( { (result) in
 			self.listenWebhooks(on: host, port: port)
-		})
+//        })
 	}
 	
 	private func listenWebhooks(on host: String, port: Int) {

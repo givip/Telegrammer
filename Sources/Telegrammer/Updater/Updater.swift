@@ -16,7 +16,7 @@ public final class Updater {
     public var running: Bool
 	
 	private var longpollingConnection: Longpolling?
-//	private var webhooksListener: Webhooks?
+    private var webhooksListener: Webhooks?
 	
 	@discardableResult
     public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 1)) {
@@ -26,8 +26,9 @@ public final class Updater {
         self.running = false
     }
     
-    public func startWebhooks() {
-        
+    public func startWebhooks() throws {
+        webhooksListener = Webhooks(bot: bot, dispatcher: dispatcher, worker: worker)
+        try webhooksListener?.start(on: "127.0.0.1", port: 8080)
     }
 	
 	public func startLongpolling() throws {
