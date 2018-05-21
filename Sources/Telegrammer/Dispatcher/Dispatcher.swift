@@ -70,9 +70,19 @@ public class Dispatcher {
 }
 
 extension Dispatcher: HTTPServerResponder {
-	public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
-		return Future.map(on: worker, { () -> HTTPResponse in
-			return HTTPResponse()
-		})
-	}
+    public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
+        return request.body.consumeData(on: worker)
+            .flatMap { (data) -> EventLoopFuture<Update> in
+                return Future.map(on: worker, { try JSONDecoder().decode(Update.self, from: data) })
+            }
+            .do { (update) in
+                self.enqueue(updates: [update])
+            }
+            .flatMap { (update) -> EventLoopFuture<HTTPResponse> in
+                return Future.map(on: worker, { HTTPResponse(status: .ok) })
+            }
+            .catchFlatMap { (error) -> (EventLoopFuture<HTTPResponse>) in
+                return Future.map(on: worker, { HTTPResponse(status: .badRequest) })
+        }
+    }
 }

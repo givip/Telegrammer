@@ -62,15 +62,8 @@ do {
     dispatcher.add(handler: echoHandler)
 
     
-	try Updater(bot: bot, dispatcher: dispatcher).startWebhooks()
+	try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
     
-    let group = MultiThreadedEventLoopGroup(numThreads: 1)
-    
-    let promise = group.eventLoop.newPromise(Void.self)
-    try! Future.map(on: group) { () -> Void in
-        promise.succeed()
-    }.wait()
-
 } catch {
     print(error.localizedDescription)
 }
