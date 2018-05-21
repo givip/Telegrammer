@@ -83,7 +83,7 @@ public final class Bot {
                     resultString = json
                 }
             } catch {
-                print(error.localizedDescription)
+                Log.error(error.localizedDescription)
             }
         }
         
