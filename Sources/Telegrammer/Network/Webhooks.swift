@@ -22,22 +22,29 @@ class Webhooks: Connection {
 	
 	private var server: HTTPServer?
 	
-	public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 4)) {
-		self.bot = bot
-		self.dispatcher = dispatcher
-		self.worker = worker
-		self.running = false
-	}
-	
-	public func start(on host: String,
-					  port: Int,
-					  urlPath: String,
-					  cert: InputFile,
-					  secret: InputFile,
-					  readLatency: TimeAmount = ReadLatency,
-					  clean: Bool = Clean,
-					  maxConnections: Int = MaxConnections) throws {
-		self.running = true
+    public init(
+        bot: Bot,
+        dispatcher: Dispatcher,
+        worker: Worker = MultiThreadedEventLoopGroup(numThreads: 4)
+        ) {
+        self.bot = bot
+        self.dispatcher = dispatcher
+        self.worker = worker
+        self.running = false
+    }
+    
+    public func start(
+        on host: String,
+        port: Int,
+        urlPath: String,
+        cert: InputFile,
+        secret: InputFile,
+        readLatency: TimeAmount = ReadLatency,
+        clean: Bool = Clean,
+        maxConnections: Int = MaxConnections
+        ) throws {
+        
+        self.running = true
 
 		let params = Bot.SetWebhookParams(url: urlPath, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
 		
