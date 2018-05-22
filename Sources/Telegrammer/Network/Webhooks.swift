@@ -9,17 +9,18 @@ import Foundation
 import HeliumLogger
 import LoggerAPI
 import HTTP
+import NIO
 
 class Webhooks: Connection {
-	
-	public static let ReadLatency     = TimeAmount.seconds(2)
-	public static let Clean: Bool     = false
-	public static let MaxConnections  = 40
-	
+
 	public var bot: Bot
 	public var dispatcher: Dispatcher
 	public var worker: Worker
 	public var running: Bool
+    
+    public var readLatency: TimeAmount = .seconds(2)
+    public var clean: Bool = false
+    public var maxConnections: Int = 40
 	
 	private var server: HTTPServer?
 	
@@ -30,23 +31,16 @@ class Webhooks: Connection {
 		self.running = false
 	}
 	
-	public func start(on host: String,
-                      url: String,
-					  port: Int,
-                      publicCert: String,
-                      privateKey: String,
-					  readLatency: TimeAmount = ReadLatency,
-					  clean: Bool = Clean,
-					  maxConnections: Int = MaxConnections) throws -> Future<Void> {
+	public func start(on host: String, url: String, port: Int, publicCert: String, privateKey: String) throws -> Future<Void> {
         let tlsConfig = TLSConfiguration.forServer(certificateChain: [.file(publicCert)], privateKey: .file(privateKey))
         
-        guard let fileData = try Bundle.file(with: publicCert) else {
-            Log.error("Public key '\(publicCert)' for HTTPS server wasn't found")
-            return Future.map(on: worker, { })
+        guard let fileHandle = FileHandle(forReadingAtPath: publicCert) else {
+            let errorDescription = "Public key '\(publicCert)' for HTTPS server wasn't found"
+            Log.error(errorDescription)
+            throw CoreError(identifier: "FileIO", reason: errorDescription)
         }
         
-        let cert = InputFile(data: fileData, filename: publicCert)
-        self.running = true
+        let cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: publicCert)
         let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
             Log.debug("setWebhook request result: \(success)")

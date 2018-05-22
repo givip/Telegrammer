@@ -13,7 +13,6 @@ public final class Updater {
     public let bot: Bot
     public let dispatcher: Dispatcher
     public let worker: Worker
-    public var running: Bool
 	
 	private var longpollingConnection: Longpolling!
     private var webhooksListener: Webhooks!
@@ -23,16 +22,21 @@ public final class Updater {
         self.bot = bot
         self.dispatcher = dispatcher
         self.worker = worker
-        self.running = false
     }
     
     public func startWebhooks() throws -> Future<Void> {
+        guard let ip = Enviroment.get("TELEGRAMMER_IP"),
+            let url = Enviroment.get("TELEGRAMMER_WEBHOOK_URL"),
+            let portString = Enviroment.get("TELEGRAMMER_PORT"),
+            let port = Int(portString),
+            let publicCert = Enviroment.get("TELEGRAMMER_PUBLIC_KEY"),
+            let privateKey = Enviroment.get("TELEGRAMMER_PRIVATE_KEY") else {
+                throw CoreError(identifier: "Webhooks",
+                                reason: "Initialization parameters wasn't found in enviroment variables")
+        }
+        
         webhooksListener = Webhooks(bot: bot, dispatcher: dispatcher, worker: worker)
-        return try webhooksListener.start(on: "5.45.66.69",
-                                          url: "https://5.45.66.69:443/webhook",
-                                          port: 443,
-                                          publicCert: "public.pem",
-                                          privateKey: "private.pem")
+        return try webhooksListener.start(on: ip, url: url, port: port, publicCert: publicCert, privateKey: privateKey)
     }
 	
 	public func startLongpolling() throws {

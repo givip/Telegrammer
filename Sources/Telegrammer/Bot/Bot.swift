@@ -17,7 +17,7 @@ public final class Bot {
     let boundary: String
     
     public init(token: String, host: String, port: Int, numThreads: Int = 4) throws {
-        if let mode = Enviroment.get("TELEGRAM_BOT_DEBUG"), mode == "TRUE" {
+        if let mode = Enviroment.get("TELEGRAMMER_DEBUG"), mode == "TRUE" {
             Log.logger = HeliumLogger(.verbose)
             Log.info("Application is in debug mode, with verbose logging")
         }

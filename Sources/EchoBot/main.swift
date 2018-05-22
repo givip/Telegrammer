@@ -3,7 +3,7 @@ import Foundation
 import Telegrammer
 import HTTP
 
-guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
+guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else {
     exit(1)
 }
 
