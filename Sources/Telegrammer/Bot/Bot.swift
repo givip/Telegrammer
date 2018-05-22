@@ -71,7 +71,6 @@ public final class Bot {
     }
     
     func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> String {
-        
         var resultString = "[]"
         
         if let result = container.result {
@@ -83,7 +82,11 @@ public final class Bot {
                     resultString = json
                 }
             } catch {
-                Log.error(error.localizedDescription)
+                if let value = container.result as? Bool {
+                    resultString = value.description
+                } else {
+                    Log.error(error.localizedDescription)
+                }
             }
         }
         
@@ -99,10 +102,7 @@ public final class Bot {
     }
     
     func logError<T: Codable>(_ container: TelegramContainer<T>) -> Error {
-        return NSError(domain: container.description ?? "Response error",
-                       code: container.errorCode ?? -1,
-                       userInfo: nil)
+        return CoreError(identifier: "DecodingErrors",
+                         reason: container.description ?? "Response error")
     }
-    
 }
-
