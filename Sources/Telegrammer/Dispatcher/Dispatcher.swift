@@ -6,6 +6,8 @@
 //
 
 import NIO
+import HeliumLogger
+import LoggerAPI
 import HTTP
 
 public enum DispatchStatus {
@@ -73,6 +75,7 @@ extension Dispatcher: HTTPServerResponder {
     public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
         return request.body.consumeData(on: worker)
             .flatMap { (data) -> EventLoopFuture<Update> in
+                Log.info(self.logResponse(data))
                 return Future.map(on: worker, { try JSONDecoder().decode(Update.self, from: data) })
             }
             .do { (update) in
@@ -82,7 +85,20 @@ extension Dispatcher: HTTPServerResponder {
                 return Future.map(on: worker, { HTTPResponse(status: .ok) })
             }
             .catchFlatMap { (error) -> (EventLoopFuture<HTTPResponse>) in
+                Log.error(error.localizedDescription)
                 return Future.map(on: worker, { HTTPResponse(status: .badRequest) })
         }
+    }
+    
+    private func logResponse(_ data: Data) -> String {
+        guard let json = String(data: data, encoding: .utf8) else {
+            return "Occured error while casting HTTPResponse body Data to String"
+        }
+        return """
+        
+        Received webhook update
+        \(json)
+        
+        """
     }
 }

@@ -87,13 +87,13 @@ public class Longpolling: Connection {
     private func retryRequest(with params: Bot.GetUpdatesParams, after error: Error) {
         guard let maxRetries = bootstrapRetries, connectionRetries < maxRetries else {
             running = false
-            Log.debug("Failed connection after \(connectionRetries) retries")
+            Log.error("Failed connection after \(connectionRetries) retries")
             pollingPromise?.fail(error: error)
             return
         }
         
         connectionRetries += 1
-        Log.debug("Retry \(connectionRetries) after failed request")
+        Log.info("Retry \(connectionRetries) after failed request")
         
         _ = worker.eventLoop.scheduleTask(in: pollingInterval, { () -> Void in
             self.longpolling(with: params)

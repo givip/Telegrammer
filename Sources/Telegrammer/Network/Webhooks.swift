@@ -43,7 +43,7 @@ class Webhooks: Connection {
         let cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: publicCert)
         let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
-            Log.debug("setWebhook request result: \(success)")
+            Log.info("setWebhook request result: \(success)")
             return try self.listenWebhooks(on: host, port: port, tlsConfig: tlsConfig).onClose
         }
     }
@@ -51,6 +51,7 @@ class Webhooks: Connection {
     private func listenWebhooks(on host: String, port: Int, tlsConfig: TLSConfiguration) throws -> HTTPServer {
         return try HTTPServer.start(hostname: host, port: port, responder: dispatcher, tlsConfig: tlsConfig, on: worker)
             .do { (server) in
+                Log.info("HTTPS server started on: \(host):\(port)")
                 self.server = server
                 self.running = true
             }
