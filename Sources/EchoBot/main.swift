@@ -61,7 +61,11 @@ do {
     let echoHandler = MessageHandler(filters: Filters.text, callback: echo)
     dispatcher.add(handler: echoHandler)
 	
-	try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
+    ///Longpolling updates
+    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
+    
+    ///Webhooks updates (need to addition setup), longpolling and webhooks cannot work simultaneously
+    //try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
 
 } catch {
     print(error.localizedDescription)
