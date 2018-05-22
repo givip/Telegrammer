@@ -125,6 +125,9 @@ def deduce_result_type(description)
 
 	type_name = description[/returns an (.+) objects/, 1]
 	return type_name unless type_name.nil?
+    
+    type_name = description[/returns a (\w+) object/, 1]
+    return type_name unless type_name.nil?
 
 	type_name = description[/in form of a (.+) object/, 1]
 	return type_name unless type_name.nil?
@@ -320,8 +323,6 @@ def generate_method(f, node)
 		out.write "public extension Bot {\n"
 		out.write "\n"
 
-		
-
 		current_node = current_node.next_element
 		description, current_node = fetch_description(current_node)
 
@@ -331,7 +332,6 @@ def generate_method(f, node)
 		codable_params_struct = ""
 		codable_params_enum = ""
 		
-
 		f.write "DESCRIPTION:\n#{description}\n"
 
 		anchor = method_name.downcase
