@@ -55,7 +55,12 @@ do {
     let dispatcher = Dispatcher(bot: bot)
     dispatcher.add(handler: NewMemberHandler(callback: greetNewMember))
     dispatcher.add(handler: CommandHandler(commands: ["/greet"], callback: greeting))
-    try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
+    
+    ///Longpolling updates
+//    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
+    
+    ///Webhooks updates (need to addition setup), longpolling and webhooks cannot work simultaneously
+        try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
 } catch {
     print(error.localizedDescription)
 }
