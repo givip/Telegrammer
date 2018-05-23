@@ -62,10 +62,10 @@ do {
     dispatcher.add(handler: echoHandler)
 	
     ///Longpolling updates
-    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
+//    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
     
     ///Webhooks updates (need to addition setup), longpolling and webhooks cannot work simultaneously
-    //try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
+    try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
 
 } catch {
     print(error.localizedDescription)

@@ -73,32 +73,30 @@ public class Dispatcher {
 
 extension Dispatcher: HTTPServerResponder {
     public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
+        Log.info("""
+            \nReceived telegram webhook request
+            
+            \(request.description)
+            
+            """)
         return request.body.consumeData(on: worker)
             .flatMap { (data) -> EventLoopFuture<Update> in
-                Log.info(self.logResponse(data))
                 return Future.map(on: worker, { try JSONDecoder().decode(Update.self, from: data) })
             }
             .do { (update) in
+                Log.info("Update \(update.updateId) enqueued to handlers")
                 self.enqueue(updates: [update])
             }
             .flatMap { (update) -> EventLoopFuture<HTTPResponse> in
-                return Future.map(on: worker, { HTTPResponse(status: .ok) })
+                let ok = HTTPResponse(status: .ok)
+                Log.info("\nResponding: \(ok.description)")
+                return Future.map(on: worker, { ok })
             }
             .catchFlatMap { (error) -> (EventLoopFuture<HTTPResponse>) in
+                let bad = HTTPResponse(status: .badRequest)
+                Log.info("\nResponding: \(bad.description)")
                 Log.error(error.localizedDescription)
-                return Future.map(on: worker, { HTTPResponse(status: .badRequest) })
+                return Future.map(on: worker, { bad })
         }
-    }
-    
-    private func logResponse(_ data: Data) -> String {
-        guard let json = String(data: data, encoding: .utf8) else {
-            return "Occured error while casting HTTPResponse body Data to String"
-        }
-        return """
-        
-        Received webhook update
-        \(json)
-        
-        """
     }
 }
