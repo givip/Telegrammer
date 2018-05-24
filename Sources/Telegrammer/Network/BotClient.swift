@@ -55,21 +55,27 @@ public class BotClient {
     private func send<T: Codable>(request: HTTPRequest) -> Future<TelegramContainer<T>> {
         var futureClient: Future<HTTPClient>
         if let existingClient = client {
+            Log.info("Using existing HTTP client")
             futureClient = Future<HTTPClient>.map(on: worker, { existingClient })
         } else {
             futureClient = HTTPClient
                 .connect(scheme: .https, hostname: host, port: port, on: worker, onError: { (error) in
+                    Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
+                    Log.error(error.localizedDescription)
                     self.client = nil
                 })
                 .do({ (freshClient) in
+                    Log.info("Creating new HTTP Client")
                     self.client = freshClient
                 })
         }
         return futureClient
             .then { (client) -> Future<HTTPResponse> in
+                Log.info("Sending request to vapor HTTPClient")
                 return client.send(request)
             }
             .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
+                Log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
         }
     }
