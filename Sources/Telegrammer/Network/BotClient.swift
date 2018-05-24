@@ -77,6 +77,10 @@ public class BotClient {
             .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
                 Log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
+            }
+            .catch { (error) in
+                Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
+                Log.error(error.localizedDescription)
         }
     }
     
