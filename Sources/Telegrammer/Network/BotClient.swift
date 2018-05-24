@@ -70,6 +70,10 @@ public class BotClient {
                 })
         }
         return futureClient
+            .catch { (error) in
+                Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
+                Log.error(error.localizedDescription)
+            }
             .then { (client) -> Future<HTTPResponse> in
                 Log.info("Sending request to vapor HTTPClient")
                 return client.send(request)
@@ -77,10 +81,6 @@ public class BotClient {
             .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
                 Log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
-            }
-            .catch { (error) in
-                Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
-                Log.error(error.localizedDescription)
         }
     }
     
