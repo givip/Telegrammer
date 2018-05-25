@@ -92,6 +92,6 @@ public class BotClient {
     }
     
     func apiUrl(endpoint: String) -> URL {
-        return URL(string: "https://api.telegram.org/bot\(token)/\(endpoint)")!
+        return URL(string: "https://\(host):\(port)/bot\(token)/\(endpoint)")!
     }
 }
