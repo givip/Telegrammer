@@ -10,7 +10,8 @@ guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else {
 let bot: Bot!
 
 do {
-    bot = try Bot(token: token, host: "api.telegram.org", port: 443)
+    let settings = Bot.Settings(token: token, debugMode: true, serverHost: "api.telegram.org", serverPort: 443)
+    bot = try Bot(settings: settings)
 } catch {
     print(error.localizedDescription)
     exit(1)
@@ -57,10 +58,7 @@ do {
     dispatcher.add(handler: CommandHandler(commands: ["/greet"], callback: greeting))
     
     ///Longpolling updates
-//    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
-    
-    ///Webhooks updates (need to addition setup), longpolling and webhooks cannot work simultaneously
-        try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
+    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
 } catch {
     print(error.localizedDescription)
 }
