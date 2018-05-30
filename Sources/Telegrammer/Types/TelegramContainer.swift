@@ -15,20 +15,22 @@ public struct TelegramContainer<T: Codable>: Codable {
 		case result = "result"
 		case description = "description"
 		case errorCode = "error_code"
+        case parameters = "parameters"
 	}
 	
 	public var ok: Bool
 	public var result: T?
 	public var description: String?
 	public var errorCode: Int?
+    public var parameters: ResponseParameters?
 	
-	public init (ok: Bool, result: T?, description: String?, errorCode: Int?) {
+    public init (ok: Bool, result: T?, description: String?, errorCode: Int?, parameters: ResponseParameters?) {
 		self.ok = ok
 		self.result = result
 		self.description = description
 		self.errorCode = errorCode
+        self.parameters = parameters
 	}
-	
 }
 
 

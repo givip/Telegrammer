@@ -89,7 +89,7 @@ public class BotClient {
         if let data = response.body.data {
             return try JSONDecoder().decode(TelegramContainer<T>.self, from: data)
         }
-        return TelegramContainer(ok: false, result: nil, description: nil, errorCode: nil)
+        throw BotError()
     }
     
     func apiUrl(endpoint: String) -> URL {
