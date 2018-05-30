@@ -27,7 +27,7 @@ public class CallbackQueryHandler: Handler {
         return true
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+    public func handle(update: Update, dispatcher: Dispatcher) throws {
+        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
     }
 }

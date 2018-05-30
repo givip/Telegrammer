@@ -12,20 +12,38 @@ import LoggerAPI
 
 public final class Bot {
     
+    public struct Settings {
+        let token: String
+        let debugMode: Bool
+        let serverHost: String = "api.telegram.org"
+        let serverPort: Int = 443
+        let webhooksIp: String? = nil
+        let webhooksUrl: String? = nil
+        let webhooksPort: Int? = nil
+        let webhooksPublicCert: String? = nil
+        let webhooksPrivateKey: String? = nil
+        
+        public init(token: String, debugMode: Bool) {
+            self.token = token
+            self.debugMode = debugMode
+        }
+    }
+    
     public let client: BotClient
+    public let settings: Settings
     let requestWorker: Worker
     let boundary: String
     
-    public init(token: String, host: String, port: Int, numThreads: Int = 4) throws {
-        if let mode = Enviroment.get("TELEGRAMMER_DEBUG"), mode == "TRUE" {
-            Log.logger = HeliumLogger(.verbose)
-            Log.info("Application is in debug mode, with verbose logging")
-        }
+    public init(settings: Settings, numThreads: Int = 4) throws {
+        Log.logger = settings.debugMode ? HeliumLogger(.verbose) : HeliumLogger(.error)
         
+        self.settings = settings
         self.requestWorker = MultiThreadedEventLoopGroup(numThreads: numThreads)
-        self.client = try BotClient(host: host, port: port, token: token, worker: self.requestWorker)
+        self.client = try BotClient(host: settings.serverHost,
+                                    port: settings.serverPort,
+                                    token: settings.token,
+                                    worker: self.requestWorker)
         self.boundary = String.random(ofLength: 20)
-        Log.info("Initialized Bot instance")
     }
     
     func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {

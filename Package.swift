@@ -7,7 +7,8 @@ let package = Package(
     name: "Telegrammer",
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
-        .executable(name: "EchoBot", targets: ["EchoBot"])
+        .executable(name: "EchoBot", targets: ["EchoBot"]),
+        .executable(name: "HelloBot", targets: ["HelloBot"])
     ],
     dependencies: [
         .package(url: "https://github.com/givip/http.git", from: "3.0.0"),
@@ -19,7 +20,7 @@ let package = Package(
         .target(
             name: "Telegrammer",
             dependencies: ["HTTP", "Multipart", "Crypto", "HeliumLogger"]),
-        .target(name: "EchoBot",
-                dependencies: ["Telegrammer"])
+        .target(name: "EchoBot", dependencies: ["Telegrammer"]),
+        .target(name: "HelloBot", dependencies: ["Telegrammer"])
     ]
 )

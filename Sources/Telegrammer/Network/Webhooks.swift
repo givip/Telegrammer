@@ -12,7 +12,7 @@ import HTTP
 import NIO
 
 class Webhooks: Connection {
-
+    
 	public var bot: Bot
 	public var dispatcher: Dispatcher
 	public var worker: Worker
@@ -24,14 +24,22 @@ class Webhooks: Connection {
 	
 	private var server: HTTPServer?
 	
-	public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 4)) {
+    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 4)) {
 		self.bot = bot
 		self.dispatcher = dispatcher
 		self.worker = worker
 		self.running = false
 	}
 	
-	public func start(on host: String, url: String, port: Int, publicCert: String, privateKey: String) throws -> Future<Void> {
+	public func start() throws -> Future<Void> {
+        guard let ip = bot.settings.webhooksIp,
+            let url = bot.settings.webhooksUrl,
+            let port = bot.settings.webhooksPort,
+            let publicCert = bot.settings.webhooksPublicCert,
+            let privateKey = bot.settings.webhooksPrivateKey else {
+                throw CoreError(identifier: "Webhooks",
+                                reason: "Initialization parameters wasn't found in enviroment variables")
+        }
         let tlsConfig = TLSConfiguration.forServer(certificateChain: [.file(publicCert)], privateKey: .file(privateKey))
         
         guard let fileHandle = FileHandle(forReadingAtPath: publicCert) else {
@@ -44,7 +52,7 @@ class Webhooks: Connection {
         let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
             Log.info("setWebhook request result: \(success)")
-            return try self.listenWebhooks(on: host, port: port, tlsConfig: tlsConfig).onClose
+            return try self.listenWebhooks(on: ip, port: port, tlsConfig: tlsConfig).onClose
         }
     }
 	

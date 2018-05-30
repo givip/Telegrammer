@@ -49,7 +49,7 @@ public class MessageHandler: Handler {
         return false
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+    public func handle(update: Update, dispatcher: Dispatcher) throws {
+        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
     }
 }

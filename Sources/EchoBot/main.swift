@@ -3,33 +3,20 @@ import Foundation
 import Telegrammer
 import HTTP
 
-guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else {
-    exit(1)
-}
+///Getting token from enviroment variable (most safe, recommended)
+guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else { exit(1) }
 
-var bot: Bot!
+/// Initializind Bot settings (token, debugmode)
+let settings = Bot.Settings(token: token, debugMode: true)
+let bot = try! Bot(settings: settings)
 
-do {
-    bot = try Bot(token: token, host: "api.telegram.org", port: 443)
-} catch {
-    print(error.localizedDescription)
-    exit(1)
-}
-
+/// Dictionary for user echo modes
 var userEchoModes: [Int64: Bool] = [:]
 
-func send(message: Bot.SendMessageParams) {
-    do {
-        try bot.sendMessage(params: message)
-    } catch {
-        print(error.localizedDescription)
-    }
-}
-
-func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
-
-    guard let message = update.message else { return }
-    guard let user = message.from else { return }
+///Callback for Command handler, which send Echo mode status for user
+func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
+    guard let message = update.message,
+        let user = message.from else { return }
     
     var onText = ""
     if let on = userEchoModes[user.id] {
@@ -41,31 +28,33 @@ func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker
     }
 
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
-    send(message: params)
+    try bot.sendMessage(params: params)
 }
 
-func echo(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
-	guard let message = update.message else { return }
-    guard let user = message.from else { return }
-    guard let on = userEchoModes[user.id], on == true else { return }
+///Callback for Message handler, which send echo message to user
+func echoResponse(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
+    guard let message = update.message,
+        let user = message.from,
+        let on = userEchoModes[user.id],
+        on == true else { return }
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: message.text!)
-    send(message: params)
+    try bot.sendMessage(params: params)
 }
 
 do {
+    ///Dispatcher - handle all incoming messages
     let dispatcher = Dispatcher(bot: bot)
     
+    ///Creating and adding handler for command /echo
     let commandHandler = CommandHandler(commands: ["/echo"], callback: echoModeSwitch)
     dispatcher.add(handler: commandHandler)
     
-    let echoHandler = MessageHandler(filters: Filters.text, callback: echo)
+    ///Creating and adding handler for ordinary text messages
+    let echoHandler = MessageHandler(filters: Filters.text, callback: echoResponse)
     dispatcher.add(handler: echoHandler)
 	
     ///Longpolling updates
     try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
-    
-    ///Webhooks updates (need to addition setup), longpolling and webhooks cannot work simultaneously
-    //try Updater(bot: bot, dispatcher: dispatcher).startWebhooks().wait()
 
 } catch {
     print(error.localizedDescription)
