@@ -10,7 +10,7 @@ import Telegrammer
 
 class NewMemberHandler: Handler {
     
-    typealias NewMemberCallback = (_ update: Update) -> Void
+    typealias NewMemberCallback = (_ update: Update) throws -> Void
     
     let filters = StatusUpdateFilters.newChatMembers
     var callback: NewMemberCallback
@@ -20,12 +20,12 @@ class NewMemberHandler: Handler {
     }
     
     func check(update: Update) -> Bool {
-        guard let message = update.message else { return false }
-        guard filters.check(message) else { return false }
+        guard let message = update.message,
+            filters.check(message) else { return false }
         return true
     }
     
-    func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update)
+    func handle(update: Update, dispatcher: Dispatcher) throws {
+        try callback(update)
     }
 }

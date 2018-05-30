@@ -3,29 +3,11 @@ import Foundation
 import Telegrammer
 import HTTP
 
-guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else {
-    exit(1)
-}
+guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else { exit(1) }
+let settings = Bot.Settings(token: token, debugMode: true)
+let bot = try! Bot(settings: settings)
 
-let bot: Bot!
-
-do {
-    let settings = Bot.Settings(token: token, debugMode: true, serverHost: "api.telegram.org", serverPort: 443)
-    bot = try Bot(settings: settings)
-} catch {
-    print(error.localizedDescription)
-    exit(1)
-}
-
-func send(message: Bot.SendMessageParams) {
-    do {
-        try bot.sendMessage(params: message)
-    } catch {
-        print(error.localizedDescription)
-    }
-}
-
-func greetNewMember(_ update: Update) {
+func greetNewMember(_ update: Update) throws {
     guard let message = update.message else { return }
     guard let newUsers = message.newChatMembers else { return }
     
@@ -40,20 +22,21 @@ func greetNewMember(_ update: Update) {
         let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: """
             Hey \(name)!\nI'm HelloBot, written in Swift with Telegrammer framework, please feel free to ask questions in this group chat!
             """)
-        send(message: params)
+        try bot.sendMessage(params: params)
     }
 }
 
-func greeting(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) {
+func greeting(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
     guard let message = update.message else { return }
     guard let user = message.from else { return }
     
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Hello, \(user.firstName)!")
-    send(message: params)
+    try bot.sendMessage(params: params)
 }
 
 do {
     let dispatcher = Dispatcher(bot: bot)
+    
     dispatcher.add(handler: NewMemberHandler(callback: greetNewMember))
     dispatcher.add(handler: CommandHandler(commands: ["/greet"], callback: greeting))
     

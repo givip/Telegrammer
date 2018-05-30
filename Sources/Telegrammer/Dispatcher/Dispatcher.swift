@@ -64,7 +64,11 @@ public class Dispatcher {
                 let handler = group.first { $0.check(update: update) }
                 guard let _handler = handler else { continue }
                 updateQueue.eventLoop.execute {
-                    _handler.handle(update: update, dispatcher: self)
+                    do {
+                        try _handler.handle(update: update, dispatcher: self)
+                    } catch {
+                        Log.error(error.localizedDescription)
+                    }
                 }
             }
         }

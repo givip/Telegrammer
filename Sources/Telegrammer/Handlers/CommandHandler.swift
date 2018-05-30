@@ -31,10 +31,11 @@ public class CommandHandler: Handler {
             return true
         }
             
-        guard let message = update.message else { return false }
-        guard let text = message.text else { return false }
-        guard filters.check(message) else { return false }
-        guard let entities = message.entities else { return false }
+        guard let message = update.message,
+            filters.check(message),
+            let text = message.text,
+            let entities = message.entities else { return false }
+        
         let types = entities.compactMap { (entity) -> String? in
             let nsRange = NSRange(location: entity.offset, length: entity.length)
             guard let range = Range(nsRange, in: text) else { return nil }
@@ -43,7 +44,7 @@ public class CommandHandler: Handler {
         return !commands.intersection(types).isEmpty
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) {
-        callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+    public func handle(update: Update, dispatcher: Dispatcher) throws {
+        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
     }
 }
