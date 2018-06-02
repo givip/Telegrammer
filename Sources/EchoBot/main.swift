@@ -54,8 +54,8 @@ do {
     dispatcher.add(handler: echoHandler)
 	
     ///Longpolling updates
-    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
-
+    _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
+    
 } catch {
     print(error.localizedDescription)
 }

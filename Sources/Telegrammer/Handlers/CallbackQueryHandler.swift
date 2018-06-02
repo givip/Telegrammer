@@ -12,8 +12,7 @@ public class CallbackQueryHandler: Handler {
     let pattern: String
     let callback: HandlerCallback
     
-    public init(pattern: String,
-                callback: @escaping HandlerCallback) {
+    public init(pattern: String, callback: @escaping HandlerCallback) {
         self.pattern = pattern
         self.callback = callback
     }

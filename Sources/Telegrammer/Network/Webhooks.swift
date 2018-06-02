@@ -31,7 +31,7 @@ class Webhooks: Connection {
 		self.running = false
 	}
 	
-	public func start() throws -> Future<Void> {
+    public func start() throws -> Future<Void> {
         guard let ip = bot.settings.webhooksIp,
             let url = bot.settings.webhooksUrl,
             let port = bot.settings.webhooksPort,
@@ -52,18 +52,17 @@ class Webhooks: Connection {
         let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
             Log.info("setWebhook request result: \(success)")
-            return try self.listenWebhooks(on: ip, port: port, tlsConfig: tlsConfig).onClose
+            return try self.listenWebhooks(on: ip, port: port, tlsConfig: tlsConfig).then { $0.onClose }
         }
     }
 	
-    private func listenWebhooks(on host: String, port: Int, tlsConfig: TLSConfiguration) throws -> HTTPServer {
-        return try HTTPServer.start(hostname: host, port: port, responder: dispatcher, tlsConfig: tlsConfig, on: worker)
+    private func listenWebhooks(on host: String, port: Int, tlsConfig: TLSConfiguration) throws -> Future<HTTPServer> {
+        return HTTPServer.start(hostname: host, port: port, responder: dispatcher, tlsConfig: tlsConfig, on: worker)
             .do { (server) in
                 Log.info("HTTPS server started on: \(host):\(port)")
                 self.server = server
                 self.running = true
             }
-            .wait()
     }
 	
 	public func stop() {

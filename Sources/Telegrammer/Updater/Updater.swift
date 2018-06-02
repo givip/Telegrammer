@@ -29,9 +29,9 @@ public final class Updater {
         return try webhooksListener.start()
     }
 	
-	public func startLongpolling() throws {
+	public func startLongpolling() throws -> Future<Void> {
 		longpollingConnection = Longpolling(bot: bot, dispatcher: dispatcher, worker: worker)
-		try longpollingConnection.start().wait()
+		return try longpollingConnection.start()
 	}
 	
     public func stop() {
