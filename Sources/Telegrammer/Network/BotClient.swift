@@ -85,6 +85,8 @@ public class BotClient {
     }
     
     func decode<T: Encodable>(response: HTTPResponse) throws -> TelegramContainer<T> {
+        ///Temporary workaround for drop current HTTPClient state after each request,
+        ///waiting for fixes from Vapor team
         self.client = nil
         if let data = response.body.data {
             return try JSONDecoder().decode(TelegramContainer<T>.self, from: data)
