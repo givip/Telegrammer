@@ -38,7 +38,7 @@ public final class Bot {
         Log.logger = settings.debugMode ? HeliumLogger(.verbose) : HeliumLogger(.error)
         
         self.settings = settings
-        self.requestWorker = MultiThreadedEventLoopGroup(numThreads: numThreads)
+        self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
         self.client = try BotClient(host: settings.serverHost,
                                     port: settings.serverPort,
                                     token: settings.token,

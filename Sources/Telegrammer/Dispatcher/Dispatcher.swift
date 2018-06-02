@@ -26,13 +26,13 @@ public class Dispatcher {
     public var errorHandlers: [ErrorHandlerCallback] = []
     
     public init(bot: Bot,
-                updateQueue: Worker = MultiThreadedEventLoopGroup(numThreads: 1),
-                jobQueue: Worker = MultiThreadedEventLoopGroup(numThreads: 1),
+                updateQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1),
+                jobQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1),
                 workers: Int = 4) {
         self.bot = bot
         self.updateQueue = updateQueue
         self.jobQueue = jobQueue
-        self.worker = MultiThreadedEventLoopGroup(numThreads: workers)
+        self.worker = MultiThreadedEventLoopGroup(numberOfThreads: workers)
     }
     
     public func add(handler: Handler, group: Int = 0) {

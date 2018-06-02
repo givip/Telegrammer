@@ -30,7 +30,7 @@ public class Longpolling: Connection {
     
     private var pollingPromise: Promise<Void>?
     
-	public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 1)) {
+    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
 		self.bot = bot
 		self.dispatcher = dispatcher
 		self.worker = worker

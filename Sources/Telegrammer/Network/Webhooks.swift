@@ -24,7 +24,7 @@ class Webhooks: Connection {
 	
 	private var server: HTTPServer?
 	
-    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 4)) {
+    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 4)) {
 		self.bot = bot
 		self.dispatcher = dispatcher
 		self.worker = worker

@@ -24,7 +24,7 @@ public class BotClient {
         self.port = port
         self.token = token
         self.worker = worker
-        self.callbackWorker = MultiThreadedEventLoopGroup(numThreads: 1)
+        self.callbackWorker = MultiThreadedEventLoopGroup(numberOfThreads: 1)
     }
     
     /// Sends request to api.telegram.org, and receive TelegramContainer object

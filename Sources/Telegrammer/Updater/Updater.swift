@@ -18,7 +18,7 @@ public final class Updater {
     private var webhooksListener: Webhooks!
 	
 	@discardableResult
-    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numThreads: 1)) {
+    public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
         self.worker = worker
