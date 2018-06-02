@@ -59,20 +59,21 @@ public class Longpolling: Connection {
 	}
 	
 	private func longpolling(with params: Bot.GetUpdatesParams) {
-		var requestBody = params
-		do {
-			let updates = try self.bot.getUpdates(params: requestBody).wait()
-			if !updates.isEmpty {
-                if !cleanStart || !(cleanStart && isFirstRequest) {
-                    dispatcher.enqueue(updates: updates)
+        var requestBody = params
+        do {
+            try self.bot.getUpdates(params: requestBody).whenSuccess({ (updates) in
+                if !updates.isEmpty {
+                    if !self.cleanStart || !(self.cleanStart && self.isFirstRequest) {
+                        self.dispatcher.enqueue(updates: updates)
+                    }
+                    if let last = updates.last {
+                        requestBody.offset = last.updateId + 1
+                    }
                 }
-				if let last = updates.last {
-					requestBody.offset = last.updateId + 1
-				}
-			}
-            isFirstRequest = false
-			self.scheduleLongpolling(with: requestBody)
-		} catch {
+                self.isFirstRequest = false
+                self.scheduleLongpolling(with: requestBody)
+            })
+        } catch {
             Log.error(error.localizedDescription)
             retryRequest(with: params, after: error)
 		}
