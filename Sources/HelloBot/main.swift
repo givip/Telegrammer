@@ -49,7 +49,7 @@ do {
     dispatcher.add(handler: CommandHandler(commands: ["/greet"], callback: greeting))
     
     ///Longpolling updates
-    try Updater(bot: bot, dispatcher: dispatcher).startLongpolling()
+    _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
     
 } catch {
     print(error.localizedDescription)
