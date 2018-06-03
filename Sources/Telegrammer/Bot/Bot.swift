@@ -13,15 +13,15 @@ import LoggerAPI
 public final class Bot {
     
     public struct Settings {
-        let token: String
-        let debugMode: Bool
-        let serverHost: String = "api.telegram.org"
-        let serverPort: Int = 443
-        let webhooksIp: String? = nil
-        let webhooksUrl: String? = nil
-        let webhooksPort: Int? = nil
-        let webhooksPublicCert: String? = nil
-        let webhooksPrivateKey: String? = nil
+        public let token: String
+        public let debugMode: Bool
+        public let serverHost: String = "api.telegram.org"
+        public let serverPort: Int = 443
+        public let webhooksIp: String? = nil
+        public let webhooksUrl: String? = nil
+        public let webhooksPort: Int? = nil
+        public let webhooksPublicCert: String? = nil
+        public let webhooksPrivateKey: String? = nil
         
         public init(token: String, debugMode: Bool) {
             self.token = token
