@@ -15,13 +15,13 @@ public final class Bot {
     public struct Settings {
         public let token: String
         public let debugMode: Bool
-        public let serverHost: String = "api.telegram.org"
-        public let serverPort: Int = 443
-        public let webhooksIp: String? = nil
-        public let webhooksUrl: String? = nil
-        public let webhooksPort: Int? = nil
-        public let webhooksPublicCert: String? = nil
-        public let webhooksPrivateKey: String? = nil
+        public var serverHost: String = "api.telegram.org"
+        public var serverPort: Int = 443
+        public var webhooksIp: String? = nil
+        public var webhooksUrl: String? = nil
+        public var webhooksPort: Int? = nil
+        public var webhooksPublicCert: String? = nil
+        public var webhooksPrivateKey: String? = nil
         
         public init(token: String, debugMode: Bool) {
             self.token = token
