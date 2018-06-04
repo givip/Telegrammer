@@ -4,7 +4,7 @@ import Telegrammer
 import HTTP
 
 ///Getting token from enviroment variable (most safe, recommended)
-guard let token = Enviroment.get("TELEGRAMMER_TOKEN") else { exit(1) }
+guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else { exit(1) }
 
 /// Initializind Bot settings (token, debugmode)
 let settings = Bot.Settings(token: token, debugMode: true)
