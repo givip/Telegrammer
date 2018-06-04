@@ -7,7 +7,15 @@ import HTTP
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else { exit(1) }
 
 /// Initializind Bot settings (token, debugmode)
-let settings = Bot.Settings(token: token, debugMode: true)
+var settings = Bot.Settings(token: token, debugMode: true)
+
+///Webhooks settings
+//settings.webhooksIp = Enviroment.get("TELEGRAM_BOT_IP")!
+//settings.webhooksUrl = Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!
+//settings.webhooksPort = Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!
+//settings.webhooksPublicCert = Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!
+//settings.webhooksPrivateKey = Enviroment.get("TELEGRAM_BOT_PRIVATE_KEY")!
+
 let bot = try! Bot(settings: settings)
 
 ///Callback for handler, that sends Hello message for new chat member
