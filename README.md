@@ -13,11 +13,13 @@ Telegram Bot Framework written in Swift 4.1 with SwiftNIO network framework
 
 <p align="center">
 <a href="#what-does-it-do">What does it do</a> &bull;
+<a href="#documentation">Documentation</a> &bull;
+<a href="#howto-guides">HOWTO Guides</a> &bull;
+<a href="#usage-without-vapor">Usage without Vapor</a> &bull;
+<a href="#usage-with-vapor">Usage with Vapor</a> &bull;
+<a href="#demo-bots">Demo bots</a> &bull;
 <a href="#requirements">Requirements</a> &bull;
 <a href="#contributing">Contributing</a> &bull;
-<a href="#installing-and-usage">Installing and Usage</a> &bull;
-<a href="#documentation">Documentation</a> &bull;
-<a href="#demo-bots">Demo bots</a> &bull;
 <a href="#author">Author</a> &bull;
 </p>
 
@@ -32,23 +34,22 @@ It was built on top of [Apple/SwiftNIO](https://github.com/apple/swift-nio) whic
 
 Also Telegrammer use some submodules of [Vapor 3 server side swift framework](https://github.com/vapor/vapor)
 
+Join to our [Telegram developers chat](https://t.me/joinchat/AzGW3kkUjLoK2dr3CZFrFQ)
 
-Requirements
----------------
+Documentation
+-------------
 
-- Ubuntu 14.04 or later with [Swift 4.1 or later](https://swift.org/getting-started/) / macOS with [Xcode 9.3 or later](https://swift.org/download/)
-- Telegram account and a Telegram App for any platform
-- [Swift Package Manager (SPM)](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md) for dependencies 
-- [Vapor 3](https://vapor.codes) (optionally, for bots with database and other server side stuff)
+- Read [An official introduction for developers](https://core.telegram.org/bots) 
+- Check out [bot FAQ](https://core.telegram.org/bots/faq)
+- Official [Telegram Bot API](https://core.telegram.org/bots/api)
 
-Contributing
----------------
+HOWTO Guides
+-------------
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
+- [Create Telegram Bot](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
+- [Setup Telegram Bot webhooks](https://core.telegram.org/bots/webhooks)
 
-Join to [Telegram developers chat](https://t.me/joinchat/AzGW3kkUjLoK2dr3CZFrFQ)
-
-Installing and Usage
+Usage without Vapor
 ---------------
 
 1. Create package with Swift Package Manager (SPM)
@@ -58,15 +59,15 @@ $ cd MyBot
 $ swift package init --type executable
 ```
 2. Define Dependencies in Package.swift file
-```
+```swift
 let package = Package(
-name: "MyBot",
-dependencies: [
-.package(url: "https://github.com/givip/Telegrammer.git", from: "0.2.0"),
-],
-targets: [
-.target( name: "MyBot", dependencies: ["Telegrammer"]),
-]
+    name: "MyBot",
+    dependencies: [
+        .package(url: "https://github.com/givip/Telegrammer.git", from: "0.2.0")
+        ],
+    targets: [
+        .target( name: "MyBot", dependencies: ["Telegrammer"])
+        ]
 )
 ```
 3. Resolve dependencies
@@ -85,22 +86,31 @@ You project is ready to create new Telegram Bot.
 
 If you need more help through this steps, you can read [How to create a Telegram bot with Telegrammer on Ubuntu / macOS](https://github.com/givip/Telegrammer/wiki/Creating-Telegram-bot-in-Swift)
 
+Usage with Vapor
+---------------
 
-Documentation
--------------
+You may also use previous way to create project with Vapor, only include Vapor as dependency in Package.swift
 
-- Read [An official introduction for developers](https://core.telegram.org/bots) 
-- Check out bot [FAQ](https://core.telegram.org/bots/faq)
-- Official [Telegram Bot API](https://core.telegram.org/bots/api)
-
+1. Install [Vapor CLI](https://docs.vapor.codes/3.0/install/macos/)
+```
+$ brew install vapor/tap/vapor
+```
+2. Create Vapor project with [Telegrammer template](https://github.com/givip/telegram-bot-template/)
+```
+$ vapor new MyBot --template=https://github.com/givip/telegram-bot-template
+```
+3. Generate XCode project
+```
+$ vapor xcode
+```
 
 Demo bots
 ---------
 
 #### EchoBot Sample
-1. Add Telegram Token in [Environment Variables](http://nshipster.com/launch-arguments-and-environment-variables/), e.g. 
+1. Add Telegram Token in [Environment Variables](http://nshipster.com/launch-arguments-and-environment-variables/), so, either create an environment variable:
 ```
-TELEGRAM_BOT_TOKEN 000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+$ export TELEGRAM_BOT_TOKEN='000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 ```
 2. Run EchoBot executable scheme or
 ```
@@ -109,11 +119,25 @@ $ swift run
 3. Send _**/echo**_ command to bot
 
 
+Requirements
+---------------
+
+- Ubuntu 14.04 or later with [Swift 4.1 or later](https://swift.org/getting-started/) / macOS with [Xcode 9.3 or later](https://swift.org/download/)
+- Telegram account and a Telegram App for any platform
+- [Swift Package Manager (SPM)](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md) for dependencies 
+- [Vapor 3](https://vapor.codes) (optionally, for bots with database and other server side stuff)
+
+Contributing
+---------------
+
+See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
+
 Author
 ------
 
 Givi Pataridze
 
 [pataridzegivi@gmail.com](mailto:pataridzegivi@gmail.com)
+
 
 
