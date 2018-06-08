@@ -9,14 +9,16 @@ import Foundation
 import Telegrammer
 
 class NewMemberHandler: Handler {
-    
+
     typealias NewMemberCallback = (_ update: Update) throws -> Void
-    
+	
+	var name: String
     let filters = StatusUpdateFilters.newChatMembers
     var callback: NewMemberCallback
     
-    init(callback: @escaping NewMemberCallback) {
+    init(callback: @escaping NewMemberCallback, name: String = String(describing: CallbackQueryHandler.self)) {
         self.callback = callback
+		self.name = name
     }
     
     func check(update: Update) -> Bool {

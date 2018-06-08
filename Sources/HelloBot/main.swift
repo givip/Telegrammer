@@ -39,7 +39,7 @@ func greetNewMember(_ update: Update) throws {
 }
 
 ///Callback for handler, that sends Hello message
-func greeting(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
+func greeting(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
     
@@ -51,10 +51,12 @@ do {
     let dispatcher = Dispatcher(bot: bot)
     
     ///Creating and adding New chat member handler
-    dispatcher.add(handler: NewMemberHandler(callback: greetNewMember))
+	let newMemberHandler = NewMemberHandler(callback: greetNewMember)
+    dispatcher.add(handler: newMemberHandler)
     
     ///Creating and adding Command handler for '/greet'
-    dispatcher.add(handler: CommandHandler(commands: ["/greet"], callback: greeting))
+	let commandHandler = CommandHandler(commands: ["/greet"], callback: greeting)
+    dispatcher.add(handler: commandHandler)
     
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
