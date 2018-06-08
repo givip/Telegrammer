@@ -8,20 +8,25 @@
 import HTTP
 
 public class CommandHandler: Handler {
+	public var name: String
 
     let commands: Set<String>
     let callback: HandlerCallback 
     let filters: Filters
     let editedUpdates: Bool
     
-    public init(commands: [String],
-                filters: Filters = Filters.command,
-                callback: @escaping HandlerCallback,
-                editedUpdates: Bool = false) {
+	public init(
+		commands: [String],
+		filters: Filters = Filters.command,
+		callback: @escaping HandlerCallback,
+		editedUpdates: Bool = false,
+		name: String = String(describing: CommandHandler.self)
+		) {
         self.commands = Set(commands)
         self.callback = callback
         self.filters = filters
         self.editedUpdates = editedUpdates
+		self.name = name
     }
     
     public func check(update: Update) -> Bool {
@@ -45,6 +50,6 @@ public class CommandHandler: Handler {
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+        try callback(update, nil)
     }
 }

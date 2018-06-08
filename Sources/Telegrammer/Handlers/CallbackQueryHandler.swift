@@ -8,13 +8,20 @@
 import Foundation
 
 public class CallbackQueryHandler: Handler {
-    
+	
+	public var name: String
+	
     let pattern: String
     let callback: HandlerCallback
     
-    public init(pattern: String, callback: @escaping HandlerCallback) {
+    public init(
+		pattern: String,
+		callback: @escaping HandlerCallback,
+		name: String = String(describing: CallbackQueryHandler.self)
+		) {
         self.pattern = pattern
         self.callback = callback
+		self.name = name
     }
     
     public func check(update: Update) -> Bool {
@@ -27,6 +34,6 @@ public class CallbackQueryHandler: Handler {
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+        try callback(update, nil)
     }
 }

@@ -10,69 +10,58 @@ import HeliumLogger
 import LoggerAPI
 import HTTP
 
-public enum DispatchStatus {
-    case success
-    case failed
+public class Dispatcher {
+	
+    public let bot: Bot
+    public let updateQueue: DispatchQueue
+    public let jobsQueue: Worker
+    
+	public var handlersList: HandlersQueue
+    
+    public init(bot: Bot, jobsQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
+        self.bot = bot
+		self.jobsQueue = jobsQueue
+        self.updateQueue = DispatchQueue(label: "Telegrammer Updates Queue",
+										 qos: .default,
+										 attributes: .concurrent,
+										 autoreleaseFrequency: .inherit,
+										 target: nil)
+		self.handlersList = HandlersQueue()
+    }
+	
+	public func enqueue(updates: [Update]) {
+		updates.forEach { (update) in
+			updateQueue.async {
+				self.submit(update: update)
+			}
+		}
+	}
+
+	private func submit(update: Update) {
+		handlersList.handlers(for: update).forEach { (handler) in
+			_ = jobsQueue.eventLoop.submit { () -> Void in
+				try handler.handle(update: update, dispatcher: self)
+			}
+		}
+	}
 }
 
-public class Dispatcher {
-    
-    public let bot: Bot
-    public let worker: Worker
-    public let updateQueue: Worker
-    public let jobQueue: Worker
-    
-    public var handlers: [Int: [Handler]] = [:]
-    public var errorHandlers: [ErrorHandlerCallback] = []
-    
-    public init(bot: Bot,
-                updateQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1),
-                jobQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1),
-                workers: Int = 4) {
-        self.bot = bot
-        self.updateQueue = updateQueue
-        self.jobQueue = jobQueue
-        self.worker = MultiThreadedEventLoopGroup(numberOfThreads: workers)
-    }
-    
-    public func add(handler: Handler, group: Int = 0) {
-        if handlers[group] == nil {
-            handlers[group] = [handler]
-        } else {
-            handlers[group]?.append(handler)
-        }
-    }
-    
-    public func add(errorHandler: @escaping ErrorHandlerCallback) {
-        errorHandlers.append(errorHandler)
-    }
-    
-    public func remove(handler: Handler, group: Int) {
-        //TODO: Implement
-    }
-    
-    public func remove(errorHandler: ErrorHandlerCallback) {
-        //TODO: Implement
-    }
-    
-    public func enqueue(updates: [Update]) {
-        let groups = Array<Int>(handlers.keys).sorted()
-        let sortedGroups = groups.compactMap { handlers[$0] }
-        
-        for update in updates {
-            for group in sortedGroups {
-                let handler = group.first { $0.check(update: update) }
-                guard let _handler = handler else { continue }
-                updateQueue.eventLoop.execute {
-                    do {
-                        try _handler.handle(update: update, dispatcher: self)
-                    } catch {
-                        Log.error(error.localizedDescription)
-                    }
-                }
-            }
-        }
-    }
+public extension Dispatcher {
+	public func add<T: Handler>(handler: T, to group: HandlerGroup = .zero) {
+		self.handlersList.add(handler, to: group)
+	}
+	
+	public func add(errorHandler: ErrorHandler) {
+		self.handlersList.add(errorHandler)
+	}
+	
+	public func remove<T: Handler>(handler: T, from group: HandlerGroup) {
+		self.handlersList.remove(handler, from: group)
+	}
+	
+	public func remove(errorHandler: ErrorHandler) {
+		self.handlersList.remove(errorHandler)
+	}
 }
 
 extension Dispatcher: HTTPServerResponder {

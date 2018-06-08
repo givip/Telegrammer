@@ -8,24 +8,29 @@
 import HTTP
 
 public class MessageHandler: Handler {
-    
+	
+	public var name: String
+	
     let filters: Filters
     let callback: HandlerCallback
     let messageUpdates: Bool
     let channelPostUpdates: Bool
     let editedUpdates: Bool
-    
-    public init(filters: Filters = Filters.all,
-                callback: @escaping HandlerCallback,
-                messageUpdates: Bool = true,
-                channelPostUpdates: Bool = true,
-                editedUpdates: Bool = false
-                ) {
+	
+	public init(
+		filters: Filters = Filters.all,
+		callback: @escaping HandlerCallback,
+		messageUpdates: Bool = true,
+		channelPostUpdates: Bool = true,
+		editedUpdates: Bool = false,
+		name: String = String(describing: MessageHandler.self)
+		) {
         self.filters = filters
         self.callback = callback
         self.messageUpdates = messageUpdates
         self.channelPostUpdates = channelPostUpdates
         self.editedUpdates = editedUpdates
+		self.name = name
     }
     
     public func check(update: Update) -> Bool {
@@ -50,6 +55,6 @@ public class MessageHandler: Handler {
     }
     
     public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, dispatcher.updateQueue, dispatcher.jobQueue)
+        try callback(update, nil)
     }
 }

@@ -22,7 +22,7 @@ let bot = try! Bot(settings: settings)
 var userEchoModes: [Int64: Bool] = [:]
 
 ///Callback for Command handler, which send Echo mode status for user
-func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
+func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
     
@@ -40,7 +40,7 @@ func echoModeSwitch(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker
 }
 
 ///Callback for Message handler, which send echo message to user
-func echoResponse(_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws {
+func echoResponse(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from,
         let on = userEchoModes[user.id],

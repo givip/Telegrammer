@@ -7,11 +7,17 @@
 
 import HTTP
 
-public typealias HandlerCallback = (_ update: Update, _ updateQueue: Worker?, _ jobQueue: Worker?) throws -> Void
+public protocol BotContext { }
 
-public typealias ErrorHandlerCallback = (_ bot: Bot, _ update: Update, _ error: Error) -> Void
+public typealias HandlerCallback = (_ update: Update, _ context: BotContext?) throws -> Void
 
 public protocol Handler {
+	var name: String { get }
+	
     func check(update: Update) -> Bool
     func handle(update: Update, dispatcher: Dispatcher) throws
 }
+
+
+
+public protocol ErrorHandler: Handler { }
