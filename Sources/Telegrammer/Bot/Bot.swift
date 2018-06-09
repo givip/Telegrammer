@@ -23,7 +23,7 @@ public final class Bot {
         public var webhooksPublicCert: String? = nil
         public var webhooksPrivateKey: String? = nil
         
-        public init(token: String, debugMode: Bool) {
+        public init(token: String, debugMode: Bool = true) {
             self.token = token
             self.debugMode = debugMode
         }

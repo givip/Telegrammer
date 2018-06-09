@@ -1,13 +1,13 @@
 
 import Foundation
 import Telegrammer
-import HTTP
+
 
 ///Getting token from enviroment variable (most safe, recommended)
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else { exit(1) }
 
 /// Initializind Bot settings (token, debugmode)
-var settings = Bot.Settings(token: token, debugMode: true)
+var settings = Bot.Settings(token: token)
 
 ///Webhooks settings
 //settings.webhooksIp = Enviroment.get("TELEGRAM_BOT_IP")!
