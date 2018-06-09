@@ -34,7 +34,11 @@ public final class Bot {
     let requestWorker: Worker
     let boundary: String
     
-    public init(settings: Settings, numThreads: Int = 4) throws {
+    public convenience init(token: String) throws {
+        try self.init(settings: Bot.Settings(token: token))
+    }
+    
+    public init(settings: Settings, numThreads: Int = System.coreCount) throws {
         Log.logger = settings.debugMode ? HeliumLogger(.verbose) : HeliumLogger(.error)
         
         self.settings = settings
