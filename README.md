@@ -36,6 +36,25 @@ Also Telegrammer use some submodules of [Vapor 3 server side swift framework](ht
 
 Join to our [Telegram developers chat](https://t.me/joinchat/AzGW3kkUjLoK2dr3CZFrFQ)
 
+It's easy, from scratch
+-------------
+_main.swift_
+```swift
+import Telegrammer
+
+let bot = try! Bot(token: "BOT_TOKEN_HERE")
+
+let commandHandler = CommandHandler(commands: ["/hello"], callback: { (update, _) in
+    guard let message = update.message, let user = message.from else { return }
+    try! message.reply("Hello \(user.firstName)", from: bot)
+})
+
+let dispatcher = Dispatcher(bot: bot)
+dispatcher.add(handler: commandHandler)
+
+_ = try! Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
+```
+
 Documentation
 -------------
 
@@ -138,6 +157,3 @@ Author
 Givi Pataridze
 
 [pataridzegivi@gmail.com](mailto:pataridzegivi@gmail.com)
-
-
-
