@@ -49,7 +49,9 @@ public final class HandlersQueue {
 	public func remove<T: Handler>(_ handler: T, from group: HandlerGroup) {
 		concurrentQueue.async(flags: .barrier) {
 			guard var groupHandlers = self._handlers[group] else { return }
-			groupHandlers.removeAll { $0.name == handler.name }
+            groupHandlers.removeAll(where: { (elem) -> Bool in
+                return elem.name == handler.name
+            })
 			
 			if groupHandlers.isEmpty {
 				self._handlers.removeValue(forKey: group)
@@ -65,7 +67,9 @@ public final class HandlersQueue {
 	}
 	
 	public func remove(_ errorHandler: ErrorHandler) {
-		_errorHandlers.removeAll { $0.name == errorHandler.name }
+        _errorHandlers.removeAll(where: { (elem) -> Bool in
+            return elem.name == errorHandler.name
+        })
 	}
 	
 	private func sortGroups() {
