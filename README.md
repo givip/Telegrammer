@@ -149,7 +149,7 @@ Requirements
 Contributing
 ---------------
 
-See [CONTRIBUTING.md](docs/CONTRIBUTING.md) file.
+See [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 Author
 ------
