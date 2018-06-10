@@ -1,7 +1,6 @@
 
 import Foundation
 import Telegrammer
-import HTTP
 
 ///Getting token from enviroment variable (most safe, recommended)
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else { exit(1) }
