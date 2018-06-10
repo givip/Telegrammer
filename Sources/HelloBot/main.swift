@@ -32,7 +32,10 @@ func greetNewMember(_ update: Update) throws {
         }
         
         let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: """
-            Hey \(name)!\nI'm HelloBot, written in Swift with Telegrammer framework, please feel free to ask questions in this group chat!
+            🎊🎉👋😃
+            Hey \(name)!
+            I'm `HelloBot` 😎, made by Telegrammer
+            Here you may ask any questions about me!
             """)
         try bot.sendMessage(params: params)
     }
@@ -43,7 +46,9 @@ func greeting(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
     
-    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Hello, \(user.firstName)!")
+    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: """
+        Hello, \(user.firstName)! Nice to meet you.
+        """)
     try bot.sendMessage(params: params)
 }
 
