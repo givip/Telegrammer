@@ -74,7 +74,7 @@ public final class HandlersQueue {
 		_handlersGroup = self._handlers.keys.sorted { $0.id < $1.id }.compactMap { _handlers[$0] }
 	}
 	
-	public func handlers(for update: Update) -> [Handler] {
+	public func next(for update: Update) -> [Handler] {
 		var handlers: [Handler] = []
 		for group in _handlersGroup {
 			concurrentQueue.sync {
