@@ -41,16 +41,21 @@ public class Longpolling: Connection {
 		self.running = true
 		
 		let promise = worker.eventLoop.newPromise(Void.self)
-		let params = Bot.GetUpdatesParams(offset: nil, limit: limit, timeout: pollingTimeout, allowedUpdates: allowedUpdates)
+        
+        pollingPromise = promise
 		
-		worker.eventLoop.execute {
-			self.longpolling(with: params)
-		}
-		
-		pollingPromise = promise
+        let params = Bot.GetUpdatesParams(offset: nil, limit: limit, timeout: pollingTimeout, allowedUpdates: allowedUpdates)
+        
+        _ = worker.eventLoop.submit {
+            try self.bot.deleteWebhook().whenSuccess({ (success) in
+                guard success else { return }
+                self.longpolling(with: params)
+            })
+        }
+        
 		return promise.futureResult
 	}
-	
+    
 	public func stop() {
 		running = false
 		worker.eventLoop.execute {
