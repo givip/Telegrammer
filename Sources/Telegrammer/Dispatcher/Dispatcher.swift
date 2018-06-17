@@ -10,6 +10,10 @@ import HeliumLogger
 import LoggerAPI
 import HTTP
 
+/**
+ This class dispatches all kinds of updates to its registered handlers.
+ It supports handlers for different kinds of data: Updates from Telegram, basic text commands and even arbitrary types.
+ */
 public class Dispatcher {
 	
     public let bot: Bot
@@ -21,7 +25,7 @@ public class Dispatcher {
     public init(bot: Bot, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
         self.bot = bot
 		self.worker = worker
-        self.updateQueue = DispatchQueue(label: "UPDATES-QUEUE",
+        self.updateQueue = DispatchQueue(label: "TLGRM-UPDATES-QUEUE",
 										 qos: .default,
 										 attributes: .concurrent,
 										 autoreleaseFrequency: .inherit,

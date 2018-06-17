@@ -8,6 +8,12 @@
 import HTTP
 import NIO
 
+/**
+ This class purpose is to receive the updates from Telegram and to deliver them to said dispatcher.
+ It also runs in a separate thread, so the user can interact with the bot.
+ The updater can be started as a polling service or, for production, use a webhook to receive updates.
+ This is achieved using the Webhooks and Longpolling classes.
+ */
 public final class Updater {
 	
     public let bot: Bot

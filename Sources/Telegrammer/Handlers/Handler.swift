@@ -11,6 +11,11 @@ public protocol BotContext { }
 
 public typealias HandlerCallback = (_ update: Update, _ context: BotContext?) throws -> Void
 
+/**
+ Protocol for any update handler
+ 
+ Every handler must implement `check` and `handle` methods
+ */
 public protocol Handler {
 	var name: String { get }
 	

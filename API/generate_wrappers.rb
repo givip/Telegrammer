@@ -255,7 +255,12 @@ def generate_model_file(f, node)
 		
 		current_node = current_node.next_element
 		description, current_node = fetch_description(current_node)
-
+        puts '################# Desciption'
+        puts description
+        puts '////################# Desciption'
+        puts '################# Curren Node'
+        puts current_node
+        puts '////################# Curren Node'
 		f.write "DESCRIPTION:\n#{description}\n"
 		description.each_line { |line|
 			out.write "/// #{line.strip}\n"
@@ -484,7 +489,6 @@ def main
 			f.write "\n"
 		}
 	}
-
 
 	puts 'Finished'
 end

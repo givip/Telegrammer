@@ -7,6 +7,16 @@
 
 import HTTP
 
+/**
+ Handler class to handle Telegram commands.
+ 
+ Commands are Telegram messages that start with /, optionally followed by an @ and the bot’s name
+ and/or some additional text.
+ 
+ - Options of this handler
+    - `editedUpdates` Determines whether the handler should also accept edited messages.
+ 
+ */
 public class CommandHandler: Handler {
 	public var name: String
 
@@ -17,7 +27,6 @@ public class CommandHandler: Handler {
             self.rawValue = rawValue
         }
         
-        ///Determines whether the handler should also accept edited messages.
         public static let editedUpdates = Options(rawValue: 1)
     }
     

@@ -7,11 +7,37 @@
 
 import Foundation
 
+
+///Base protocol for atomic filter
 public protocol Filter {
     var name: String { get }
     func filter(message: Message) -> Bool
 }
 
+/**
+ Class cluster for all filters.
+ 
+ Filters may be combined using bitwise operators:
+ 
+ - And:
+ ````
+ (Filters.text && Filters.entity([.mention]))
+ ````
+ - Or:
+ ````
+ (Filters.audio || Filters.video)
+ ````
+ - Not:
+ ````
+ !Filters.command
+ ````
+ Also works with more than two filters:
+ ````
+ (Filters.text && (Filters.entity([.url, .mention]) || Filters.entity([.command])))
+ (Filters.text && !Filters.forwarded)
+ ````
+ If you want to create your own filters create a struct conforming `Filter` protocol and implement a `filter` method that returns a boolean: `true`, if the message should be handled, `false` otherwise.
+ */
 public class Filters {
     
     private enum Operation {

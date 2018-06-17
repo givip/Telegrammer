@@ -7,10 +7,12 @@
 
 import Foundation
 
-/// Sorted by priority Handlers Queue
-/// queue is thread safe, you can read, add and remove from any threads.
-/// Note, that operations of adding/removing handlers to/from queue
-/// will perform after all pending read operations finished
+/**
+ Sorted by priority Handlers Queue
+ queue is thread safe, you can read, add and remove from any threads.
+ Note, that operations of adding/removing handlers to/from queue
+ will perform after all pending read operations finished
+ */
 public final class HandlersQueue {
 	
 	public var handlers: [HandlerGroup: [Handler]] {
@@ -32,7 +34,7 @@ public final class HandlersQueue {
 	private var _handlersGroup: [[Handler]] = []
 	private var _errorHandlers: [ErrorHandler] = []
 	
-	private let concurrentQueue = DispatchQueue(label: "Telegrammer Handlers Queue", attributes: .concurrent)
+	private let concurrentQueue = DispatchQueue(label: "TLGRM-HANDLERS-QUEUE", attributes: .concurrent)
 	
 	public func add<T: Handler>(_ handler: T, to group: HandlerGroup) {
 		concurrentQueue.async(flags: .barrier) {
