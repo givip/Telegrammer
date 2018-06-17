@@ -39,7 +39,13 @@ public class Dispatcher {
 		self.handlersQueue = HandlersQueue()
     }
 	
-    /// Enqueue new updates array to Updates queue
+    
+    /**
+     Enqueue new updates array to Updates queue
+    
+    - Parameters:
+        - updates: Array of Telegram updates
+    */
 	public func enqueue(updates: [Update]) {
 		updates.forEach { (update) in
 			updateQueue.async {
@@ -50,18 +56,46 @@ public class Dispatcher {
 }
 
 public extension Dispatcher {
+    /**
+     Add new handler to group
+     
+     - Parameters:
+        - handler: Handler to add in `Dispatcher`'s handlers queue
+        - group: Group of `Dispatcher`'s handler queue, `zero` group by default
+     */
     func add<T: Handler>(handler: T, to group: HandlerGroup = .zero) {
 		self.handlersQueue.add(handler, to: group)
 	}
 	
+    /**
+     Add new error handler to group
+     
+     - Parameters:
+        - handler: Error Handler to add in `Dispatcher`'s handlers queue
+     */
     func add(errorHandler: ErrorHandler) {
 		self.handlersQueue.add(errorHandler)
 	}
 	
+    /**
+     Remove handler from specific group of `Dispatchers`'s queue
+     
+     Note: If in one group present more then one handlers with the same name, they both will be deleted
+     
+     - Parameters:
+        - handler: Handler to be removed
+        - group: Group from which handlers will be removed
+     */
     func remove<T: Handler>(handler: T, from group: HandlerGroup) {
 		self.handlersQueue.remove(handler, from: group)
 	}
 	
+    /**
+     Removes error handler
+     
+     - Parameters:
+        - handler: Handler to be removed
+     */
     func remove(errorHandler: ErrorHandler) {
 		self.handlersQueue.remove(errorHandler)
 	}

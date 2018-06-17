@@ -12,6 +12,7 @@ import LoggerAPI
 
 public final class Bot {
     
+    /// Bot parameters container for initial setup, also contains Webhoos seetings
     public struct Settings {
         public let token: String
         public let debugMode: Bool
@@ -29,8 +30,12 @@ public final class Bot {
         }
     }
     
+    /// HTTP client for bot
     public let client: BotClient
+    
+    /// Bot parameters container
     public let settings: Settings
+    
     let requestWorker: Worker
     let boundary: String
     
