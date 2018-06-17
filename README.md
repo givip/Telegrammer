@@ -36,6 +36,8 @@ Also Telegrammer use some submodules of [Vapor 3 server side swift framework](ht
 
 Join to our [Telegram developers chat](https://t.me/joinchat/AzGW3kkUjLoK2dr3CZFrFQ)
 
+Join to our [Telegrammer channel](https://discord.gg/yjspy8b) on [Vapor Discord server](https://discord.gg/3jG8QFV) 
+
 It's easy, from scratch
 -------------
 _main.swift_
