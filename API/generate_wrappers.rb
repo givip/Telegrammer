@@ -93,6 +93,11 @@ def make_swift_type_name(var_name, var_type)
 		return 'MessageOrBool'
 	when 'Messages'
 		return '[Message]'
+    when 'String'
+        if var_name.include?('parse_mode') then
+            return 'ParseMode'
+        end
+        return 'String'
 	end
 	return var_type
 end

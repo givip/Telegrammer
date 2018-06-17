@@ -24,7 +24,7 @@ public extension Bot {
         var messageId: Int?
         var inlineMessageId: String?
         var caption: String?
-        var parseMode: String?
+        var parseMode: ParseMode?
         var replyMarkup: InlineKeyboardMarkup?
 
         enum CodingKeys: String, CodingKey {
@@ -36,7 +36,7 @@ public extension Bot {
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId? = nil, messageId: Int? = nil, inlineMessageId: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
+        public init(chatId: ChatId? = nil, messageId: Int? = nil, inlineMessageId: String? = nil, caption: String? = nil, parseMode: ParseMode? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
             self.chatId = chatId
             self.messageId = messageId
             self.inlineMessageId = inlineMessageId

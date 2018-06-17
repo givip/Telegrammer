@@ -28,7 +28,7 @@ public extension Bot {
         var chatId: ChatId
         var audio: FileInfo
         var caption: String?
-        var parseMode: String?
+        var parseMode: ParseMode?
         var duration: Int?
         var performer: String?
         var title: String?
@@ -49,7 +49,7 @@ public extension Bot {
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, audio: FileInfo, caption: String? = nil, parseMode: String? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, audio: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.audio = audio
             self.caption = caption

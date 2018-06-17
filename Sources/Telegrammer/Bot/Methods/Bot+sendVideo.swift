@@ -31,7 +31,7 @@ public extension Bot {
         var width: Int?
         var height: Int?
         var caption: String?
-        var parseMode: String?
+        var parseMode: ParseMode?
         var supportsStreaming: Bool?
         var disableNotification: Bool?
         var replyToMessageId: Int?
@@ -51,7 +51,7 @@ public extension Bot {
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, video: FileInfo, duration: Int? = nil, width: Int? = nil, height: Int? = nil, caption: String? = nil, parseMode: String? = nil, supportsStreaming: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, video: FileInfo, duration: Int? = nil, width: Int? = nil, height: Int? = nil, caption: String? = nil, parseMode: ParseMode? = nil, supportsStreaming: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.video = video
             self.duration = duration

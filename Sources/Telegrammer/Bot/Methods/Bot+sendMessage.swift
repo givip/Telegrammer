@@ -23,7 +23,7 @@ public extension Bot {
     public struct SendMessageParams: JSONEncodable {
         var chatId: ChatId
         var text: String
-        var parseMode: String?
+        var parseMode: ParseMode?
         var disableWebPagePreview: Bool?
         var disableNotification: Bool?
         var replyToMessageId: Int?
@@ -39,7 +39,7 @@ public extension Bot {
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, text: String, parseMode: String? = nil, disableWebPagePreview: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, text: String, parseMode: ParseMode? = nil, disableWebPagePreview: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.text = text
             self.parseMode = parseMode
