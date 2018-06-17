@@ -10,27 +10,38 @@ import HTTP
 public class CommandHandler: Handler {
 	public var name: String
 
+    public struct Options: OptionSet {
+        public let rawValue: Int
+        
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
+        
+        ///Determines whether the handler should also accept edited messages.
+        public static let editedUpdates = Options(rawValue: 1)
+    }
+    
     let commands: Set<String>
     let callback: HandlerCallback 
     let filters: Filters
-    let editedUpdates: Bool
+    let options: Options
     
 	public init(
+        name: String = String(describing: CommandHandler.self),
 		commands: [String],
-		filters: Filters = Filters.command,
-		callback: @escaping HandlerCallback,
-		editedUpdates: Bool = false,
-		name: String = String(describing: CommandHandler.self)
+		filters: Filters = .all,
+		options: Options = [],
+        callback: @escaping HandlerCallback
 		) {
+        self.name = name
         self.commands = Set(commands)
-        self.callback = callback
         self.filters = filters
-        self.editedUpdates = editedUpdates
-		self.name = name
+        self.options = options
+        self.callback = callback
     }
     
     public func check(update: Update) -> Bool {
-        if editedUpdates,
+        if options.contains(.editedUpdates),
             update.editedMessage != nil ||
                 update.editedChannelPost != nil {
             return true

@@ -18,6 +18,10 @@ public protocol Handler {
     func handle(update: Update, dispatcher: Dispatcher) throws
 }
 
-
+extension Handler {
+    var name: String {
+        return String(describing: Self.self)
+    }
+}
 
 public protocol ErrorHandler: Handler { }

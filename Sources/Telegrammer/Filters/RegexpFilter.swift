@@ -23,7 +23,7 @@ public struct RegexpFilter: Filter {
         guard let text = message.text else { return false }
         guard let regexp = try? NSRegularExpression(pattern: pattern, options: options) else { return false }
         let range = NSRange(location: 0, length: text.count)
-        return regexp.numberOfMatches(in: text, options: [], range: range) != 0
+        return regexp.numberOfMatches(in: text, options: [], range: range) > 0
     }
 }
 

@@ -14,14 +14,14 @@ public class Dispatcher {
 	
     public let bot: Bot
     public let updateQueue: DispatchQueue
-    public let jobsQueue: Worker
+    public let worker: Worker
     
 	public var handlersList: HandlersQueue
     
-    public init(bot: Bot, jobsQueue: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
+    public init(bot: Bot, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
         self.bot = bot
-		self.jobsQueue = jobsQueue
-        self.updateQueue = DispatchQueue(label: "Telegrammer Updates Queue",
+		self.worker = worker
+        self.updateQueue = DispatchQueue(label: "UPDATES-QUEUE",
 										 qos: .default,
 										 attributes: .concurrent,
 										 autoreleaseFrequency: .inherit,
@@ -39,7 +39,7 @@ public class Dispatcher {
 
 	private func submit(update: Update) {
 		handlersList.handlers(for: update).forEach { (handler) in
-			_ = jobsQueue.eventLoop.submit { () -> Void in
+			_ = worker.eventLoop.submit { () -> Void in
 				try handler.handle(update: update, dispatcher: self)
 			}
 		}
