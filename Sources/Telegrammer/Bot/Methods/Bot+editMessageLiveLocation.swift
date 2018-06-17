@@ -6,27 +6,28 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to edit live location messages sent by the bot or via the bot (for inline bots). A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
-    /// - Parameters:
-    ///     - chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - message_id: Required if inline_message_id is not specified. Identifier of the sent message
-    ///     - inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-    ///     - latitude: Latitude of new location
-    ///     - longitude: Longitude of new location
-    ///     - reply_markup: A JSON-serialized object for a new inline keyboard.
-    /// - Returns: Future<MessageOrBool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#editmessagelivelocation>
-
+    /// Parameters container struct for `editMessageLiveLocation` method
     public struct EditMessageLiveLocationParams: JSONEncodable {
+
+        /// Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId?
+
+        /// Required if inline_message_id is not specified. Identifier of the sent message
         var messageId: Int?
+
+        /// Required if chat_id and message_id are not specified. Identifier of the inline message
         var inlineMessageId: String?
+
+        /// Latitude of new location
         var latitude: Float
+
+        /// Longitude of new location
         var longitude: Float
+
+        /// A JSON-serialized object for a new inline keyboard.
         var replyMarkup: InlineKeyboardMarkup?
 
+        /// Custom keys for coding/decoding `EditMessageLiveLocationParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case messageId = "message_id"
@@ -46,6 +47,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to edit live location messages sent by the bot or via the bot (for inline bots). A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageLiveLocationParams](https://core.telegram.org/bots/api#editmessagelivelocation)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageLiveLocationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
     @discardableResult
     public func editMessageLiveLocation(params: EditMessageLiveLocationParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)

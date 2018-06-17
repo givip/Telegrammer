@@ -6,25 +6,25 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send a game. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat
-    ///     - game_short_name: Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendgame>
-
+    /// Parameters container struct for `sendGame` method
     public struct SendGameParams: JSONEncodable {
+
+        /// Unique identifier for the target chat
         var chatId: Int64
+
+        /// Short name of the game, serves as the unique identifier for the game. Set up your games via Botfather.
         var gameShortName: String
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
         var replyMarkup: InlineKeyboardMarkup?
 
+        /// Custom keys for coding/decoding `SendGameParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case gameShortName = "game_short_name"
@@ -42,6 +42,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send a game. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendGameParams](https://core.telegram.org/bots/api#sendgame)
+     
+     - Parameters:
+         - params: Parameters container, see `SendGameParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendGame(params: SendGameParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

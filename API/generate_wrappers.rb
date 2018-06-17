@@ -103,7 +103,12 @@ def make_swift_type_name(var_name, var_type)
 end
 
 def make_request_parameter(request_name, swift_type_name, var_name, var_type, var_optional, var_desc)
-	return "#{TWO}var #{var_name.camel_case_lower}: #{swift_type_name}#{var_optional ? '?' : ''}\n"
+    parameters = ""
+    var_desc.each_line { |line|
+        parameters << "#{TWO}/// #{line.strip}\n"
+    }
+    parameters << "#{TWO}var #{var_name.camel_case_lower}: #{swift_type_name}#{var_optional ? '?' : ''}\n\n"
+    return parameters
 end
 
 def make_request_value(request_name, swift_type_name, var_name, var_type, var_optional, var_desc)
@@ -255,27 +260,9 @@ def generate_model_file(f, node)
 		
 		current_node = current_node.next_element
 		description, current_node = fetch_description(current_node)
-        puts '################# Desciption'
-        puts description
-        puts '////################# Desciption'
-        puts '################# Curren Node'
-        puts current_node
-        puts '////################# Curren Node'
+
 		f.write "DESCRIPTION:\n#{description}\n"
-		description.each_line { |line|
-			out.write "/// #{line.strip}\n"
-		}
-		out.write "///\n"
-
-		anchor = type_name.downcase
-		out.write "/// [- SeeAlso: ]<https://core.telegram.org/bots/api\##{anchor}>\n"\
-							"\n"
-
-		out.write  "public final class #{type_name}: Codable {\n"\
-			"    \n"\
-
-		all_init_params = {}
-
+        
 		keys_block = ""
 		vars_block = ""
 		init_params_block = ""
@@ -290,19 +277,36 @@ def generate_model_file(f, node)
 			var_desc = td[2].text
 			var_optional = var_desc.start_with? "Optional"
 			f.write "PARAM: #{var_name} [#{var_type}#{var_optional ? '?' : ''}]: #{var_desc}\n"
-
+            
 			correct_var_type = convert_type(var_name, var_desc, var_type, type_name, var_optional)
 			correct_var_type_init = correct_var_type[-1] == "?" ? correct_var_type + " = nil" : correct_var_type
 			var_name_camel = var_name.camel_case_lower
 
 			keys_block        << "#{TWO}case #{var_name_camel} = \"#{var_name}\"\n"
-			vars_block        << "#{ONE}public var #{var_name_camel}: #{correct_var_type}\n"
+            
+            var_desc.each_line { |line|
+                vars_block        << "#{ONE}/// #{line.strip}\n"
+            }
+            
+			vars_block        << "#{ONE}public var #{var_name_camel}: #{correct_var_type}\n\n"
 			init_params_block << "#{var_name_camel}: #{correct_var_type_init}, "
 			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
         
+        out.write "/**\n"
+        description.each_line { |line|
+            out.write " #{line.strip}\n"
+        }
+        out.write "\n"
+        
+        out.write " SeeAlso Telegram Bot API Reference:\n"
+        out.write " [#{type_name}](https://core.telegram.org/bots/api\##{type_name.downcase})\n"
+        out.write " */\n"
+        out.write  "public final class #{type_name}: Codable {\n\n"
+        
         if keys_block != "" then
-            out.write  "#{ONE}enum CodingKeys: String, CodingKey {\n"\
+            out.write "#{ONE}/// Custom keys for coding/decoding `#{type_name}` struct\n"\
+            "#{ONE}enum CodingKeys: String, CodingKey {\n"\
             "#{keys_block}"\
             "#{ONE}}\n"\
             "\n"\
@@ -310,11 +314,9 @@ def generate_model_file(f, node)
             "\n"\
             "#{ONE}public init (#{init_params_block.chomp(', ')}) {\n"\
             "#{init_block}"\
-            "#{ONE}}\n"\
-            "\n"
+            "#{ONE}}\n"
         end
-        out.write  "}\n"\
-			"\n"
+        out.write  "}\n"
 	}
 end
 
@@ -346,7 +348,7 @@ def generate_method(f, node)
 
 		anchor = method_name.downcase
 
-		vars_desc = ''
+		vars_desc = ""
 		all_params = ""
 		all_enums = ""
 		init_params_body = ""
@@ -399,23 +401,32 @@ def generate_method(f, node)
 			}
 		}
 
-		# Generate Async request
-		description.each_line { |line| out.write "    /// #{line.strip}\n" }
-		out.write vars_desc
-
-		method_name_capitalized = method_name.dup
-		method_name_capitalized = "#{method_name_capitalized.capitalize_first}Params"
-
-		out.write "    /// - Returns: Future<#{result_type}>. Throws on errors.\n"
-		out.write "    /// - Note: Asynchronous method.\n"
-		out.write "    ///\n"
-		out.write "    /// [- SeeAlso: ]<https://core.telegram.org/bots/api\##{anchor}>\n"
-		out.write "\n"
+        method_name_capitalized = method_name.dup
+        method_name_capitalized = "#{method_name_capitalized.capitalize_first}Params"
 
 		body_param = ", body: HTTPBody(), headers: HTTPHeaders()"
 
+        #Generate description
+        method_description = ""
+        method_description << "#{ONE}/**\n"
+        
+        description.each_line { |line|
+            method_description << "#{ONE} #{line.strip}\n"
+        }
+        
+        method_description << "\n"
+        method_description << "#{ONE} SeeAlso Telegram Bot API Reference:\n"
+        method_description << "#{ONE} [#{method_name_capitalized}](https://core.telegram.org/bots/api\##{anchor})\n"
+        method_description << "#{ONE} \n"
+        method_description << "#{ONE} - Parameters:\n"
+        method_description << "#{TWO} - params: Parameters container, see `#{method_name_capitalized}` struct\n"
+        method_description << "#{ONE} - Throws: Throws on errors\n"
+        method_description << "#{ONE} - Returns: Future of `#{result_type}` type\n"
+        method_description << "#{ONE} */\n"
+
 	if all_params.empty? then
 		params_block = "(params: #{method_name_capitalized}? = nil)"
+        out.write method_description
         out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}() throws -> Future<#{result_type}> {\n"
 	else
@@ -425,10 +436,10 @@ def generate_method(f, node)
 		if has_upload_type then
 			encodable_type = "MultipartEncodable"
 		end
-	
-		out.write "#{ONE}public struct #{method_name_capitalized}: #{encodable_type} {\n"
+        out.write "#{ONE}/// Parameters container struct for `#{method_name}` method\n"
+		out.write "#{ONE}public struct #{method_name_capitalized}: #{encodable_type} {\n\n"
 		out.write "#{all_params}"
-		out.write "\n"
+        out.write "#{TWO}/// Custom keys for coding/decoding `#{method_name_capitalized}` struct\n"
 		out.write "#{TWO}enum CodingKeys: String, CodingKey {\n"
 		out.write "#{all_enums}"
 		out.write "#{TWO}}\n"
@@ -443,6 +454,8 @@ def generate_method(f, node)
 		else
 			params_block = "(params: #{method_name_capitalized}? = nil)"
 		end
+        
+        out.write method_description
         out.write "#{ONE}@discardableResult\n"
 		out.write "#{ONE}public func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
 

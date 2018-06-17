@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send point on the map. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - latitude: Latitude of the location
-    ///     - longitude: Longitude of the location
-    ///     - live_period: Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendlocation>
-
+    /// Parameters container struct for `sendLocation` method
     public struct SendLocationParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Latitude of the location
         var latitude: Float
+
+        /// Longitude of the location
         var longitude: Float
+
+        /// Period in seconds for which the location will be updated (see Live Locations, should be between 60 and 86400.
         var livePeriod: Int?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendLocationParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case latitude = "latitude"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send point on the map. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendLocationParams](https://core.telegram.org/bots/api#sendlocation)
+     
+     - Parameters:
+         - params: Parameters container, see `SendLocationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendLocation(params: SendLocationParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

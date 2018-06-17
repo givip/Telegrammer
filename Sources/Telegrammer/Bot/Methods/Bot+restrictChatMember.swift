@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
-    ///     - user_id: Unique identifier of the target user
-    ///     - until_date: Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
-    ///     - can_send_messages: Pass True, if the user can send text messages, contacts, locations and venues
-    ///     - can_send_media_messages: Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
-    ///     - can_send_other_messages: Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
-    ///     - can_add_web_page_previews: Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#restrictchatmember>
-
+    /// Parameters container struct for `restrictChatMember` method
     public struct RestrictChatMemberParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
         var chatId: ChatId
+
+        /// Unique identifier of the target user
         var userId: Int64
+
+        /// Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
         var untilDate: Int?
+
+        /// Pass True, if the user can send text messages, contacts, locations and venues
         var canSendMessages: Bool?
+
+        /// Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
         var canSendMediaMessages: Bool?
+
+        /// Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
         var canSendOtherMessages: Bool?
+
+        /// Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
         var canAddWebPagePreviews: Bool?
 
+        /// Custom keys for coding/decoding `RestrictChatMemberParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case userId = "user_id"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [RestrictChatMemberParams](https://core.telegram.org/bots/api#restrictchatmember)
+     
+     - Parameters:
+         - params: Parameters container, see `RestrictChatMemberParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func restrictChatMember(params: RestrictChatMemberParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

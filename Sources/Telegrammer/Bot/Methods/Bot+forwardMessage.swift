@@ -6,23 +6,22 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to forward messages of any kind. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - from_chat_id: Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - message_id: Message identifier in the chat specified in from_chat_id
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#forwardmessage>
-
+    /// Parameters container struct for `forwardMessage` method
     public struct ForwardMessageParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
         var fromChatId: ChatId
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// Message identifier in the chat specified in from_chat_id
         var messageId: Int
 
+        /// Custom keys for coding/decoding `ForwardMessageParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case fromChatId = "from_chat_id"
@@ -38,6 +37,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to forward messages of any kind. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [ForwardMessageParams](https://core.telegram.org/bots/api#forwardmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `ForwardMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func forwardMessage(params: ForwardMessageParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get the number of members in a chat. Returns Int on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-    /// - Returns: Future<Int>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getchatmemberscount>
-
+    /// Parameters container struct for `getChatMembersCount` method
     public struct GetChatMembersCountParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
         var chatId: ChatId
 
+        /// Custom keys for coding/decoding `GetChatMembersCountParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to get the number of members in a chat. Returns Int on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetChatMembersCountParams](https://core.telegram.org/bots/api#getchatmemberscount)
+     
+     - Parameters:
+         - params: Parameters container, see `GetChatMembersCountParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Int` type
+     */
     @discardableResult
     public func getChatMembersCount(params: GetChatMembersCountParams) throws -> Future<Int> {
         let body = try httpBody(for: params)

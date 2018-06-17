@@ -6,24 +6,22 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
-    /// This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
-    /// - Parameters:
-    ///     - user_id: Target user id
-    ///     - chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
-    ///     - message_id: Required if inline_message_id is not specified. Identifier of the sent message
-    ///     - inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-    /// - Returns: Future<[GameHighScore]>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getgamehighscores>
-
+    /// Parameters container struct for `getGameHighScores` method
     public struct GetGameHighScoresParams: JSONEncodable {
+
+        /// Target user id
         var userId: Int64
+
+        /// Required if inline_message_id is not specified. Unique identifier for the target chat
         var chatId: Int64?
+
+        /// Required if inline_message_id is not specified. Identifier of the sent message
         var messageId: Int?
+
+        /// Required if chat_id and message_id are not specified. Identifier of the inline message
         var inlineMessageId: String?
 
+        /// Custom keys for coding/decoding `GetGameHighScoresParams` struct
         enum CodingKeys: String, CodingKey {
             case userId = "user_id"
             case chatId = "chat_id"
@@ -39,6 +37,18 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to get data for high score tables. Will return the score of the specified user and several of his neighbors in a game. On success, returns an Array of GameHighScore objects.
+     This method will currently return scores for the target user, plus two of his closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetGameHighScoresParams](https://core.telegram.org/bots/api#getgamehighscores)
+     
+     - Parameters:
+         - params: Parameters container, see `GetGameHighScoresParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `[GameHighScore]` type
+     */
     @discardableResult
     public func getGameHighScores(params: GetGameHighScoresParams) throws -> Future<[GameHighScore]> {
         let body = try httpBody(for: params)

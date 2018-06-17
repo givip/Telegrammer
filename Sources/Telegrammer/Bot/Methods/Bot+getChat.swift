@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-    /// - Returns: Future<Chat>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getchat>
-
+    /// Parameters container struct for `getChat` method
     public struct GetChatParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
         var chatId: ChatId
 
+        /// Custom keys for coding/decoding `GetChatParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetChatParams](https://core.telegram.org/bots/api#getchat)
+     
+     - Parameters:
+         - params: Parameters container, see `GetChatParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Chat` type
+     */
     @discardableResult
     public func getChat(params: GetChatParams) throws -> Future<Chat> {
         let body = try httpBody(for: params)

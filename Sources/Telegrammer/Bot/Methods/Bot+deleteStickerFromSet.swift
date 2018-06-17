@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to delete a sticker from a set created by the bot. Returns True on success.
-    /// - Parameters:
-    ///     - sticker: File identifier of the sticker
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#deletestickerfromset>
-
+    /// Parameters container struct for `deleteStickerFromSet` method
     public struct DeleteStickerFromSetParams: JSONEncodable {
+
+        /// File identifier of the sticker
         var sticker: String
 
+        /// Custom keys for coding/decoding `DeleteStickerFromSetParams` struct
         enum CodingKeys: String, CodingKey {
             case sticker = "sticker"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to delete a sticker from a set created by the bot. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [DeleteStickerFromSetParams](https://core.telegram.org/bots/api#deletestickerfromset)
+     
+     - Parameters:
+         - params: Parameters container, see `DeleteStickerFromSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func deleteStickerFromSet(params: DeleteStickerFromSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get a sticker set. On success, a StickerSet object is returned.
-    /// - Parameters:
-    ///     - name: Name of the sticker set
-    /// - Returns: Future<StickerSet>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getstickerset>
-
+    /// Parameters container struct for `getStickerSet` method
     public struct GetStickerSetParams: JSONEncodable {
+
+        /// Name of the sticker set
         var name: String
 
+        /// Custom keys for coding/decoding `GetStickerSetParams` struct
         enum CodingKeys: String, CodingKey {
             case name = "name"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to get a sticker set. On success, a StickerSet object is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetStickerSetParams](https://core.telegram.org/bots/api#getstickerset)
+     
+     - Parameters:
+         - params: Parameters container, see `GetStickerSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `StickerSet` type
+     */
     @discardableResult
     public func getStickerSet(params: GetStickerSetParams) throws -> Future<StickerSet> {
         let body = try httpBody(for: params)

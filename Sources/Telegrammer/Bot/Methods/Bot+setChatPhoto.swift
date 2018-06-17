@@ -6,20 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-    /// Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - photo: New chat photo, uploaded using multipart/form-data
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#setchatphoto>
-
+    /// Parameters container struct for `setChatPhoto` method
     public struct SetChatPhotoParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// New chat photo, uploaded using multipart/form-data
         var photo: InputFile
 
+        /// Custom keys for coding/decoding `SetChatPhotoParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case photo = "photo"
@@ -31,6 +27,18 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to set a new profile photo for the chat. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+     Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetChatPhotoParams](https://core.telegram.org/bots/api#setchatphoto)
+     
+     - Parameters:
+         - params: Parameters container, see `SetChatPhotoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func setChatPhoto(params: SetChatPhotoParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

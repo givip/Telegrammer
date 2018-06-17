@@ -6,31 +6,34 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - voice: Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-    ///     - caption: Voice message caption, 0-200 characters
-    ///     - parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-    ///     - duration: Duration of the voice message in seconds
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendvoice>
-
+    /// Parameters container struct for `sendVoice` method
     public struct SendVoiceParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         var voice: FileInfo
+
+        /// Voice message caption, 0-200 characters
         var caption: String?
+
+        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         var parseMode: ParseMode?
+
+        /// Duration of the voice message in seconds
         var duration: Int?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendVoiceParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case voice = "voice"
@@ -54,6 +57,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVoiceParams](https://core.telegram.org/bots/api#sendvoice)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVoiceParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendVoice(params: SendVoiceParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

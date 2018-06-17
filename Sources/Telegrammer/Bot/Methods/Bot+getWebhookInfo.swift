@@ -6,12 +6,17 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
-    /// - Returns: Future<WebhookInfo>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getwebhookinfo>
+    /**
+     Use this method to get current webhook status. Requires no parameters. On success, returns a WebhookInfo object. If the bot is using getUpdates, will return an object with the url field empty.
 
+     SeeAlso Telegram Bot API Reference:
+     [GetWebhookInfoParams](https://core.telegram.org/bots/api#getwebhookinfo)
+     
+     - Parameters:
+         - params: Parameters container, see `GetWebhookInfoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `WebhookInfo` type
+     */
     @discardableResult
     public func getWebhookInfo() throws -> Future<WebhookInfo> {
         let response: Future<TelegramContainer<WebhookInfo>>

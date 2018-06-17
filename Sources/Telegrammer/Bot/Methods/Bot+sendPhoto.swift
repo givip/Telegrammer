@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send photos. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - photo: Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
-    ///     - caption: Photo caption (may also be used when resending photos by file_id), 0-200 characters
-    ///     - parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendphoto>
-
+    /// Parameters container struct for `sendPhoto` method
     public struct SendPhotoParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
         var photo: FileInfo
+
+        /// Photo caption (may also be used when resending photos by file_id), 0-200 characters
         var caption: String?
+
+        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         var parseMode: ParseMode?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendPhotoParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case photo = "photo"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send photos. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendPhotoParams](https://core.telegram.org/bots/api#sendphoto)
+     
+     - Parameters:
+         - params: Parameters container, see `SendPhotoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendPhoto(params: SendPhotoParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

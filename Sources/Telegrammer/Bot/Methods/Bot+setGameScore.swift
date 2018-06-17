@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
-    /// - Parameters:
-    ///     - user_id: User identifier
-    ///     - score: New score, must be non-negative
-    ///     - force: Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
-    ///     - disable_edit_message: Pass True, if the game message should not be automatically edited to include the current scoreboard
-    ///     - chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat
-    ///     - message_id: Required if inline_message_id is not specified. Identifier of the sent message
-    ///     - inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#setgamescore>
-
+    /// Parameters container struct for `setGameScore` method
     public struct SetGameScoreParams: JSONEncodable {
+
+        /// User identifier
         var userId: Int64
+
+        /// New score, must be non-negative
         var score: Int
+
+        /// Pass True, if the high score is allowed to decrease. This can be useful when fixing mistakes or banning cheaters
         var force: Bool?
+
+        /// Pass True, if the game message should not be automatically edited to include the current scoreboard
         var disableEditMessage: Bool?
+
+        /// Required if inline_message_id is not specified. Unique identifier for the target chat
         var chatId: Int64?
+
+        /// Required if inline_message_id is not specified. Identifier of the sent message
         var messageId: Int?
+
+        /// Required if chat_id and message_id are not specified. Identifier of the inline message
         var inlineMessageId: String?
 
+        /// Custom keys for coding/decoding `SetGameScoreParams` struct
         enum CodingKeys: String, CodingKey {
             case userId = "user_id"
             case score = "score"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetGameScoreParams](https://core.telegram.org/bots/api#setgamescore)
+     
+     - Parameters:
+         - params: Parameters container, see `SetGameScoreParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func setGameScore(params: SetGameScoreParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

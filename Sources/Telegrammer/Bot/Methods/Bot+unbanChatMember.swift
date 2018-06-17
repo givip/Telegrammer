@@ -6,19 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target group or username of the target supergroup or channel (in the format @username)
-    ///     - user_id: Unique identifier of the target user
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#unbanchatmember>
-
+    /// Parameters container struct for `unbanChatMember` method
     public struct UnbanChatMemberParams: JSONEncodable {
+
+        /// Unique identifier for the target group or username of the target supergroup or channel (in the format @username)
         var chatId: ChatId
+
+        /// Unique identifier of the target user
         var userId: Int64
 
+        /// Custom keys for coding/decoding `UnbanChatMemberParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case userId = "user_id"
@@ -30,6 +27,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to unban a previously kicked user in a supergroup or channel. The user will not return to the group or channel automatically, but will be able to join via link, etc. The bot must be an administrator for this to work. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [UnbanChatMemberParams](https://core.telegram.org/bots/api#unbanchatmember)
+     
+     - Parameters:
+         - params: Parameters container, see `UnbanChatMemberParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func unbanChatMember(params: UnbanChatMemberParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

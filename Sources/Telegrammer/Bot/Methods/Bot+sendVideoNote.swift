@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - video_note: Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
-    ///     - duration: Duration of sent video in seconds
-    ///     - length: Video width and height
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendvideonote>
-
+    /// Parameters container struct for `sendVideoNote` method
     public struct SendVideoNoteParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Video note to send. Pass a file_id as String to send a video note that exists on the Telegram servers (recommended) or upload a new video using multipart/form-data. More info on Sending Files ». Sending video notes by a URL is currently unsupported
         var videoNote: FileInfo
+
+        /// Duration of sent video in seconds
         var duration: Int?
+
+        /// Video width and height
         var length: Int?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendVideoNoteParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case videoNote = "video_note"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVideoNoteParams](https://core.telegram.org/bots/api#sendvideonote)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVideoNoteParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendVideoNote(params: SendVideoNoteParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

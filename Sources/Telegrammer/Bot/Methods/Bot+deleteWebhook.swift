@@ -6,12 +6,17 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#deletewebhook>
+    /**
+     Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
 
+     SeeAlso Telegram Bot API Reference:
+     [DeleteWebhookParams](https://core.telegram.org/bots/api#deletewebhook)
+     
+     - Parameters:
+         - params: Parameters container, see `DeleteWebhookParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func deleteWebhook() throws -> Future<Bool> {
         let response: Future<TelegramContainer<Bool>>

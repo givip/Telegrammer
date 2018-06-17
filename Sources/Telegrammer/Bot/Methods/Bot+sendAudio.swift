@@ -6,36 +6,40 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
-    /// For sending voice messages, use the sendVoice method instead.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - audio: Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-    ///     - caption: Audio caption, 0-200 characters
-    ///     - parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-    ///     - duration: Duration of the audio in seconds
-    ///     - performer: Performer
-    ///     - title: Track name
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendaudio>
-
+    /// Parameters container struct for `sendAudio` method
     public struct SendAudioParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Audio file to send. Pass a file_id as String to send an audio file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get an audio file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         var audio: FileInfo
+
+        /// Audio caption, 0-200 characters
         var caption: String?
+
+        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         var parseMode: ParseMode?
+
+        /// Duration of the audio in seconds
         var duration: Int?
+
+        /// Performer
         var performer: String?
+
+        /// Track name
         var title: String?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendAudioParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case audio = "audio"
@@ -63,6 +67,18 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .mp3 format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+     For sending voice messages, use the sendVoice method instead.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendAudioParams](https://core.telegram.org/bots/api#sendaudio)
+     
+     - Parameters:
+         - params: Parameters container, see `SendAudioParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendAudio(params: SendAudioParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

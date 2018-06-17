@@ -6,33 +6,37 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send information about a venue. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - latitude: Latitude of the venue
-    ///     - longitude: Longitude of the venue
-    ///     - title: Name of the venue
-    ///     - address: Address of the venue
-    ///     - foursquare_id: Foursquare identifier of the venue
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendvenue>
-
+    /// Parameters container struct for `sendVenue` method
     public struct SendVenueParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Latitude of the venue
         var latitude: Float
+
+        /// Longitude of the venue
         var longitude: Float
+
+        /// Name of the venue
         var title: String
+
+        /// Address of the venue
         var address: String
+
+        /// Foursquare identifier of the venue
         var foursquareId: String?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendVenueParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case latitude = "latitude"
@@ -58,6 +62,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send information about a venue. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVenueParams](https://core.telegram.org/bots/api#sendvenue)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVenueParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendVenue(params: SendVenueParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

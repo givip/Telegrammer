@@ -6,19 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - description: New chat description, 0-255 characters
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#setchatdescription>
-
+    /// Parameters container struct for `setChatDescription` method
     public struct SetChatDescriptionParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// New chat description, 0-255 characters
         var description: String?
 
+        /// Custom keys for coding/decoding `SetChatDescriptionParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case description = "description"
@@ -30,6 +27,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to change the description of a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetChatDescriptionParams](https://core.telegram.org/bots/api#setchatdescription)
+     
+     - Parameters:
+         - params: Parameters container, see `SetChatDescriptionParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func setChatDescription(params: SetChatDescriptionParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

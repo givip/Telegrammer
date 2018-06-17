@@ -6,37 +6,43 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - video: Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
-    ///     - duration: Duration of sent video in seconds
-    ///     - width: Video width
-    ///     - height: Video height
-    ///     - caption: Video caption (may also be used when resending videos by file_id), 0-200 characters
-    ///     - parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-    ///     - supports_streaming: Pass True, if the uploaded video is suitable for streaming
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendvideo>
-
+    /// Parameters container struct for `sendVideo` method
     public struct SendVideoParams: MultipartEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Video to send. Pass a file_id as String to send a video that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a video from the Internet, or upload a new video using multipart/form-data. More info on Sending Files »
         var video: FileInfo
+
+        /// Duration of sent video in seconds
         var duration: Int?
+
+        /// Video width
         var width: Int?
+
+        /// Video height
         var height: Int?
+
+        /// Video caption (may also be used when resending videos by file_id), 0-200 characters
         var caption: String?
+
+        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         var parseMode: ParseMode?
+
+        /// Pass True, if the uploaded video is suitable for streaming
         var supportsStreaming: Bool?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendVideoParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case video = "video"
@@ -66,6 +72,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVideoParams](https://core.telegram.org/bots/api#sendvideo)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVideoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendVideo(params: SendVideoParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

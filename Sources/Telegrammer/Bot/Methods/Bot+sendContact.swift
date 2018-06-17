@@ -6,29 +6,31 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to send phone contacts. On success, the sent Message is returned.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - phone_number: Contact's phone number
-    ///     - first_name: Contact's first name
-    ///     - last_name: Contact's last name
-    ///     - disable_notification: Sends the message silently. Users will receive a notification with no sound.
-    ///     - reply_to_message_id: If the message is a reply, ID of the original message
-    ///     - reply_markup: Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
-    /// - Returns: Future<Message>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#sendcontact>
-
+    /// Parameters container struct for `sendContact` method
     public struct SendContactParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Contact's phone number
         var phoneNumber: String
+
+        /// Contact's first name
         var firstName: String
+
+        /// Contact's last name
         var lastName: String?
+
+        /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
+
+        /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
+        /// Custom keys for coding/decoding `SendContactParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case phoneNumber = "phone_number"
@@ -50,6 +52,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to send phone contacts. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendContactParams](https://core.telegram.org/bots/api#sendcontact)
+     
+     - Parameters:
+         - params: Parameters container, see `SendContactParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
     @discardableResult
     public func sendContact(params: SendContactParams) throws -> Future<Message> {
         let body = try httpBody(for: params)

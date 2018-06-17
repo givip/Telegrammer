@@ -6,23 +6,22 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).  On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
-    /// - Parameters:
-    ///     - chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - message_id: Required if inline_message_id is not specified. Identifier of the sent message
-    ///     - inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-    ///     - reply_markup: A JSON-serialized object for an inline keyboard.
-    /// - Returns: Future<MessageOrBool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#editmessagereplymarkup>
-
+    /// Parameters container struct for `editMessageReplyMarkup` method
     public struct EditMessageReplyMarkupParams: JSONEncodable {
+
+        /// Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId?
+
+        /// Required if inline_message_id is not specified. Identifier of the sent message
         var messageId: Int?
+
+        /// Required if chat_id and message_id are not specified. Identifier of the inline message
         var inlineMessageId: String?
+
+        /// A JSON-serialized object for an inline keyboard.
         var replyMarkup: InlineKeyboardMarkup?
 
+        /// Custom keys for coding/decoding `EditMessageReplyMarkupParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case messageId = "message_id"
@@ -38,6 +37,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to edit only the reply markup of messages sent by the bot or via the bot (for inline bots).  On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageReplyMarkupParams](https://core.telegram.org/bots/api#editmessagereplymarkup)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageReplyMarkupParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
     @discardableResult
     public func editMessageReplyMarkup(params: EditMessageReplyMarkupParams? = nil) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)

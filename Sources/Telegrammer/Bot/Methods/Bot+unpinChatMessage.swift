@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to unpin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#unpinchatmessage>
-
+    /// Parameters container struct for `unpinChatMessage` method
     public struct UnpinChatMessageParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
+        /// Custom keys for coding/decoding `UnpinChatMessageParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to unpin a message in a supergroup or a channel. The bot must be an administrator in the chat for this to work and must have the ‘can_pin_messages’ admin right in the supergroup or ‘can_edit_messages’ admin right in the channel. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [UnpinChatMessageParams](https://core.telegram.org/bots/api#unpinchatmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `UnpinChatMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func unpinChatMessage(params: UnpinChatMessageParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

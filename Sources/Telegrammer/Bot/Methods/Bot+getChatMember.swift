@@ -6,19 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to get information about a member of a chat. Returns a ChatMember object on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-    ///     - user_id: Unique identifier of the target user
-    /// - Returns: Future<ChatMember>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getchatmember>
-
+    /// Parameters container struct for `getChatMember` method
     public struct GetChatMemberParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Unique identifier of the target user
         var userId: Int64
 
+        /// Custom keys for coding/decoding `GetChatMemberParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case userId = "user_id"
@@ -30,6 +27,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to get information about a member of a chat. Returns a ChatMember object on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetChatMemberParams](https://core.telegram.org/bots/api#getchatmember)
+     
+     - Parameters:
+         - params: Parameters container, see `GetChatMemberParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `ChatMember` type
+     */
     @discardableResult
     public func getChatMember(params: GetChatMemberParams) throws -> Future<ChatMember> {
         let body = try httpBody(for: params)

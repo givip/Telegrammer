@@ -6,17 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#leavechat>
-
+    /// Parameters container struct for `leaveChat` method
     public struct LeaveChatParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
         var chatId: ChatId
 
+        /// Custom keys for coding/decoding `LeaveChatParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
         }
@@ -26,6 +22,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method for your bot to leave a group, supergroup or channel. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [LeaveChatParams](https://core.telegram.org/bots/api#leavechat)
+     
+     - Parameters:
+         - params: Parameters container, see `LeaveChatParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func leaveChat(params: LeaveChatParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

@@ -6,19 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
-    /// - Parameters:
-    ///     - sticker: File identifier of the sticker
-    ///     - position: New sticker position in the set, zero-based
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#setstickerpositioninset>
-
+    /// Parameters container struct for `setStickerPositionInSet` method
     public struct SetStickerPositionInSetParams: JSONEncodable {
+
+        /// File identifier of the sticker
         var sticker: String
+
+        /// New sticker position in the set, zero-based
         var position: Int
 
+        /// Custom keys for coding/decoding `SetStickerPositionInSetParams` struct
         enum CodingKeys: String, CodingKey {
             case sticker = "sticker"
             case position = "position"
@@ -30,6 +27,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetStickerPositionInSetParams](https://core.telegram.org/bots/api#setstickerpositioninset)
+     
+     - Parameters:
+         - params: Parameters container, see `SetStickerPositionInSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func setStickerPositionInSet(params: SetStickerPositionInSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

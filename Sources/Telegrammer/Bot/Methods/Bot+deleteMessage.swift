@@ -6,25 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to delete a message, including service messages, with the following limitations:
-    /// - A message can only be deleted if it was sent less than 48 hours ago.
-    /// - Bots can delete outgoing messages in groups and supergroups.
-    /// - Bots granted can_post_messages permissions can delete outgoing messages in channels.
-    /// - If the bot is an administrator of a group, it can delete any message there.
-    /// - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
-    /// Returns True on success.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - message_id: Identifier of the message to delete
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#deletemessage>
-
+    /// Parameters container struct for `deleteMessage` method
     public struct DeleteMessageParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// Identifier of the message to delete
         var messageId: Int
 
+        /// Custom keys for coding/decoding `DeleteMessageParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case messageId = "message_id"
@@ -36,6 +27,23 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to delete a message, including service messages, with the following limitations:
+     - A message can only be deleted if it was sent less than 48 hours ago.
+     - Bots can delete outgoing messages in groups and supergroups.
+     - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+     - If the bot is an administrator of a group, it can delete any message there.
+     - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+     Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [DeleteMessageParams](https://core.telegram.org/bots/api#deletemessage)
+     
+     - Parameters:
+         - params: Parameters container, see `DeleteMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func deleteMessage(params: DeleteMessageParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

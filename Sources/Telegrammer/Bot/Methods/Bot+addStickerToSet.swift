@@ -6,25 +6,25 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to add a new sticker to a set created by the bot. Returns True on success.
-    /// - Parameters:
-    ///     - user_id: User identifier of sticker set owner
-    ///     - name: Sticker set name
-    ///     - png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-    ///     - emojis: One or more emoji corresponding to the sticker
-    ///     - mask_position: A JSON-serialized object for position where the mask should be placed on faces
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#addstickertoset>
-
+    /// Parameters container struct for `addStickerToSet` method
     public struct AddStickerToSetParams: MultipartEncodable {
+
+        /// User identifier of sticker set owner
         var userId: Int64
+
+        /// Sticker set name
         var name: String
+
+        /// Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. Pass a file_id as a String to send a file that already exists on the Telegram servers, pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         var pngSticker: FileInfo
+
+        /// One or more emoji corresponding to the sticker
         var emojis: String
+
+        /// A JSON-serialized object for position where the mask should be placed on faces
         var maskPosition: MaskPosition?
 
+        /// Custom keys for coding/decoding `AddStickerToSetParams` struct
         enum CodingKeys: String, CodingKey {
             case userId = "user_id"
             case name = "name"
@@ -42,6 +42,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to add a new sticker to a set created by the bot. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [AddStickerToSetParams](https://core.telegram.org/bots/api#addstickertoset)
+     
+     - Parameters:
+         - params: Parameters container, see `AddStickerToSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func addStickerToSet(params: AddStickerToSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

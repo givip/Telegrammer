@@ -6,20 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-    /// Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - title: New chat title, 1-255 characters
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#setchattitle>
-
+    /// Parameters container struct for `setChatTitle` method
     public struct SetChatTitleParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
+
+        /// New chat title, 1-255 characters
         var title: String
 
+        /// Custom keys for coding/decoding `SetChatTitleParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case title = "title"
@@ -31,6 +27,18 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to change the title of a chat. Titles can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+     Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetChatTitleParams](https://core.telegram.org/bots/api#setchattitle)
+     
+     - Parameters:
+         - params: Parameters container, see `SetChatTitleParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func setChatTitle(params: SetChatTitleParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

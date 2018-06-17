@@ -6,18 +6,13 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
-    /// Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
-    /// - Parameters:
-    ///     - chat_id: Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    /// - Returns: Future<Bool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#deletechatphoto>
-
+    /// Parameters container struct for `deleteChatPhoto` method
     public struct DeleteChatPhotoParams: JSONEncodable {
+
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
+        /// Custom keys for coding/decoding `DeleteChatPhotoParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
         }
@@ -27,6 +22,18 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to delete a chat photo. Photos can't be changed for private chats. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns True on success.
+     Note: In regular groups (non-supergroups), this method will only work if the ‘All Members Are Admins’ setting is off in the target group.
+
+     SeeAlso Telegram Bot API Reference:
+     [DeleteChatPhotoParams](https://core.telegram.org/bots/api#deletechatphoto)
+     
+     - Parameters:
+         - params: Parameters container, see `DeleteChatPhotoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
     @discardableResult
     public func deleteChatPhoto(params: DeleteChatPhotoParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)

@@ -6,19 +6,16 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
-    /// - Parameters:
-    ///     - user_id: User identifier of sticker file owner
-    ///     - png_sticker: Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
-    /// - Returns: Future<File>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#uploadstickerfile>
-
+    /// Parameters container struct for `uploadStickerFile` method
     public struct UploadStickerFileParams: MultipartEncodable {
+
+        /// User identifier of sticker file owner
         var userId: Int64
+
+        /// Png image with the sticker, must be up to 512 kilobytes in size, dimensions must not exceed 512px, and either width or height must be exactly 512px. More info on Sending Files »
         var pngSticker: InputFile
 
+        /// Custom keys for coding/decoding `UploadStickerFileParams` struct
         enum CodingKeys: String, CodingKey {
             case userId = "user_id"
             case pngSticker = "png_sticker"
@@ -30,6 +27,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to upload a .png file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [UploadStickerFileParams](https://core.telegram.org/bots/api#uploadstickerfile)
+     
+     - Parameters:
+         - params: Parameters container, see `UploadStickerFileParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `File` type
+     */
     @discardableResult
     public func uploadStickerFile(params: UploadStickerFileParams) throws -> Future<File> {
         let body = try httpBody(for: params)

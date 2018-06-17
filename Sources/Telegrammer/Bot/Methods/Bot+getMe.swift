@@ -6,12 +6,17 @@ import HTTP
 
 public extension Bot {
 
-    /// A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
-    /// - Returns: Future<User>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#getme>
+    /**
+     A simple method for testing your bot's auth token. Requires no parameters. Returns basic information about the bot in form of a User object.
 
+     SeeAlso Telegram Bot API Reference:
+     [GetMeParams](https://core.telegram.org/bots/api#getme)
+     
+     - Parameters:
+         - params: Parameters container, see `GetMeParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `User` type
+     */
     @discardableResult
     public func getMe() throws -> Future<User> {
         let response: Future<TelegramContainer<User>>

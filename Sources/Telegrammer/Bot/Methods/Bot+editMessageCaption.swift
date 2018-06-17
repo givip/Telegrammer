@@ -6,27 +6,28 @@ import HTTP
 
 public extension Bot {
 
-    /// Use this method to edit captions of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
-    /// - Parameters:
-    ///     - chat_id: Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
-    ///     - message_id: Required if inline_message_id is not specified. Identifier of the sent message
-    ///     - inline_message_id: Required if chat_id and message_id are not specified. Identifier of the inline message
-    ///     - caption: New caption of the message
-    ///     - parse_mode: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
-    ///     - reply_markup: A JSON-serialized object for an inline keyboard.
-    /// - Returns: Future<MessageOrBool>. Throws on errors.
-    /// - Note: Asynchronous method.
-    ///
-    /// [- SeeAlso: ]<https://core.telegram.org/bots/api#editmessagecaption>
-
+    /// Parameters container struct for `editMessageCaption` method
     public struct EditMessageCaptionParams: JSONEncodable {
+
+        /// Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId?
+
+        /// Required if inline_message_id is not specified. Identifier of the sent message
         var messageId: Int?
+
+        /// Required if chat_id and message_id are not specified. Identifier of the inline message
         var inlineMessageId: String?
+
+        /// New caption of the message
         var caption: String?
+
+        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
         var parseMode: ParseMode?
+
+        /// A JSON-serialized object for an inline keyboard.
         var replyMarkup: InlineKeyboardMarkup?
 
+        /// Custom keys for coding/decoding `EditMessageCaptionParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case messageId = "message_id"
@@ -46,6 +47,17 @@ public extension Bot {
         }
     }
 
+    /**
+     Use this method to edit captions of messages sent by the bot or via the bot (for inline bots). On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageCaptionParams](https://core.telegram.org/bots/api#editmessagecaption)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageCaptionParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
     @discardableResult
     public func editMessageCaption(params: EditMessageCaptionParams? = nil) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
