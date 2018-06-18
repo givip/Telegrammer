@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Audio`
 public struct AudioFilter: Filter {
     public var name: String = "audio"
     

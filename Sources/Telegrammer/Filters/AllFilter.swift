@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Filter for any update, said "no filter"
 public struct AllFilter: Filter {
     public var name: String = "all"
     

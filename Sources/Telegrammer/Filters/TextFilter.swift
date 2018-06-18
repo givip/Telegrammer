@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Filters messages to allow only those which contains text
 public struct TextFilter: Filter {
     
     public var name: String = "text"
