@@ -7,22 +7,7 @@
 
 import Foundation
 
-/// Type of the entity.
-///
-/// - mention: @username
-/// - hashtag: hashtag
-/// - botCommand: botCommand
-/// - url: url
-/// - email: email
-/// - bold: bold text
-/// - italic: italic text
-/// - code: monowidth string
-/// - pre: monowidth block
-/// - text_link: for clickable text URLs
-/// - text_mention: for users without usernames
-///
-/// [- SeeAlso: ]<https://core.telegram.org/bots/api#messageentity>
-
+/// Type of the entity. Can be mention (@username), hashtag, bot_command, url, email, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
 public enum MessageEntityType: String, Codable {
     case mention     = "mention"
     case hashtag     = "hashtag"

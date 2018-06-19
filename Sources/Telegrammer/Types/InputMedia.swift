@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// This enum represents the content of a media message to be sent.
 public enum InputMedia: Encodable {
     case inputMediaPhoto(InputMediaPhoto)
     case inputMediaVideo(InputMediaVideo)

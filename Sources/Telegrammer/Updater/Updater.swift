@@ -16,10 +16,15 @@ import NIO
  */
 public final class Updater {
 	
+    /// Bot instance which perform requests and establish http server
     public let bot: Bot
+    
+    /// Dispatcher instance, which handle all updates from Telegram
     public let dispatcher: Dispatcher
+    
+    /// EventLoopGroup for networking stuff
     public let worker: Worker
-	
+
 	private var longpollingConnection: Longpolling!
     private var webhooksListener: Webhooks!
 	

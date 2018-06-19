@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Type of chat, can be either “private”, “group”, “supergroup” or “channel”
 public enum ChatType: String, Codable {
     case `private`  = "private"
     case group      = "group"

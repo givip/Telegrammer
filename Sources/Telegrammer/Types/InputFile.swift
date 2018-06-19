@@ -8,9 +8,12 @@
 import Foundation
 import Multipart
 
-/// Represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser..
-/// - SeeAlso: <https://core.telegram.org/bots/api#inputfile>
-
+/**
+ This object represents the contents of a file to be uploaded. Must be posted using multipart/form-data in the usual way that files are uploaded via the browser.
+ 
+ SeeAlso Telegram Bot API Reference:
+ [Input Files](https://core.telegram.org/bots/api#inputfile)
+ */
 public struct InputFile: Encodable, MultipartPartConvertible {
     
     public func convertToMultipartPart() throws -> MultipartPart {

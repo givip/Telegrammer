@@ -8,6 +8,7 @@
 import Foundation
 import Multipart
 
+/// Represent Telegram type, which will be encoded as Json on sending to server
 protocol JSONEncodable: Encodable {}
 
 extension JSONEncodable {    
@@ -16,6 +17,7 @@ extension JSONEncodable {
 	}
 }
 
+/// Represent Telegram type, which will be encoded as multipart/form-data on sending to server
 protocol MultipartEncodable: Encodable {}
 
 extension MultipartEncodable {

@@ -6,6 +6,7 @@
 //
 
 
+/// This enum represents one result of an inline query. Telegram clients currently support results of the following 20 types
 public enum InlineQueryResult: Codable {
 	case cachedAudio(InlineQueryResultAudio)
 	case cachedDocument(InlineQueryResultCachedDocument)

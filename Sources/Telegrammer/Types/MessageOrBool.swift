@@ -5,6 +5,7 @@
 //  Created by Givi Pataridze on 28.02.2018.
 //
 
+/// Sometimes bot methods returns objects On success, otherwise returns False
 public enum MessageOrBool: Codable {
 	case message(Message)
 	case bool(Bool)

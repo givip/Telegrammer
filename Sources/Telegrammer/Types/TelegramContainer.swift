@@ -5,9 +5,7 @@
 //  Created by Givi Pataridze on 25.02.2018.
 //
 
-/// This object represents a Telegram response container.
-///
-
+/// This object represents a Telegram server response container.
 public struct TelegramContainer<T: Codable>: Codable {
 	
 	enum CodingKeys: String, CodingKey {

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
 public enum ChatId: Encodable {
 	
 	case chat(Int64)
