@@ -22,6 +22,7 @@ public final class HandlersQueue {
 		}
 		return handlers
 	}
+    
 	public var errorHandlers: [ErrorHandler] {
 		var errorHandlers: [ErrorHandler] = []
 		concurrentQueue.sync {
