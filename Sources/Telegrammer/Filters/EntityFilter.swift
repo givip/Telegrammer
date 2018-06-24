@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Filters messages to only allow those which have a `MessageEntity` where their type matches `type`.
 public struct EntityFilter: Filter {
     
     let entityTypes: Set<MessageEntityType>

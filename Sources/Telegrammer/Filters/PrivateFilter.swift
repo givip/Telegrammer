@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages sent in a private chat
 public struct PrivateFilter: Filter {
     
     public var name: String = "private"

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Filters updates by searching for an occurence of pattern in the message text. The `NSRegularExpression` is used to determine whether an update should be filtered. Refer to the documentation of the `NSRegularExpression` for more information.
 public struct RegexpFilter: Filter {
     
     let pattern: String

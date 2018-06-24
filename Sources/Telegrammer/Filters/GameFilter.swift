@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Game`
 public struct GameFilter: Filter {
     
     public var name: String = "forwarded"

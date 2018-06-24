@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Video`
 public struct VideoFilter: Filter {
     
     public var name: String = "video"

@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Invoice`
 public struct InvoiceFilter: Filter {
     
     public var name: String = "invoice"

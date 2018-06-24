@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that are a reply to another message
 public struct ReplyFilter: Filter {
     
     public var name: String = "reply"

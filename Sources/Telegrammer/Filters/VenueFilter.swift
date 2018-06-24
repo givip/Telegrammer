@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Vanue`
 public struct VenueFilter: Filter {
     
     public var name: String = "venue"

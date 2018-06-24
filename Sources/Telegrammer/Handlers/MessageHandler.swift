@@ -7,10 +7,13 @@
 
 import HTTP
 
+/// Handler for bot messages, can handle normal messages, channel posts, edited messages
 public class MessageHandler: Handler {
 	
+    /// Name of particular MessageHandler, needed for determine handlers instances of one class in groups
 	public var name: String
 	
+    /// Option Set for `MessageHandler`
     public struct Options: OptionSet {
         public let rawValue: Int
         

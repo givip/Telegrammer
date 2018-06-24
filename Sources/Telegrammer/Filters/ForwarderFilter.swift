@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that are forwarded.
 public struct ForwarderFilter: Filter {
     
     public var name: String = "forwarded"

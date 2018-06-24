@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages sent in a group chat
 public struct GroupFilter: Filter {
     
     public var name: String = "group"
