@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Location`
 public struct LocationFilter: Filter {
     
     public var name: String = "location"

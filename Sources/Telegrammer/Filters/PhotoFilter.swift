@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `[PhotoSize]`
 public struct PhotoFilter: Filter {
     
     public var name: String = "photo"

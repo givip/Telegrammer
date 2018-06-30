@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages which contains command entity
 public struct CommandFilter: Filter {
 
     public var name: String = "command"

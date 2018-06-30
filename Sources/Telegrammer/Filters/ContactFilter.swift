@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Contact`
 public struct ContactFilter: Filter {
     
     public var name: String = "contact"

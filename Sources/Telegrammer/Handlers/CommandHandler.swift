@@ -27,6 +27,7 @@ public class CommandHandler: Handler {
             self.rawValue = rawValue
         }
         
+        /// Determines Whether the handler should also accept edited messages. Not used by default.
         public static let editedUpdates = Options(rawValue: 1)
     }
     

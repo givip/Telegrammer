@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Document`
 public struct DocumentFilter: Filter {
     
     public var name: String = "document"

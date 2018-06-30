@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Handler for CallbackQuery updates
 public class CallbackQueryHandler: Handler {
 	
 	public var name: String

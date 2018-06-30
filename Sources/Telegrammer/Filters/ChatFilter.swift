@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Filters messages to allow only those which are from specified chat ID.
 public struct ChatFilter: Filter {
     
     var chatId: Int64

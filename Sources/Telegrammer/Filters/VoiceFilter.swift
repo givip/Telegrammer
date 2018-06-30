@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Messages that contain `Voice`
 public struct VoiceFilter: Filter {
     
     public var name: String = "voice"

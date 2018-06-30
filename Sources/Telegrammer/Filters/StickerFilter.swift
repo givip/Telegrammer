@@ -7,7 +7,7 @@
 
 import Foundation
 
-/// Filters messages to allow only those which contains `Sticker`
+/// Messages that contain `Sticker`
 public struct StickerFilter: Filter {
     
     public var name: String = "sticker"
