@@ -4,6 +4,33 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+
+## [0.2.6] - 2018-06-30
+### Added
+- Documentation for filters
+- `CaptionEntityFilter` class
+
+## [0.2.5] - 2018-06-21
+### Added
+- Documentation for most of public classes
+
+### Changed
+- ruby script which generate Telegram API classes improved and now generate docs for everything
+
+### Removed
+- FoundationClient class
+
+## [0.2.4] - 2018-06-17
+### Added
+- `ParseMode` type for "Markdown" or "HTML" message text
+- Automatic Webhook deletion before starting Longpolling connection
+- Helpers `reply`, `edit`, `delete` for `Message` type
+
+
+### Changed
+- Now command settings are settings up with OptionSet
+- Improved HelloBot example message text
+
 ## [0.2.3] - 2018-06-08
 ### Added
 - CHANGELOG.md
