@@ -20,4 +20,7 @@ public enum MessageEntityType: String, Codable {
     case pre         = "pre"
     case textLink    = "text_link"
     case textMention = "text_mention"
+    case phoneNumber = "phone_number"
+    case cashtag     = "cashtag"
+    case unknown
 }

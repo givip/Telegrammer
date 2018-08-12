@@ -15,4 +15,5 @@ import Foundation
 public enum ParseMode: String, Codable {
     case markdown  = "Markdown"
     case html      = "HTML"
+    case unknown
 }
