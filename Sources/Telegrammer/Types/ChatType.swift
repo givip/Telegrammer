@@ -13,4 +13,5 @@ public enum ChatType: String, Codable {
     case group      = "group"
     case supergroup = "supergroup"
     case channel    = "channel"
+    case unknown
 }
