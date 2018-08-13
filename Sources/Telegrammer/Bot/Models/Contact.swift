@@ -15,6 +15,7 @@ public final class Contact: Codable {
         case firstName = "first_name"
         case lastName = "last_name"
         case userId = "user_id"
+        case vcard = "vcard"
     }
 
     /// Contact's phone number
@@ -29,11 +30,15 @@ public final class Contact: Codable {
     /// Optional. Contact's user identifier in Telegram
     public var userId: Int64?
 
+    /// Optional. Additional data about the contact in the form of a vCard
+    public var vcard: String?
 
-    public init (phoneNumber: String, firstName: String, lastName: String? = nil, userId: Int64? = nil) {
+
+    public init (phoneNumber: String, firstName: String, lastName: String? = nil, userId: Int64? = nil, vcard: String? = nil) {
         self.phoneNumber = phoneNumber
         self.firstName = firstName
         self.lastName = lastName
         self.userId = userId
+        self.vcard = vcard
     }
 }

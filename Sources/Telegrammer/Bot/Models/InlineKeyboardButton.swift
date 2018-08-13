@@ -23,7 +23,7 @@ public final class InlineKeyboardButton: Codable {
     /// Label text on the button
     public var text: String
 
-    /// Optional. HTTP url to be opened when button is pressed
+    /// Optional. HTTP or tg:// url to be opened when button is pressed
     public var url: String?
 
     /// Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes

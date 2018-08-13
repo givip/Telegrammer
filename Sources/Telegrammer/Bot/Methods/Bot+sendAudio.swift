@@ -30,6 +30,9 @@ public extension Bot {
         /// Track name
         var title: String?
 
+        /// Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        var thumb: FileInfo?
+
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
@@ -48,12 +51,13 @@ public extension Bot {
             case duration = "duration"
             case performer = "performer"
             case title = "title"
+            case thumb = "thumb"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, audio: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, audio: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil, thumb: FileInfo? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.audio = audio
             self.caption = caption
@@ -61,6 +65,7 @@ public extension Bot {
             self.duration = duration
             self.performer = performer
             self.title = title
+            self.thumb = thumb
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.replyMarkup = replyMarkup

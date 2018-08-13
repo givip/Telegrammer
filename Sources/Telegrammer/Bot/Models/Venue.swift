@@ -15,6 +15,7 @@ public final class Venue: Codable {
         case title = "title"
         case address = "address"
         case foursquareId = "foursquare_id"
+        case foursquareType = "foursquare_type"
     }
 
     /// Venue location
@@ -29,11 +30,15 @@ public final class Venue: Codable {
     /// Optional. Foursquare identifier of the venue
     public var foursquareId: String?
 
+    /// Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    public var foursquareType: String?
 
-    public init (location: Location, title: String, address: String, foursquareId: String? = nil) {
+
+    public init (location: Location, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil) {
         self.location = location
         self.title = title
         self.address = address
         self.foursquareId = foursquareId
+        self.foursquareType = foursquareType
     }
 }

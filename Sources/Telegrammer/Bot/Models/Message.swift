@@ -29,6 +29,7 @@ public final class Message: Codable {
         case captionEntities = "caption_entities"
         case audio = "audio"
         case document = "document"
+        case animation = "animation"
         case game = "game"
         case photo = "photo"
         case sticker = "sticker"
@@ -53,6 +54,7 @@ public final class Message: Codable {
         case invoice = "invoice"
         case successfulPayment = "successful_payment"
         case connectedWebsite = "connected_website"
+        case passportData = "passport_data"
     }
 
     /// Unique message identifier inside this chat
@@ -108,6 +110,9 @@ public final class Message: Codable {
 
     /// Optional. Message is a general file, information about the file
     public var document: Document?
+
+    /// Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
+    public var animation: Animation?
 
     /// Optional. Message is a game, information about the game. More about games »
     public var game: Game?
@@ -181,8 +186,11 @@ public final class Message: Codable {
     /// Optional. The domain name of the website on which the user has logged in. More about Telegram Login »
     public var connectedWebsite: String?
 
+    /// Optional. Telegram Passport data
+    public var passportData: PassportData?
 
-    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, captionEntities: [MessageEntity]? = nil, audio: Audio? = nil, document: Document? = nil, game: Game? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, voice: Voice? = nil, videoNote: VideoNote? = nil, caption: String? = nil, contact: Contact? = nil, location: Location? = nil, venue: Venue? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil) {
+
+    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, captionEntities: [MessageEntity]? = nil, audio: Audio? = nil, document: Document? = nil, animation: Animation? = nil, game: Game? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, voice: Voice? = nil, videoNote: VideoNote? = nil, caption: String? = nil, contact: Contact? = nil, location: Location? = nil, venue: Venue? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil) {
         self.messageId = messageId
         self.from = from
         self.date = date
@@ -201,6 +209,7 @@ public final class Message: Codable {
         self.captionEntities = captionEntities
         self.audio = audio
         self.document = document
+        self.animation = animation
         self.game = game
         self.photo = photo
         self.sticker = sticker
@@ -225,5 +234,6 @@ public final class Message: Codable {
         self.invoice = invoice
         self.successfulPayment = successfulPayment
         self.connectedWebsite = connectedWebsite
+        self.passportData = passportData
     }
 }

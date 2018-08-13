@@ -27,6 +27,9 @@ public extension Bot {
         /// Foursquare identifier of the venue
         var foursquareId: String?
 
+        /// Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+        var foursquareType: String?
+
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
@@ -44,18 +47,20 @@ public extension Bot {
             case title = "title"
             case address = "address"
             case foursquareId = "foursquare_id"
+            case foursquareType = "foursquare_type"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.latitude = latitude
             self.longitude = longitude
             self.title = title
             self.address = address
             self.foursquareId = foursquareId
+            self.foursquareType = foursquareType
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.replyMarkup = replyMarkup

@@ -17,6 +17,7 @@ public final class Audio: Codable {
         case title = "title"
         case mimeType = "mime_type"
         case fileSize = "file_size"
+        case thumb = "thumb"
     }
 
     /// Unique identifier for this file
@@ -37,13 +38,17 @@ public final class Audio: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
+    /// Optional. Thumbnail of the album cover to which the music file belongs
+    public var thumb: PhotoSize?
 
-    public init (fileId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil) {
+
+    public init (fileId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
         self.fileId = fileId
         self.duration = duration
         self.performer = performer
         self.title = title
         self.mimeType = mimeType
         self.fileSize = fileSize
+        self.thumb = thumb
     }
 }

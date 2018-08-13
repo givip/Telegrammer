@@ -21,6 +21,9 @@ public extension Bot {
         /// Contact's last name
         var lastName: String?
 
+        /// Additional data about the contact in the form of a vCard, 0-2048 bytes
+        var vcard: String?
+
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
@@ -36,16 +39,18 @@ public extension Bot {
             case phoneNumber = "phone_number"
             case firstName = "first_name"
             case lastName = "last_name"
+            case vcard = "vcard"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, phoneNumber: String, firstName: String, lastName: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.phoneNumber = phoneNumber
             self.firstName = firstName
             self.lastName = lastName
+            self.vcard = vcard
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.replyMarkup = replyMarkup

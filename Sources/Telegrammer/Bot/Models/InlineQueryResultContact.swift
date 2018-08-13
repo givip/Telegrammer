@@ -16,6 +16,7 @@ public final class InlineQueryResultContact: Codable {
         case phoneNumber = "phone_number"
         case firstName = "first_name"
         case lastName = "last_name"
+        case vcard = "vcard"
         case replyMarkup = "reply_markup"
         case inputMessageContent = "input_message_content"
         case thumbUrl = "thumb_url"
@@ -38,6 +39,9 @@ public final class InlineQueryResultContact: Codable {
     /// Optional. Contact's last name
     public var lastName: String?
 
+    /// Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
+    public var vcard: String?
+
     /// Optional. Inline keyboard attached to the message
     public var replyMarkup: InlineKeyboardMarkup?
 
@@ -54,12 +58,13 @@ public final class InlineQueryResultContact: Codable {
     public var thumbHeight: Int?
 
 
-    public init (type: String, id: String, phoneNumber: String, firstName: String, lastName: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
+    public init (type: String, id: String, phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id
         self.phoneNumber = phoneNumber
         self.firstName = firstName
         self.lastName = lastName
+        self.vcard = vcard
         self.replyMarkup = replyMarkup
         self.inputMessageContent = inputMessageContent
         self.thumbUrl = thumbUrl

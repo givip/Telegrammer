@@ -16,6 +16,7 @@ public final class InputVenueMessageContent: Codable {
         case title = "title"
         case address = "address"
         case foursquareId = "foursquare_id"
+        case foursquareType = "foursquare_type"
     }
 
     /// Latitude of the venue in degrees
@@ -33,12 +34,16 @@ public final class InputVenueMessageContent: Codable {
     /// Optional. Foursquare identifier of the venue, if known
     public var foursquareId: String?
 
+    /// Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
+    public var foursquareType: String?
 
-    public init (latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil) {
+
+    public init (latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil) {
         self.latitude = latitude
         self.longitude = longitude
         self.title = title
         self.address = address
         self.foursquareId = foursquareId
+        self.foursquareType = foursquareType
     }
 }

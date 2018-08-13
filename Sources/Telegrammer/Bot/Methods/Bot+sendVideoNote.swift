@@ -21,6 +21,9 @@ public extension Bot {
         /// Video width and height
         var length: Int?
 
+        /// Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 90. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        var thumb: FileInfo?
+
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
@@ -36,16 +39,18 @@ public extension Bot {
             case videoNote = "video_note"
             case duration = "duration"
             case length = "length"
+            case thumb = "thumb"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, videoNote: FileInfo, duration: Int? = nil, length: Int? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, videoNote: FileInfo, duration: Int? = nil, length: Int? = nil, thumb: FileInfo? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.videoNote = videoNote
             self.duration = duration
             self.length = length
+            self.thumb = thumb
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.replyMarkup = replyMarkup

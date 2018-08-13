@@ -66,6 +66,10 @@ def make_swift_type_name(var_name, var_type)
 	array_prefix = 'Array of '
 	if var_type.start_with?(array_prefix) then
 		var_type.slice! array_prefix
+        
+        if var_type == 'InputMediaPhoto and InputMediaVideo' then
+            return "[InputMedia]"
+        end
 		return "[#{var_type}]"
 	end
 
@@ -197,6 +201,10 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
 		return "String?"
 	when ['String', false]
         return "String"
+    when ['InputFile or String', true]
+        return "FileInfo?"
+    when ['InputFile or String', false]
+        return "FileInfo"
 	when ['Integer', true]
 		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
 							(type_name == 'User' && var_name == 'id')
@@ -270,7 +278,7 @@ def generate_model_file(f, node)
 
 		current_node.search('tr').each { |node|
 			td = node.search('td')
-			next unless td[0].text != 'Field'
+			next unless td[0].text != 'Field' && td[0].text != 'Parameters'
 
 			var_name = td[0].text
 			var_type = td[1].text
@@ -302,7 +310,11 @@ def generate_model_file(f, node)
         out.write " SeeAlso Telegram Bot API Reference:\n"
         out.write " [#{type_name}](https://core.telegram.org/bots/api\##{type_name.downcase})\n"
         out.write " */\n"
-        out.write  "public final class #{type_name}: Codable {\n\n"
+        var_protocol = "Codable"
+        if type_name.start_with?('InputMedia') then
+            var_protocol = "Encodable"
+        end
+        out.write  "public final class #{type_name}: #{var_protocol} {\n\n"
         
         if keys_block != "" then
             out.write "#{ONE}/// Custom keys for coding/decoding `#{type_name}` struct\n"\
@@ -487,7 +499,7 @@ def main
 			next unless title.split.count == 1
 
 			# These types are complex and created manually:
-			next unless !['InlineQueryResult', 'InputFile', 'InputMedia', 'InputMessageContent'].include?(title)
+			next unless !['InlineQueryResult', 'InputFile', 'InputMedia', 'InputMessageContent', 'PassportElementError'].include?(title)
 
 			kind = (title.chars.first == title.chars.first.upcase) ? :type : :method
 
