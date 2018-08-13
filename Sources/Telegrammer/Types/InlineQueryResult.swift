@@ -33,86 +33,86 @@ public enum InlineQueryResult: Codable {
 	
 	public init(from decoder: Decoder) throws {
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultAudio.self) {
-			self = InlineQueryResult.cachedAudio(value)
+			self = .cachedAudio(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedDocument.self) {
-			self = InlineQueryResult.cachedDocument(value)
+			self = .cachedDocument(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedGif.self) {
-			self = InlineQueryResult.cachedGif(value)
+			self = .cachedGif(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedMpeg4Gif.self) {
-			self = InlineQueryResult.cachedMpeg4Gif(value)
+			self = .cachedMpeg4Gif(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedPhoto.self) {
-			self = InlineQueryResult.cachedPhoto(value)
+			self = .cachedPhoto(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedSticker.self) {
-			self = InlineQueryResult.cachedSticker(value)
+			self = .cachedSticker(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedVideo.self) {
-			self = InlineQueryResult.cachedVideo(value)
+			self = .cachedVideo(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultCachedVoice.self) {
-			self = InlineQueryResult.cachedVoice(value)
+			self = .cachedVoice(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultArticle.self) {
-			self = InlineQueryResult.article(value)
+			self = .article(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultAudio.self) {
-			self = InlineQueryResult.audio(value)
+			self = .audio(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultContact.self) {
-			self = InlineQueryResult.contact(value)
+			self = .contact(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultGame.self) {
-			self = InlineQueryResult.game(value)
+			self = .game(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultDocument.self) {
-			self = InlineQueryResult.document(value)
+			self = .document(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultGif.self) {
-			self = InlineQueryResult.gif(value)
+			self = .gif(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultLocation.self) {
-			self = InlineQueryResult.location(value)
+			self = .location(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultMpeg4Gif.self) {
-			self = InlineQueryResult.mpeg4Gif(value)
+			self = .mpeg4Gif(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultPhoto.self) {
-			self = InlineQueryResult.photo(value)
+			self = .photo(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultVenue.self) {
-			self = InlineQueryResult.venue(value)
+			self = .venue(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultVideo.self) {
-			self = InlineQueryResult.video(value)
+			self = .video(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(InlineQueryResultVoice.self) {
-			self = InlineQueryResult.voice(value)
+			self = .voice(value)
 			return
 		}
-		self = InlineQueryResult.undefined
+		self = .undefined
 	}
 	
 	public func encode(to encoder: Encoder) throws {

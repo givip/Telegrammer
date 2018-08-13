@@ -22,6 +22,14 @@ public enum MessageEntityType: String, Codable {
     case textMention = "text_mention"
     case phoneNumber = "phone_number"
     case cashtag     = "cashtag"
-    case unknown
+    case undefined
     
+    public init(from decoder: Decoder) throws {
+        let value = try decoder.singleValueContainer().decode(String.self)
+        guard let type = MessageEntityType(rawValue: value) else {
+            self = .undefined
+            return
+        }
+        self = type
+    }
 }

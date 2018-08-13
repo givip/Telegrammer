@@ -32,21 +32,21 @@ public enum InputMessageContent: Codable {
     }
     public init(from decoder: Decoder) throws {
         if let value = try? decoder.singleValueContainer().decode(InputTextMessageContent.self) {
-            self = InputMessageContent.inputTextMessageContent(value)
+            self = .inputTextMessageContent(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(InputLocationMessageContent.self) {
-            self = InputMessageContent.inputLocationMessageContent(value)
+            self = .inputLocationMessageContent(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(InputVenueMessageContent.self) {
-            self = InputMessageContent.inputVenueMessageContent(value)
+            self = .inputVenueMessageContent(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(InputContactMessageContent.self) {
-            self = InputMessageContent.inputContactMessageContent(value)
+            self = .inputContactMessageContent(value)
             return
         }
-        self = InputMessageContent.undefined
+        self = .undefined
     }
 }

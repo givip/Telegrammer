@@ -22,10 +22,10 @@ public enum MessageOrBool: Codable {
 	
 	public init(from decoder: Decoder) throws {
 		if let value = try? decoder.singleValueContainer().decode(Bool.self) {
-			self = MessageOrBool.bool(value)
+			self = .bool(value)
 		} else {
 			let message = try decoder.singleValueContainer().decode(Message.self)
-			self = MessageOrBool.message(message)
+			self = .message(message)
 		}
 	}
 }

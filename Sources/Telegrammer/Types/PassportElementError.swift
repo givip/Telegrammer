@@ -44,30 +44,30 @@ public enum PassportElementError: Codable {
     
     public init(from decoder: Decoder) throws {
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorDataField.self) {
-            self = PassportElementError.dataField(value)
+            self = .dataField(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorFile.self) {
-            self = PassportElementError.file(value)
+            self = .file(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorFiles.self) {
-            self = PassportElementError.files(value)
+            self = .files(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorFrontSide.self) {
-            self = PassportElementError.frontSide(value)
+            self = .frontSide(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorReverseSide.self) {
-            self = PassportElementError.reverseSide(value)
+            self = .reverseSide(value)
             return
         }
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorSelfie.self) {
-            self = PassportElementError.selfie(value)
+            self = .selfie(value)
             return
         }
-        self = PassportElementError.unknown
+        self = .unknown
     }
     
 }

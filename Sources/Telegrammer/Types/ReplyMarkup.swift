@@ -35,21 +35,21 @@ public enum ReplyMarkup: Codable {
 	
 	public init(from decoder: Decoder) throws {
 		if let value = try? decoder.singleValueContainer().decode(InlineKeyboardMarkup.self) {
-			self = ReplyMarkup.inlineKeyboardMarkup(value)
+			self = .inlineKeyboardMarkup(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(ReplyKeyboardMarkup.self) {
-			self = ReplyMarkup.replyKeyboardMarkup(value)
+			self = .replyKeyboardMarkup(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(ReplyKeyboardRemove.self) {
-			self = ReplyMarkup.replyKeyboardRemove(value)
+			self = .replyKeyboardRemove(value)
 			return
 		}
 		if let value = try? decoder.singleValueContainer().decode(ForceReply.self) {
-			self = ReplyMarkup.forceReply(value)
+			self = .forceReply(value)
 			return
 		}
-		self = ReplyMarkup.undefined
+		self = .undefined
 	}
 }
