@@ -68,7 +68,7 @@ def make_swift_type_name(var_name, var_type)
 		var_type.slice! array_prefix
         
         if var_type == 'InputMediaPhoto and InputMediaVideo' then
-            return "[InputMedia]"
+            return "[InputMediaPhotoAndVideo]"
         end
 		return "[#{var_type}]"
 	end
