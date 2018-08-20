@@ -34,19 +34,22 @@ class Webhooks: Connection {
     public func start() throws -> Future<Void> {
         guard let ip = bot.settings.webhooksIp,
             let url = bot.settings.webhooksUrl,
-            let port = bot.settings.webhooksPort,
-            let publicCert = bot.settings.webhooksPublicCert else {
+            let port = bot.settings.webhooksPort else {
                 throw CoreError(identifier: "Webhooks",
                                 reason: "Initialization parameters wasn't found in enviroment variables")
         }
 
-        guard let fileHandle = FileHandle(forReadingAtPath: publicCert) else {
-            let errorDescription = "Public key '\(publicCert)' for HTTPS server wasn't found"
-            Log.error(errorDescription)
-            throw CoreError(identifier: "FileIO", reason: errorDescription)
+        var cert: InputFile? = nil
+
+        if let publicCert = bot.settings.webhooksPublicCert {
+            guard let fileHandle = FileHandle(forReadingAtPath: publicCert) else {
+                let errorDescription = "Public key '\(publicCert)' was specified for HTTPS server, but wasn't found"
+                Log.error(errorDescription)
+                throw CoreError(identifier: "FileIO", reason: errorDescription)
+            }
+            cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: publicCert)
         }
         
-        let cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: publicCert)
         let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
             Log.info("setWebhook request result: \(success)")

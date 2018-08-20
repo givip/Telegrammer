@@ -22,7 +22,6 @@ public final class Bot {
         public var webhooksUrl: String? = nil
         public var webhooksPort: Int? = nil
         public var webhooksPublicCert: String? = nil
-        public var webhooksPrivateKey: String? = nil
         
         public init(token: String, debugMode: Bool = true) {
             self.token = token

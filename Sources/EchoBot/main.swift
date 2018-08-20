@@ -14,7 +14,6 @@ var settings = Bot.Settings(token: token)
 //settings.webhooksUrl = Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!
 //settings.webhooksPort = Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!
 //settings.webhooksPublicCert = Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!
-//settings.webhooksPrivateKey = Enviroment.get("TELEGRAM_BOT_PRIVATE_KEY")!
 
 let bot = try! Bot(settings: settings)
 
