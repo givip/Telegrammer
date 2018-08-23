@@ -63,7 +63,7 @@ public extension Dispatcher {
         - handler: Handler to add in `Dispatcher`'s handlers queue
         - group: Group of `Dispatcher`'s handler queue, `zero` group by default
      */
-    func add<T: Handler>(handler: T, to group: HandlerGroup = .zero) {
+    func add(handler: Handler, to group: HandlerGroup = .zero) {
 		self.handlersQueue.add(handler, to: group)
 	}
 	
@@ -86,7 +86,7 @@ public extension Dispatcher {
         - handler: Handler to be removed
         - group: Group from which handlers will be removed
      */
-    func remove<T: Handler>(handler: T, from group: HandlerGroup) {
+    func remove(handler: Handler, from group: HandlerGroup) {
 		self.handlersQueue.remove(handler, from: group)
 	}
 	

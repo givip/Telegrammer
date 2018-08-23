@@ -37,7 +37,7 @@ public final class HandlersQueue {
 	
 	private let concurrentQueue = DispatchQueue(label: "TLGRM-HANDLERS-QUEUE", attributes: .concurrent)
 	
-	public func add<T: Handler>(_ handler: T, to group: HandlerGroup) {
+	public func add(_ handler: Handler, to group: HandlerGroup) {
 		concurrentQueue.async(flags: .barrier) {
 			if var groupHandlers = self._handlers[group] {
 				groupHandlers.append(handler)
@@ -49,7 +49,7 @@ public final class HandlersQueue {
 		}
 	}
 	
-	public func remove<T: Handler>(_ handler: T, from group: HandlerGroup) {
+	public func remove(_ handler: Handler, from group: HandlerGroup) {
 		concurrentQueue.async(flags: .barrier) {
 			guard var groupHandlers = self._handlers[group] else { return }
 			groupHandlers = groupHandlers.filter( { $0.name != handler.name } )
