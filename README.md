@@ -1,4 +1,4 @@
-<p align="center"><img src="http://gp-apps.com/github/telegrammer_logo.png" alt="SwiftyBot Banner"></p>
+<p align="center"><img src="https://gp-apps.com/github/telegrammer_logo.png" alt="SwiftyBot Banner"></p>
 
 # Telegrammer
 Telegram Bot Framework written in Swift 4.1 with SwiftNIO network framework
