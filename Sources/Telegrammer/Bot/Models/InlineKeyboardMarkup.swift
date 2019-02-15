@@ -22,3 +22,29 @@ public final class InlineKeyboardMarkup: Codable {
         self.inlineKeyboard = inlineKeyboard
     }
 }
+
+#if canImport(Multipart)
+import Multipart
+
+// MARK: - MultipartPartConvertible
+extension InlineKeyboardMarkup: MultipartPartConvertible
+{
+    /// Encodes markup to data and sets up multi part
+    public func convertToMultipartPart() throws -> MultipartPart {
+        return try MultipartPart(data: JSONEncoder().encode(self))
+    }
+    
+    /// Decodes InlineKeyboardMarkup from multipart
+    public static func convertFromMultipartPart(_ part: MultipartPart) throws -> InlineKeyboardMarkup {
+        do {
+            // Sets up decoder and decodes the multi part data into InlineKeyboardMarkup
+            let decoder = JSONDecoder()
+            let markup = try decoder.decode(InlineKeyboardMarkup.self, from: part.data)
+            return markup
+        } catch {
+            // in failure throws MultipartError
+            throw MultipartError(identifier: "InlineKeyboardMarkup", reason: "failed to setup instance from json decoder - \(error)")
+        }
+    }
+}
+#endif
