@@ -66,7 +66,11 @@ public class Longpolling: Connection {
 	private func longpolling(with params: Bot.GetUpdatesParams) {
         var requestBody = params
         do {
-            try self.bot.getUpdates(params: requestBody).whenSuccess({ (updates) in
+            try self.bot.getUpdates(params: requestBody)
+                .catch { error in
+                    self.retryRequest(with: params, after: error)
+                }
+                .whenSuccess({ (updates) in
                 if !updates.isEmpty {
                     if !self.cleanStart || !(self.cleanStart && self.isFirstRequest) {
                         self.dispatcher.enqueue(updates: updates)

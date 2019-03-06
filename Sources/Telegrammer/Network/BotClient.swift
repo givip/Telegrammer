@@ -15,7 +15,9 @@ public class BotClient {
     let port: Int
     
     let token: String
-    var client: HTTPClient?
+    //Due to memory leak in HTTPClient, temporarely switching on URLSession
+//    var client: HTTPClient?
+
     let worker: Worker
     let callbackWorker: Worker
     
@@ -53,6 +55,27 @@ public class BotClient {
     }
     
     private func send<T: Codable>(request: HTTPRequest) -> Future<TelegramContainer<T>> {
+            let promise = worker.eventLoop.newPromise(of: TelegramContainer<T>.self)
+
+            URLSession.shared.dataTask(with: request.urlRequest) { (data, response, error) in
+                if let error = error {
+                    promise.fail(error: error)
+                    return
+                }
+                if let data = data {
+                    do {
+                        let response = try JSONDecoder().decode(TelegramContainer<T>.self, from: data)
+                        promise.succeed(result: response)
+                    } catch {
+                        promise.fail(error: error)
+                    }
+                }
+            }.resume()
+
+            return promise.futureResult
+
+        //Due to memory leak in HTTPClient, temporarely switching on URLSession
+/*
         var futureClient: Future<HTTPClient>
         if let existingClient = client {
             Log.info("Using existing HTTP client")
@@ -82,17 +105,20 @@ public class BotClient {
                 Log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
         }
+ */
     }
     
     func decode<T: Encodable>(response: HTTPResponse) throws -> TelegramContainer<T> {
         ///Temporary workaround for drop current HTTPClient state after each request,
         ///waiting for fixes from Vapor team
-        self.client = nil
+        //Due to memory leak in HTTPClient, temporarely switching on URLSession
+//        self.client = nil
         if let data = response.body.data {
             return try JSONDecoder().decode(TelegramContainer<T>.self, from: data)
         }
         throw BotError()
     }
+
     
     func apiUrl(endpoint: String) -> URL {
         return URL(string: "https://\(host):\(port)/bot\(token)/\(endpoint)")!
