@@ -15,7 +15,7 @@ public extension Bot {
         /// Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         var voice: FileInfo
 
-        /// Voice message caption, 0-200 characters
+        /// Voice message caption, 0-1024 characters
         var caption: String?
 
         /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.

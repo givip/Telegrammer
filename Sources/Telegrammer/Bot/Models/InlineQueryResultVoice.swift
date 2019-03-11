@@ -34,7 +34,7 @@ public final class InlineQueryResultVoice: Codable {
     /// Recording title
     public var title: String
 
-    /// Optional. Caption, 0-200 characters
+    /// Optional. Caption, 0-1024 characters
     public var caption: String?
 
     /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.

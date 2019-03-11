@@ -15,7 +15,7 @@ public extension Bot {
         /// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
         var photo: FileInfo
 
-        /// Photo caption (may also be used when resending photos by file_id), 0-200 characters
+        /// Photo caption (may also be used when resending photos by file_id), 0-1024 characters
         var caption: String?
 
         /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.

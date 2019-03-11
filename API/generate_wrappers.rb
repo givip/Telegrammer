@@ -278,7 +278,7 @@ def generate_model_file(f, node)
 
 		current_node.search('tr').each { |node|
 			td = node.search('td')
-			next unless td[0].text != 'Field' && td[0].text != 'Parameters'
+			next unless !(td[0].nil? || td[0] == 0) && (td[0].text != 'Field' && td[0].text != 'Parameters')
 
 			var_name = td[0].text
 			var_type = td[1].text
@@ -371,7 +371,7 @@ def generate_method(f, node)
 		
 		current_node.search('tr').each { |node|
 			td = node.search('td')
-			next unless td[0].text != 'Parameters'
+			next unless !(td[0].nil? || td[0] == 0) && (td[0].text != 'Parameters')
 
 			var_name = td[0].text
 			var_type = td[1].text

@@ -19,6 +19,8 @@ public final class EncryptedPassportElement: Codable {
         case frontSide = "front_side"
         case reverseSide = "reverse_side"
         case selfie = "selfie"
+        case translation = "translation"
+        case hash = "hash"
     }
 
     /// Element type. One of “personal_details”, “passport”, “driver_license”, “identity_card”, “internal_passport”, “address”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration”, “temporary_registration”, “phone_number”, “email”.
@@ -45,8 +47,14 @@ public final class EncryptedPassportElement: Codable {
     /// Optional. Encrypted file with the selfie of the user holding a document, provided by the user; available for “passport”, “driver_license”, “identity_card” and “internal_passport”. The file can be decrypted and verified using the accompanying EncryptedCredentials.
     public var selfie: PassportFile?
 
+    /// Optional. Array of encrypted files with translated versions of documents provided by the user. Available if requested for “passport”, “driver_license”, “identity_card”, “internal_passport”, “utility_bill”, “bank_statement”, “rental_agreement”, “passport_registration” and “temporary_registration” types. Files can be decrypted and verified using the accompanying EncryptedCredentials.
+    public var translation: [PassportFile]?
 
-    public init (type: String, data: String? = nil, phoneNumber: String? = nil, email: String? = nil, files: [PassportFile]? = nil, frontSide: PassportFile? = nil, reverseSide: PassportFile? = nil, selfie: PassportFile? = nil) {
+    /// Base64-encoded element hash for using in PassportElementErrorUnspecified
+    public var hash: String
+
+
+    public init (type: String, data: String? = nil, phoneNumber: String? = nil, email: String? = nil, files: [PassportFile]? = nil, frontSide: PassportFile? = nil, reverseSide: PassportFile? = nil, selfie: PassportFile? = nil, translation: [PassportFile]? = nil, hash: String) {
         self.type = type
         self.data = data
         self.phoneNumber = phoneNumber
@@ -55,5 +63,7 @@ public final class EncryptedPassportElement: Codable {
         self.frontSide = frontSide
         self.reverseSide = reverseSide
         self.selfie = selfie
+        self.translation = translation
+        self.hash = hash
     }
 }
