@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `deleteStickerFromSet` method
-    public struct DeleteStickerFromSetParams: JSONEncodable {
+    struct DeleteStickerFromSetParams: JSONEncodable {
 
         /// File identifier of the sticker
         var sticker: String
@@ -34,7 +34,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func deleteStickerFromSet(params: DeleteStickerFromSetParams) throws -> Future<Bool> {
+    func deleteStickerFromSet(params: DeleteStickerFromSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

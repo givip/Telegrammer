@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `setChatStickerSet` method
-    public struct SetChatStickerSetParams: JSONEncodable {
+    struct SetChatStickerSetParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target supergroup (in the format @supergroupusername)
         var chatId: ChatId
@@ -39,7 +39,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func setChatStickerSet(params: SetChatStickerSetParams) throws -> Future<Bool> {
+    func setChatStickerSet(params: SetChatStickerSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `answerPreCheckoutQuery` method
-    public struct AnswerPreCheckoutQueryParams: JSONEncodable {
+    struct AnswerPreCheckoutQueryParams: JSONEncodable {
 
         /// Unique identifier for the query to be answered
         var preCheckoutQueryId: String
@@ -44,7 +44,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams) throws -> Future<Bool> {
+    func answerPreCheckoutQuery(params: AnswerPreCheckoutQueryParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

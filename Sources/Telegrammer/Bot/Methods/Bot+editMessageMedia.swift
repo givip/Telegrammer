@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `editMessageMedia` method
-    public struct EditMessageMediaParams: JSONEncodable {
+    struct EditMessageMediaParams: JSONEncodable {
 
         /// Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId?
@@ -43,7 +43,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to edit audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+     Use this method to edit animation, audio, document, photo, or video messages. If a message is a part of a message album, then it can be edited only to a photo or a video. Otherwise, message type can be changed arbitrarily. When inline message is edited, new file can't be uploaded. Use previously uploaded file via its file_id or specify a URL. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
 
      SeeAlso Telegram Bot API Reference:
      [EditMessageMediaParams](https://core.telegram.org/bots/api#editmessagemedia)
@@ -54,7 +54,7 @@ public extension Bot {
      - Returns: Future of `MessageOrBool` type
      */
     @discardableResult
-    public func editMessageMedia(params: EditMessageMediaParams) throws -> Future<MessageOrBool> {
+    func editMessageMedia(params: EditMessageMediaParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<MessageOrBool>>

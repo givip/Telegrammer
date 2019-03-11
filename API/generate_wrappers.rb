@@ -278,7 +278,7 @@ def generate_model_file(f, node)
 
 		current_node.search('tr').each { |node|
 			td = node.search('td')
-			next unless td[0].text != 'Field' && td[0].text != 'Parameters'
+			next unless !(td[0].nil? || td[0] == 0) && (td[0].text != 'Field' && td[0].text != 'Parameters')
 
 			var_name = td[0].text
 			var_type = td[1].text
@@ -310,7 +310,13 @@ def generate_model_file(f, node)
         out.write " SeeAlso Telegram Bot API Reference:\n"
         out.write " [#{type_name}](https://core.telegram.org/bots/api\##{type_name.downcase})\n"
         out.write " */\n"
+
         var_protocol = "Codable"
+
+        if type_name == "MaskPosition" then
+            var_protocol += ", MultipartPartNestedConvertible"
+        end
+
         if type_name.start_with?('InputMedia') then
             var_protocol = "Encodable"
         end
@@ -371,7 +377,7 @@ def generate_method(f, node)
 		
 		current_node.search('tr').each { |node|
 			td = node.search('td')
-			next unless td[0].text != 'Parameters'
+			next unless !(td[0].nil? || td[0] == 0) && (td[0].text != 'Parameters')
 
 			var_name = td[0].text
 			var_type = td[1].text
@@ -440,7 +446,7 @@ def generate_method(f, node)
 		params_block = "(params: #{method_name_capitalized}? = nil)"
         out.write method_description
         out.write "#{ONE}@discardableResult\n"
-		out.write "#{ONE}public func #{method_name}() throws -> Future<#{result_type}> {\n"
+		out.write "#{ONE}func #{method_name}() throws -> Future<#{result_type}> {\n"
 	else
 	
 		encodable_type = "JSONEncodable"
@@ -449,7 +455,7 @@ def generate_method(f, node)
 			encodable_type = "MultipartEncodable"
 		end
         out.write "#{ONE}/// Parameters container struct for `#{method_name}` method\n"
-		out.write "#{ONE}public struct #{method_name_capitalized}: #{encodable_type} {\n\n"
+		out.write "#{ONE}struct #{method_name_capitalized}: #{encodable_type} {\n\n"
 		out.write "#{all_params}"
         out.write "#{TWO}/// Custom keys for coding/decoding `#{method_name_capitalized}` struct\n"
 		out.write "#{TWO}enum CodingKeys: String, CodingKey {\n"
@@ -469,7 +475,7 @@ def generate_method(f, node)
         
         out.write method_description
         out.write "#{ONE}@discardableResult\n"
-		out.write "#{ONE}public func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
+		out.write "#{ONE}func #{method_name}#{params_block} throws -> Future<#{result_type}> {\n"
 
 		out.write "#{TWO}let body = try httpBody(for: params)\n"
 		out.write "#{TWO}let headers = httpHeaders(for: params)\n"

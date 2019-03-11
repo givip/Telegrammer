@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `setGameScore` method
-    public struct SetGameScoreParams: JSONEncodable {
+    struct SetGameScoreParams: JSONEncodable {
 
         /// User identifier
         var userId: Int64
@@ -64,7 +64,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func setGameScore(params: SetGameScoreParams) throws -> Future<Bool> {
+    func setGameScore(params: SetGameScoreParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

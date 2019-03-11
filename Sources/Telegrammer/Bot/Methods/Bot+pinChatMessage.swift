@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `pinChatMessage` method
-    public struct PinChatMessageParams: JSONEncodable {
+    struct PinChatMessageParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -44,7 +44,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func pinChatMessage(params: PinChatMessageParams) throws -> Future<Bool> {
+    func pinChatMessage(params: PinChatMessageParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

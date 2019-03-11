@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendMediaGroup` method
-    public struct SendMediaGroupParams: JSONEncodable {
+    struct SendMediaGroupParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -49,7 +49,7 @@ public extension Bot {
      - Returns: Future of `[Message]` type
      */
     @discardableResult
-    public func sendMediaGroup(params: SendMediaGroupParams) throws -> Future<[Message]> {
+    func sendMediaGroup(params: SendMediaGroupParams) throws -> Future<[Message]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<[Message]>>

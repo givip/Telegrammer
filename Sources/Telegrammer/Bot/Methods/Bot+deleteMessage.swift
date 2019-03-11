@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `deleteMessage` method
-    public struct DeleteMessageParams: JSONEncodable {
+    struct DeleteMessageParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -30,7 +30,7 @@ public extension Bot {
     /**
      Use this method to delete a message, including service messages, with the following limitations:
      - A message can only be deleted if it was sent less than 48 hours ago.
-     - Bots can delete outgoing messages in groups and supergroups.
+     - Bots can delete outgoing messages in private chats, groups, and supergroups.
      - Bots granted can_post_messages permissions can delete outgoing messages in channels.
      - If the bot is an administrator of a group, it can delete any message there.
      - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
@@ -45,7 +45,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func deleteMessage(params: DeleteMessageParams) throws -> Future<Bool> {
+    func deleteMessage(params: DeleteMessageParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

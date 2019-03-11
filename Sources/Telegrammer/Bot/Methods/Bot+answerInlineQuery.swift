@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `answerInlineQuery` method
-    public struct AnswerInlineQueryParams: JSONEncodable {
+    struct AnswerInlineQueryParams: JSONEncodable {
 
         /// Unique identifier for the answered query
         var inlineQueryId: String
@@ -67,7 +67,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func answerInlineQuery(params: AnswerInlineQueryParams) throws -> Future<Bool> {
+    func answerInlineQuery(params: AnswerInlineQueryParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

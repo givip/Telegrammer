@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `answerShippingQuery` method
-    public struct AnswerShippingQueryParams: JSONEncodable {
+    struct AnswerShippingQueryParams: JSONEncodable {
 
         /// Unique identifier for the query to be answered
         var shippingQueryId: String
@@ -49,7 +49,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func answerShippingQuery(params: AnswerShippingQueryParams) throws -> Future<Bool> {
+    func answerShippingQuery(params: AnswerShippingQueryParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

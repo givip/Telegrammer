@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `setWebhook` method
-    public struct SetWebhookParams: MultipartEncodable {
+    struct SetWebhookParams: MultipartEncodable {
 
         /// HTTPS url to send updates to. Use an empty string to remove webhook integration
         var url: String
@@ -52,7 +52,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func setWebhook(params: SetWebhookParams) throws -> Future<Bool> {
+    func setWebhook(params: SetWebhookParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

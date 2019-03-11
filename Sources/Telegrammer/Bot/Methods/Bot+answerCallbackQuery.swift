@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `answerCallbackQuery` method
-    public struct AnswerCallbackQueryParams: JSONEncodable {
+    struct AnswerCallbackQueryParams: JSONEncodable {
 
         /// Unique identifier for the query to be answered
         var callbackQueryId: String
@@ -57,7 +57,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func answerCallbackQuery(params: AnswerCallbackQueryParams) throws -> Future<Bool> {
+    func answerCallbackQuery(params: AnswerCallbackQueryParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

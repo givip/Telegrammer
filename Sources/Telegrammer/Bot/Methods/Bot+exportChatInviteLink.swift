@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `exportChatInviteLink` method
-    public struct ExportChatInviteLinkParams: JSONEncodable {
+    struct ExportChatInviteLinkParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -34,7 +34,7 @@ public extension Bot {
      - Returns: Future of `String` type
      */
     @discardableResult
-    public func exportChatInviteLink(params: ExportChatInviteLinkParams) throws -> Future<String> {
+    func exportChatInviteLink(params: ExportChatInviteLinkParams) throws -> Future<String> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<String>>

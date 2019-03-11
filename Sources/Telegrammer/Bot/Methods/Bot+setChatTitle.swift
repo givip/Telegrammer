@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `setChatTitle` method
-    public struct SetChatTitleParams: JSONEncodable {
+    struct SetChatTitleParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -40,7 +40,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func setChatTitle(params: SetChatTitleParams) throws -> Future<Bool> {
+    func setChatTitle(params: SetChatTitleParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

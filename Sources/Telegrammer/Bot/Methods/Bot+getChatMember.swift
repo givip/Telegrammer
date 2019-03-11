@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `getChatMember` method
-    public struct GetChatMemberParams: JSONEncodable {
+    struct GetChatMemberParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target supergroup or channel (in the format @channelusername)
         var chatId: ChatId
@@ -39,7 +39,7 @@ public extension Bot {
      - Returns: Future of `ChatMember` type
      */
     @discardableResult
-    public func getChatMember(params: GetChatMemberParams) throws -> Future<ChatMember> {
+    func getChatMember(params: GetChatMemberParams) throws -> Future<ChatMember> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<ChatMember>>

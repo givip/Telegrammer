@@ -132,7 +132,7 @@ public final class Message: Codable {
     /// Optional. Message is a video note, information about the video message
     public var videoNote: VideoNote?
 
-    /// Optional. Caption for the audio, document, photo, video or voice, 0-200 characters
+    /// Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     public var caption: String?
 
     /// Optional. Message is a shared contact, information about the contact

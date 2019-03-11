@@ -49,7 +49,7 @@ public final class InlineQueryResultGif: Codable {
     /// Optional. Title for the result
     public var title: String?
 
-    /// Optional. Caption of the GIF file to be sent, 0-200 characters
+    /// Optional. Caption of the GIF file to be sent, 0-1024 characters
     public var caption: String?
 
     /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.

@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `getStickerSet` method
-    public struct GetStickerSetParams: JSONEncodable {
+    struct GetStickerSetParams: JSONEncodable {
 
         /// Name of the sticker set
         var name: String
@@ -34,7 +34,7 @@ public extension Bot {
      - Returns: Future of `StickerSet` type
      */
     @discardableResult
-    public func getStickerSet(params: GetStickerSetParams) throws -> Future<StickerSet> {
+    func getStickerSet(params: GetStickerSetParams) throws -> Future<StickerSet> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<StickerSet>>

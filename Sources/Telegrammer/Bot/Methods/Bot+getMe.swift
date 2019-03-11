@@ -18,7 +18,7 @@ public extension Bot {
      - Returns: Future of `User` type
      */
     @discardableResult
-    public func getMe() throws -> Future<User> {
+    func getMe() throws -> Future<User> {
         let response: Future<TelegramContainer<User>>
         response = try client.respond(endpoint: "getMe", body: HTTPBody(), headers: HTTPHeaders())
         return response.flatMap(to: User.self) { try self.wrap($0) }

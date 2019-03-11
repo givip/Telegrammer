@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `uploadStickerFile` method
-    public struct UploadStickerFileParams: MultipartEncodable {
+    struct UploadStickerFileParams: MultipartEncodable {
 
         /// User identifier of sticker file owner
         var userId: Int64
@@ -39,7 +39,7 @@ public extension Bot {
      - Returns: Future of `File` type
      */
     @discardableResult
-    public func uploadStickerFile(params: UploadStickerFileParams) throws -> Future<File> {
+    func uploadStickerFile(params: UploadStickerFileParams) throws -> Future<File> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<File>>
