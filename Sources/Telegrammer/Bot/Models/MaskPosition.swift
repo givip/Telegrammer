@@ -7,7 +7,7 @@
  SeeAlso Telegram Bot API Reference:
  [MaskPosition](https://core.telegram.org/bots/api#maskposition)
  */
-public final class MaskPosition: Codable {
+public final class MaskPosition: Codable, MultipartPartNestedConvertible {
 
     /// Custom keys for coding/decoding `MaskPosition` struct
     enum CodingKeys: String, CodingKey {
