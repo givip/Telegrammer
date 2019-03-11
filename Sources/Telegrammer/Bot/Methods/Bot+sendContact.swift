@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendContact` method
-    public struct SendContactParams: JSONEncodable {
+    struct SendContactParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -69,7 +69,7 @@ public extension Bot {
      - Returns: Future of `Message` type
      */
     @discardableResult
-    public func sendContact(params: SendContactParams) throws -> Future<Message> {
+    func sendContact(params: SendContactParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Message>>

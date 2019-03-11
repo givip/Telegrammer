@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `unbanChatMember` method
-    public struct UnbanChatMemberParams: JSONEncodable {
+    struct UnbanChatMemberParams: JSONEncodable {
 
         /// Unique identifier for the target group or username of the target supergroup or channel (in the format @username)
         var chatId: ChatId
@@ -39,7 +39,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func unbanChatMember(params: UnbanChatMemberParams) throws -> Future<Bool> {
+    func unbanChatMember(params: UnbanChatMemberParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

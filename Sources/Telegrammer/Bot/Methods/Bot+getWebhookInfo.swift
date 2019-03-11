@@ -18,7 +18,7 @@ public extension Bot {
      - Returns: Future of `WebhookInfo` type
      */
     @discardableResult
-    public func getWebhookInfo() throws -> Future<WebhookInfo> {
+    func getWebhookInfo() throws -> Future<WebhookInfo> {
         let response: Future<TelegramContainer<WebhookInfo>>
         response = try client.respond(endpoint: "getWebhookInfo", body: HTTPBody(), headers: HTTPHeaders())
         return response.flatMap(to: WebhookInfo.self) { try self.wrap($0) }

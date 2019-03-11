@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendSticker` method
-    public struct SendStickerParams: MultipartEncodable {
+    struct SendStickerParams: MultipartEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -54,7 +54,7 @@ public extension Bot {
      - Returns: Future of `Message` type
      */
     @discardableResult
-    public func sendSticker(params: SendStickerParams) throws -> Future<Message> {
+    func sendSticker(params: SendStickerParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Message>>

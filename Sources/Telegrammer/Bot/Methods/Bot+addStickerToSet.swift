@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `addStickerToSet` method
-    public struct AddStickerToSetParams: MultipartEncodable {
+    struct AddStickerToSetParams: MultipartEncodable {
 
         /// User identifier of sticker set owner
         var userId: Int64
@@ -54,7 +54,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func addStickerToSet(params: AddStickerToSetParams) throws -> Future<Bool> {
+    func addStickerToSet(params: AddStickerToSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendGame` method
-    public struct SendGameParams: JSONEncodable {
+    struct SendGameParams: JSONEncodable {
 
         /// Unique identifier for the target chat
         var chatId: Int64
@@ -54,7 +54,7 @@ public extension Bot {
      - Returns: Future of `Message` type
      */
     @discardableResult
-    public func sendGame(params: SendGameParams) throws -> Future<Message> {
+    func sendGame(params: SendGameParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Message>>

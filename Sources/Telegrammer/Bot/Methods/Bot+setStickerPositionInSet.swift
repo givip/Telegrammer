@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `setStickerPositionInSet` method
-    public struct SetStickerPositionInSetParams: JSONEncodable {
+    struct SetStickerPositionInSetParams: JSONEncodable {
 
         /// File identifier of the sticker
         var sticker: String
@@ -39,7 +39,7 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    public func setStickerPositionInSet(params: SetStickerPositionInSetParams) throws -> Future<Bool> {
+    func setStickerPositionInSet(params: SetStickerPositionInSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Bool>>

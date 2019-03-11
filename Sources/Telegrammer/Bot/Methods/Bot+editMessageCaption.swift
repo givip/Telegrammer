@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `editMessageCaption` method
-    public struct EditMessageCaptionParams: JSONEncodable {
+    struct EditMessageCaptionParams: JSONEncodable {
 
         /// Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId?
@@ -59,7 +59,7 @@ public extension Bot {
      - Returns: Future of `MessageOrBool` type
      */
     @discardableResult
-    public func editMessageCaption(params: EditMessageCaptionParams? = nil) throws -> Future<MessageOrBool> {
+    func editMessageCaption(params: EditMessageCaptionParams? = nil) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<MessageOrBool>>

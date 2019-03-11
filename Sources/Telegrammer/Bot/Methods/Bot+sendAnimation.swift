@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendAnimation` method
-    public struct SendAnimationParams: MultipartEncodable {
+    struct SendAnimationParams: MultipartEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
@@ -84,7 +84,7 @@ public extension Bot {
      - Returns: Future of `Message` type
      */
     @discardableResult
-    public func sendAnimation(params: SendAnimationParams) throws -> Future<Message> {
+    func sendAnimation(params: SendAnimationParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Message>>

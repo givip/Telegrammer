@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `getUserProfilePhotos` method
-    public struct GetUserProfilePhotosParams: JSONEncodable {
+    struct GetUserProfilePhotosParams: JSONEncodable {
 
         /// Unique identifier of the target user
         var userId: Int64
@@ -44,7 +44,7 @@ public extension Bot {
      - Returns: Future of `UserProfilePhotos` type
      */
     @discardableResult
-    public func getUserProfilePhotos(params: GetUserProfilePhotosParams) throws -> Future<UserProfilePhotos> {
+    func getUserProfilePhotos(params: GetUserProfilePhotosParams) throws -> Future<UserProfilePhotos> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<UserProfilePhotos>>

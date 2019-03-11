@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `getFile` method
-    public struct GetFileParams: JSONEncodable {
+    struct GetFileParams: JSONEncodable {
 
         /// File identifier to get info about
         var fileId: String
@@ -34,7 +34,7 @@ public extension Bot {
      - Returns: Future of `File` type
      */
     @discardableResult
-    public func getFile(params: GetFileParams) throws -> Future<File> {
+    func getFile(params: GetFileParams) throws -> Future<File> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<File>>

@@ -7,7 +7,7 @@ import HTTP
 public extension Bot {
 
     /// Parameters container struct for `sendInvoice` method
-    public struct SendInvoiceParams: JSONEncodable {
+    struct SendInvoiceParams: JSONEncodable {
 
         /// Unique identifier for the target private chat
         var chatId: Int64
@@ -144,7 +144,7 @@ public extension Bot {
      - Returns: Future of `Message` type
      */
     @discardableResult
-    public func sendInvoice(params: SendInvoiceParams) throws -> Future<Message> {
+    func sendInvoice(params: SendInvoiceParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         let response: Future<TelegramContainer<Message>>
