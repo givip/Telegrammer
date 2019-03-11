@@ -10,7 +10,7 @@
  SeeAlso Telegram Bot API Reference:
  [Reply Markups](https://core.telegram.org/bots/2-0-intro#new-inline-keyboards)
  */
-public enum ReplyMarkup: Codable {
+public enum ReplyMarkup: Codable, MultipartPartNestedConvertible {
 	case inlineKeyboardMarkup(InlineKeyboardMarkup)
 	case replyKeyboardMarkup(ReplyKeyboardMarkup)
 	case replyKeyboardRemove(ReplyKeyboardRemove)
