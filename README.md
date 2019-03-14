@@ -1,7 +1,7 @@
 <p align="center"><img src="https://gp-apps.com/github/telegrammer_logo.png" alt="SwiftyBot Banner"></p>
 
 # Telegrammer
-Telegram Bot Framework written in Swift 4.1 with SwiftNIO network framework
+Telegram Bot Framework written in Swift 5.0 with SwiftNIO network framework
 
 [![Build](https://circleci.com/gh/givip/Telegrammer/tree/master.svg?style=shield&circle-token=04a84114573c1c6b3039ef82b88e54f1f6b8c512)](https://circleci.com/gh/givip/Telegrammer)
 [![Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](https://github.com/givip/Telegrammer/releases)
@@ -48,7 +48,7 @@ let bot = try! Bot(token: "BOT_TOKEN_HERE")
 
 let commandHandler = CommandHandler(commands: ["/hello"], callback: { (update, _) in
     guard let message = update.message, let user = message.from else { return }
-    try! message.reply("Hello \(user.firstName)", from: bot)
+    try! message.reply(text: "Hello \(user.firstName)", from: bot)
 })
 
 let dispatcher = Dispatcher(bot: bot)
@@ -84,7 +84,7 @@ $ swift package init --type executable
 let package = Package(
     name: "MyBot",
     dependencies: [
-        .package(url: "https://github.com/givip/Telegrammer.git", from: "0.4.0")
+        .package(url: "https://github.com/givip/Telegrammer.git", from: "0.5.0")
         ],
     targets: [
         .target( name: "MyBot", dependencies: ["Telegrammer"])
@@ -143,7 +143,7 @@ $ swift run
 Requirements
 ---------------
 
-- Ubuntu 14.04 or later with [Swift 4.1 or later](https://swift.org/getting-started/) / macOS with [Xcode 9.3 or later](https://swift.org/download/)
+- Ubuntu 14.04 or later with [Swift 4.2 or later](https://swift.org/getting-started/) / macOS with [Xcode 9.3 or later](https://swift.org/download/)
 - Telegram account and a Telegram App for any platform
 - [Swift Package Manager (SPM)](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md) for dependencies 
 - [Vapor 3](https://vapor.codes) (optionally, for bots with database and other server side stuff)
@@ -159,3 +159,4 @@ Author
 Givi Pataridze
 
 [pataridzegivi@gmail.com](mailto:pataridzegivi@gmail.com)
+[@givip](tg://user?id=53581534)
