@@ -9,7 +9,7 @@ jobs:
     # Specify the Xcode version to use
     linux:
     docker:
-      - image: codevapor/swift:4.1
+      - image: codevapor/swift:5.0
     steps:
       - checkout
       - run: 

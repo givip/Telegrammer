@@ -1,7 +1,8 @@
 import XCTest
 
-import telegrammer_nioTests
+import TelegrammerTests
 
 var tests = [XCTestCaseEntry]()
-tests += telegrammer_nioTests.allTests()
+tests += TelegrammerTests.__allTests()
+
 XCTMain(tests)

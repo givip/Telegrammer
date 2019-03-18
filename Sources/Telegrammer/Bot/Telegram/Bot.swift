@@ -2,7 +2,7 @@
 //  Bot.swift
 //  Telegrammer
 //
-//  Created by Givi Pataridze on 25.02.2018.
+//  Created by Givi on 15/03/2019.
 //
 
 import Foundation
@@ -10,8 +10,8 @@ import HTTP
 import HeliumLogger
 import LoggerAPI
 
-public final class Bot {
-    
+public final class Bot: BotProtocol {
+
     /// Bot parameters container for initial setup, also contains Webhoos seetings
     public struct Settings {
         public let token: String
@@ -22,29 +22,29 @@ public final class Bot {
         public var webhooksUrl: String? = nil
         public var webhooksPort: Int? = nil
         public var webhooksPublicCert: String? = nil
-        
+
         public init(token: String, debugMode: Bool = true) {
             self.token = token
             self.debugMode = debugMode
         }
     }
-    
+
     /// HTTP client for bot
     public let client: BotClient
-    
+
     /// Bot parameters container
     public let settings: Settings
-    
+
     let requestWorker: Worker
     let boundary: String
-    
+
     public convenience init(token: String) throws {
         try self.init(settings: Bot.Settings(token: token))
     }
-    
+
     public init(settings: Settings, numThreads: Int = System.coreCount) throws {
         Log.logger = settings.debugMode ? HeliumLogger(.verbose) : HeliumLogger(.error)
-        
+
         self.settings = settings
         self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
         self.client = try BotClient(host: settings.serverHost,
@@ -53,11 +53,11 @@ public final class Bot {
                                     worker: self.requestWorker)
         self.boundary = String.random(ofLength: 20)
     }
-    
+
     func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
-        
+
         Log.verbose(logMessage(container))
-        
+
         if let result = container.result {
             return Future.map(on: self.requestWorker, { result })
         } else {
@@ -66,39 +66,39 @@ public final class Bot {
             throw error
         }
     }
-    
+
     func httpBody(for object: Encodable?) throws -> HTTPBody {
         guard let object = object else { return HTTPBody() }
-        
+
         if let object = object as? JSONEncodable {
             return HTTPBody(data: try object.encodeBody())
         }
-        
+
         if let object = object as? MultipartEncodable {
             let boundaryBytes = boundary.utf8.map { $0 }
             return HTTPBody(data: try object.encodeBody(boundary: boundaryBytes))
         }
-        
+
         return HTTPBody()
     }
-    
+
     func httpHeaders(for object: Encodable?) -> HTTPHeaders {
         guard let object = object else { return HTTPHeaders() }
-        
+
         if object is JSONEncodable {
             return HTTPHeaders.contentJson
         }
-        
+
         if object is MultipartEncodable {
             return HTTPHeaders.typeFormData(boundary: boundary)
         }
-        
+
         return HTTPHeaders()
     }
-    
+
     func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> String {
         var resultString = "[]"
-        
+
         if let result = container.result {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
@@ -115,18 +115,18 @@ public final class Bot {
                 }
             }
         }
-        
+
         return """
-        
+
         Received response
         Code: \(container.errorCode ?? 0)
         Status OK: \(container.ok)
         Description: \(container.description ?? "Empty")
         Result: \(resultString)
-        
+
         """
     }
-    
+
     func logError<T: Codable>(_ container: TelegramContainer<T>) -> Error {
         return CoreError(identifier: "DecodingErrors",
                          reason: container.description ?? "Response error")
