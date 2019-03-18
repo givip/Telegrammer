@@ -1,5 +1,6 @@
 
 import Foundation
+import NIO
 import Telegrammer
 
 ///Getting token from enviroment variable (most safe, recommended)
@@ -20,15 +21,40 @@ let jobQueue = BasicJobQueue<Chat>(bot: bot)
 /// Dictionary for user echo modes
 var userJobs: [Int64: String] = [:]
 
-///Callback for Command handler, which send Echo mode status for user
-func timerEchoStart(_ update: Update, _ context: BotContext?) throws {
+func onceTimerStart(_ update: Update, _ context: BotContext?) throws {
+    guard let message = update.message else { return }
+
+    var interval: TimeInterval = 5.0
+
+    if let value = message.text?.split(separator: " ").last, let amount = Double(value) {
+        interval = amount
+    }
+
+    let oneTimerJob = OnceJob(when: Date().addingTimeInterval(interval), context: message.chat) { chat in
+        guard let chat = chat else { return }
+        let params = Bot.SendMessageParams(chatId: .chat(chat.id), text: "Once, after \(interval) seconds: \(Date())")
+        try bot.sendMessage(params: params)
+    }
+
+    _ = try jobQueue.scheduleOnce(oneTimerJob)
+}
+
+func repeatedTimerStart(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
 
+    var interval = TimeAmount.seconds(5)
+
+    if let value = message.text?.split(separator: " ").last, let amount = Int(value) {
+        interval = TimeAmount.seconds(amount)
+    }
+
+    let secondsInterval = interval.nanoseconds / 1_000_000_000
+
     if userJobs[user.id] == nil {
-        let timerJob = RepeatableJob(when: Date(), interval: .seconds(5), context: message.chat) { chat in
+        let timerJob = RepeatableJob(when: Date(), interval: interval, context: message.chat) { chat in
             guard let chat = chat else { return }
-            let params = Bot.SendMessageParams(chatId: .chat(chat.id), text: "\(Date())")
+            let params = Bot.SendMessageParams(chatId: .chat(chat.id), text: "Repeating each \(secondsInterval) seconds: \(Date())")
             try bot.sendMessage(params: params)
         }
 
@@ -38,8 +64,7 @@ func timerEchoStart(_ update: Update, _ context: BotContext?) throws {
     }
 }
 
-///Callback for Command handler, which send Echo mode status for user
-func timerEchoStop(_ update: Update, _ context: BotContext?) throws {
+func repeatedTimerStop(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
 
@@ -56,12 +81,14 @@ do {
     ///Dispatcher - handle all incoming messages
     let dispatcher = Dispatcher(bot: bot)
 
-    ///Creating and adding handler for command /echo
-    let startHandler = CommandHandler(commands: ["/start"], callback: timerEchoStart)
-    dispatcher.add(handler: startHandler)
+    let onceTimerStartHandler = CommandHandler(commands: ["/once"], callback: onceTimerStart)
+    dispatcher.add(handler: onceTimerStartHandler)
 
-    let stopHandler = CommandHandler(commands: ["/stop"], callback: timerEchoStop)
-    dispatcher.add(handler: stopHandler)
+    let repeatedTimerStartHandler = CommandHandler(commands: ["/start"], callback: repeatedTimerStart)
+    dispatcher.add(handler: repeatedTimerStartHandler)
+
+    let repeatedTimerStopHandler = CommandHandler(commands: ["/stop"], callback: repeatedTimerStop)
+    dispatcher.add(handler: repeatedTimerStopHandler)
 
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
