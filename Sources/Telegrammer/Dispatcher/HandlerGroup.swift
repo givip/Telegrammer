@@ -16,21 +16,21 @@ import Foundation
  Also we offer predefined group called `zero`, which has highest priority and used in `Dispatcher` by default.
  */
 public class HandlerGroup: Hashable {
-	public static func == (lhs: HandlerGroup, rhs: HandlerGroup) -> Bool {
-		return lhs.id == rhs.id
-	}
-	
-	public var hashValue: Int {
-		return Int(id)
-	}
-	
-	public let id: UInt
-	public let name: String
-	
-	public init(id: UInt, name: String) {
-		self.id = id
-		self.name = name
-	}
-	
-	public static var zero = HandlerGroup(id: 0, name: "zero")
+    public static func == (lhs: HandlerGroup, rhs: HandlerGroup) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(Int(id))
+    }
+
+    public let id: UInt
+    public let name: String
+
+    public init(id: UInt, name: String) {
+        self.id = id
+        self.name = name
+    }
+
+    public static var zero = HandlerGroup(id: 0, name: "zero")
 }
