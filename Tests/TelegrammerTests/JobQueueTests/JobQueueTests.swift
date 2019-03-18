@@ -26,7 +26,7 @@ class JobQueueTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "JobQueue.runOnce has finished")
 
-        try! JobQueue.runOnce(on: bot, interval: .seconds(Int(delay))) {
+        try! BasicJobQueue.runOnce(on: bot, interval: .seconds(Int(delay))) {
             finishDate = Date()
             count += 1
             expectation.fulfill()
@@ -49,70 +49,56 @@ class JobQueueTests: XCTestCase {
             XCTAssert(false, "Job shouldn't be executed")
         }
 
-        XCTAssertThrowsError(try JobQueue.runOnce(on: bot, interval: .seconds(Int(0)), jobBlock), "Exception wasn't received") { error in
+        XCTAssertThrowsError(try BasicJobQueue.runOnce(on: bot, interval: .seconds(Int(0)), jobBlock), "Exception wasn't received") { error in
             debugPrint("Error \(error.localizedDescription) was successfully thrown")
         }
 
-        XCTAssertThrowsError(try JobQueue.runOnce(on: bot, interval: .seconds(Int(-1)), jobBlock), "Exception wasn't received") { error in
+        XCTAssertThrowsError(try BasicJobQueue.runOnce(on: bot, interval: .seconds(Int(-1)), jobBlock), "Exception wasn't received") { error in
             debugPrint("Error \(error.localizedDescription) was successfully thrown")
         }
     }
 
     func testJobQueue_scheduleRepeated_correctDelayValue() {
         let bot = MockBot()
-        let queue = JobQueue(bot: bot)
+        let queue = BasicJobQueue(bot: bot)
 
-        let repeats = 5.0
+        let repeats: Int = 5
 
         let startDate: TimeInterval = Date().timeIntervalSince1970
-        let delay: TimeInterval = 1.0
-        let desiredFinishDate: TimeInterval = startDate + repeats * delay
+        let delay: TimeInterval = 0.1
+        let desiredFinishDate: TimeInterval = startDate + Double(repeats) * delay
 
         var finishDate: Date? = nil
         var count = 0
 
-        let job = 
+        var expectations: [XCTestExpectation] = []
 
-        let expectation = XCTestExpectation(description: "JobQueue.scheduleRepeated has finished")
-        let expectations = Array(repeating: expectation, count: Int(repeats))
-
-        queue.scheduleRepeated(<#T##job: Job##Job#>)
-
-        try! JobQueue.runOnce(on: bot, interval: .seconds(Int(delay))) {
-            finishDate = Date()
-            count += 1
-            expectation.fulfill()
+        for i in 0..<repeats {
+            expectations.append(XCTestExpectation(description: "Job run #\(i)"))
         }
 
-        wait(for: expectations, timeout: delay + 0.5)
+        let job = RepeatableJob(when: Date(), interval: .milliseconds(Int(delay * 1000))) {
+            let currentDate = Date()
+            finishDate = currentDate
 
-        XCTAssertNotNil(finishDate, "FinishDate must be fulfilled")
+            let isValid = currentDate.isCloseTo(Date(timeIntervalSince1970: startDate + Double(count) * delay), accuracy: 0.01)
+            XCTAssert(isValid, "Timer was fired in incorrect time")
 
-        let difference = abs(finishDate!.timeIntervalSince1970 - desiredFinishDate)
+            expectations[count].fulfill()
+            count += 1
+        }
 
-        XCTAssert(difference < 0.01, "runOnce fired too early/lately")
-        XCTAssert(count == 1, "JobQueue has executed Job more then once")
-    }
+        _ = queue.scheduleRepeated(job)
 
-    func testJobQueue_scheduleRepeated_incorrectDelayValue() {
-//        let bot = MockBot()
-//
-//        let jobBlock = {
-//            XCTAssert(false, "Job shouldn't be executed")
-//        }
-//
-//        XCTAssertThrowsError(try JobQueue.runOnce(on: bot, interval: .seconds(Int(0)), jobBlock), "Exception wasn't received") { error in
-//            debugPrint("Error \(error.localizedDescription) was successfully thrown")
-//        }
-//
-//        XCTAssertThrowsError(try JobQueue.runOnce(on: bot, interval: .seconds(Int(-1)), jobBlock), "Exception wasn't received") { error in
-//            debugPrint("Error \(error.localizedDescription) was successfully thrown")
-//        }
+        wait(for: expectations, timeout: desiredFinishDate + 0.5)
+
+        XCTAssert(count == 5, "Timer wasn't fired desired amount of times")
+        XCTAssertNotNil(finishDate, "finishDate must be fulfilled")
     }
 
     func testJobQueue_queueShutdownsGracefully() {
         let bot = MockBot()
-        let queue = JobQueue(bot: bot)
+        let queue = BasicJobQueue(bot: bot)
 
         var performed = false
 
@@ -124,9 +110,9 @@ class JobQueueTests: XCTestCase {
                 XCTAssertTrue(performed, "At this point job shouldn't be performed")
         }
 
-        queue.stop()
+        queue.shutdownQueue()
 
-        wait(for: [], timeout: 0.5)
+        wait(for: [], timeout: 1)
 
         let expectation = XCTestExpectation(description: "EventLoop is gracefully shutdowned")
 

@@ -8,46 +8,46 @@
 import Foundation
 import NIO
 
-class RepeatableJob: Job {
-    var id: String
+public class RepeatableJob<C>: Job {
+    public typealias Context = C
 
-    var callback: () throws -> ()
+    public var id: String
 
-    var name: String?
+    public var callback: (_ context: C?) throws -> ()
 
-    var enabled: Bool = false
+    public var name: String?
 
-    var removed: Bool = false
+    public var enabled: Bool = false
 
-    let repeateable: Bool = true
+    public var scheduledRemoval: Bool = false
 
-    var startTime: Date
+    public var startTime: Date
 
-    var interval: TimeAmount
+    public var interval: TimeAmount
 
-    var days: [Day]
+    public var context: C?
 
-    var context: Any?
-    var jobQueue: JobQueue?
+    public var scheduler: RepeatedTask?
 
-    init(name: String? = nil, when: Date, interval: TimeAmount, days: [Day], context: Any? = nil, _ callback: @escaping () throws -> ()) {
+    public init(name: String? = nil, when: Date, interval: TimeAmount, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> ()) {
         let id = UUID().uuidString
         self.id = id
-        self.name = name ?? "OnceJob_\(id)"
+        self.name = name ?? "RepeatableJob_\(id)"
         self.startTime = when
         self.interval = interval
         self.callback = callback
         self.context = context
-        self.days = days
     }
 
-    func run(bot: BotProtocol) {
-        if days.contains(.todayWeekDay) {
-            try! callback()
+    public func run(_ bot: BotProtocol) throws {
+        if scheduledRemoval {
+            scheduler?.cancel()
+        } else {
+            try callback(context)
         }
     }
 
-    func scheduleRemoval() {
-        
+    public func scheduleRemoval() {
+        scheduledRemoval = true
     }
 }

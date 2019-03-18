@@ -22,4 +22,15 @@ public enum Day: Int {
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         return Day(rawValue: weekDay)
     }
+    
+}
+
+extension Date {
+
+    func stripTime() -> Date {
+        let components = Calendar.current.dateComponents([.year, .month, .day], from: self)
+        let date = Calendar.current.date(from: components)
+        return date!
+    }
+
 }

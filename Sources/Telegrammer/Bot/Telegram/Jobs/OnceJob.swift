@@ -8,29 +8,28 @@
 import Foundation
 import NIO
 
-class OnceJob: Job {
-    var id: String
+public class OnceJob<C>: Job {
+    public typealias Context = C
 
-    var callback: () throws -> ()
+    public var id: String
 
-    var name: String?
+    public var callback: (_ context: C?) throws -> ()
 
-    var enabled: Bool = false
+    public var name: String?
 
-    var removed: Bool = false
+    public var enabled: Bool = false
 
-    let repeateable: Bool = false
+    public var scheduledRemoval: Bool = false
 
-    var startTime: Date
+    public var startTime: Date
 
-    let interval: TimeAmount = .seconds(0)
+    public var interval: TimeAmount = .seconds(0)
 
-    let days: [Day] = []
+    public var context: C?
 
-    var context: Any?
-    var jobQueue: JobQueue?
+    public var scheduler: Scheduled<OnceJob>?
 
-    init(name: String? = nil, when: Date, context: Any? = nil, _ callback: @escaping () throws -> ()) {
+    public init(name: String? = nil, when: Date, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> ()) {
         let id = UUID().uuidString
         self.id = id
         self.name = name ?? "OnceJob_\(id)"
@@ -39,9 +38,15 @@ class OnceJob: Job {
         self.context = context
     }
 
-    func run(bot: BotProtocol) {
-        try! callback()
+    public func run(_ bot: BotProtocol) throws {
+        if scheduledRemoval {
+            scheduler?.cancel()
+        } else {
+            try callback(context)
+        }
     }
 
-    func scheduleRemoval() {}
+    public func scheduleRemoval() {
+        scheduledRemoval = true
+    }
 }

@@ -8,13 +8,14 @@ let package = Package(
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
         .executable(name: "EchoBot", targets: ["EchoBot"]),
-        .executable(name: "HelloBot", targets: ["HelloBot"])
+        .executable(name: "HelloBot", targets: ["HelloBot"]),
+        .executable(name: "SchedulerBot", targets: ["SchedulerBot"])
     ],
     dependencies: [
         .package(url: "https://github.com/vapor/http.git", from: "3.0.0"),
         .package(url: "https://github.com/vapor/crypto.git", from: "3.1.0"),
         .package(url: "https://github.com/vapor/multipart.git", from: "3.0.0"),
-        .package(url: "https://github.com/IBM-Swift/HeliumLogger.git", from: "1.7.0")
+        .package(url: "https://github.com/IBM-Swift/HeliumLogger.git", from: "1.8.0")
     ],
     targets: [
         .target(
@@ -22,6 +23,7 @@ let package = Package(
             dependencies: ["HTTP", "Multipart", "Crypto", "HeliumLogger"]),
         .target(name: "EchoBot", dependencies: ["Telegrammer"]),
         .target(name: "HelloBot", dependencies: ["Telegrammer"]),
+        .target(name: "SchedulerBot", dependencies: ["Telegrammer"]),
         .testTarget(name: "TelegrammerTests", dependencies: ["Telegrammer"])
     ]
 )
