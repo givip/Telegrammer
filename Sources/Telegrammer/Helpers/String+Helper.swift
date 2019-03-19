@@ -74,3 +74,11 @@ public extension String {
         return regexp.numberOfMatches(in: self, options: [], range: range) != 0
     }
 }
+
+import Logging
+
+public extension String {
+    var logMessage: Logger.Message {
+        return Logger.Message(stringLiteral: self)
+    }
+}

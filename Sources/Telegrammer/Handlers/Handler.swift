@@ -17,8 +17,8 @@ public typealias HandlerCallback = (_ update: Update, _ context: BotContext?) th
  Every handler must implement `check` and `handle` methods
  */
 public protocol Handler {
-	var name: String { get }
-	
+    var name: String { get }
+    
     func check(update: Update) -> Bool
     func handle(update: Update, dispatcher: Dispatcher) throws
 }

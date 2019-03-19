@@ -33,7 +33,7 @@ func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
         onText = "ON"
         userEchoModes[user.id] = true
     }
-
+    
     let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
     try bot.sendMessage(params: params)
 }
@@ -59,7 +59,7 @@ do {
     ///Creating and adding handler for ordinary text messages
     let echoHandler = MessageHandler(filters: Filters.text, callback: echoResponse)
     dispatcher.add(handler: echoHandler)
-	
+    
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
     

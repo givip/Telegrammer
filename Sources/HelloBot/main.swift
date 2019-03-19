@@ -57,11 +57,11 @@ do {
     let dispatcher = Dispatcher(bot: bot)
     
     ///Creating and adding New chat member handler
-	let newMemberHandler = NewMemberHandler(callback: greetNewMember)
+    let newMemberHandler = NewMemberHandler(callback: greetNewMember)
     dispatcher.add(handler: newMemberHandler)
     
     ///Creating and adding Command handler for '/greet'
-	let commandHandler = CommandHandler(commands: ["/greet"], callback: greeting)
+    let commandHandler = CommandHandler(commands: ["/greet"], callback: greeting)
     dispatcher.add(handler: commandHandler)
     
     ///Longpolling updates

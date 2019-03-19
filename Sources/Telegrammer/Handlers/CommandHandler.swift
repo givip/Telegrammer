@@ -14,12 +14,12 @@ import HTTP
  and/or some additional text.
  
  - Options of this handler
-    - `editedUpdates` Determines whether the handler should also accept edited messages.
+ - `editedUpdates` Determines whether the handler should also accept edited messages.
  
  */
 public class CommandHandler: Handler {
-	public var name: String
-
+    public var name: String
+    
     public struct Options: OptionSet {
         public let rawValue: Int
         
@@ -36,13 +36,13 @@ public class CommandHandler: Handler {
     let filters: Filters
     let options: Options
     
-	public init(
+    public init(
         name: String = String(describing: CommandHandler.self),
-		commands: [String],
-		filters: Filters = .all,
-		options: Options = [],
+        commands: [String],
+        filters: Filters = .all,
+        options: Options = [],
         callback: @escaping HandlerCallback
-		) {
+        ) {
         self.name = name
         self.commands = Set(commands)
         self.filters = filters
@@ -56,7 +56,7 @@ public class CommandHandler: Handler {
                 update.editedChannelPost != nil {
             return true
         }
-            
+        
         guard let message = update.message,
             filters.check(message),
             let text = message.text,

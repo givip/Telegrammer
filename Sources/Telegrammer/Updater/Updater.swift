@@ -15,7 +15,7 @@ import NIO
  This is achieved using the Webhooks and Longpolling classes.
  */
 public final class Updater {
-	
+    
     /// Bot instance which perform requests and establish http server
     public let bot: Bot
     
@@ -24,11 +24,11 @@ public final class Updater {
     
     /// EventLoopGroup for networking stuff
     public let worker: Worker
-
-	private var longpollingConnection: Longpolling!
+    
+    private var longpollingConnection: Longpolling!
     private var webhooksListener: Webhooks!
-	
-	@discardableResult
+    
+    @discardableResult
     public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
@@ -47,7 +47,7 @@ public final class Updater {
         webhooksListener = Webhooks(bot: bot, dispatcher: dispatcher, worker: worker)
         return try webhooksListener.start()
     }
-	
+    
     /**
      Call this method to start receiving updates from Telegram by longpolling.
      
@@ -56,11 +56,11 @@ public final class Updater {
      - Throws: Throws on errors
      - Returns: Future of `Void` type
      */
-	public func startLongpolling() throws -> Future<Void> {
-		longpollingConnection = Longpolling(bot: bot, dispatcher: dispatcher, worker: worker)
-		return try longpollingConnection.start()
-	}
-	
+    public func startLongpolling() throws -> Future<Void> {
+        longpollingConnection = Longpolling(bot: bot, dispatcher: dispatcher, worker: worker)
+        return try longpollingConnection.start()
+    }
+    
     /**
      Call this method to stop receiving updates from Telegram.
      */
