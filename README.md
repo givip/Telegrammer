@@ -128,22 +128,38 @@ $ vapor xcode
 Demo bots
 ---------
 
-#### EchoBot Sample
+#### All sample bots
 1. Add Telegram Token in [Environment Variables](http://nshipster.com/launch-arguments-and-environment-variables/), so, either create an environment variable:
 ```
 $ export TELEGRAM_BOT_TOKEN='000000000:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
 ```
-2. Run EchoBot executable scheme or
+2. Run Bot executable scheme or
 ```
 $ swift run
 ```
-3. Send _**/echo**_ command to bot
 
+
+[EchoBot sources](https://github.com/givip/Telegrammer/tree/master/Sources/EchoBot)
+Starts/stops with command "/echo", then simply responds with your message
+
+[HelloBot sources](https://github.com/givip/Telegrammer/tree/master/Sources/HelloBot)
+Says "Hello" to new users in group. Responds with "hello" message on command "/greet"
+
+[SchedulerBot sources](https://github.com/givip/Telegrammer/tree/master/Sources/SchedulerBot)
+Demonstrate Jobs Queue scheduling mechanism. 
+Command "/start X" starts repeatable job, wich will send you a message each X seconds.
+Command "/once X" will send you message once after timeout of X seconds.
+Command "/stop" stops JobsQueue only for you. Other users continues to receive scheduled messages.
+
+[SpellCheckerBot sources](https://github.com/givip/Telegrammer/tree/master/Sources/SpellCheckerBot)
+Demonstrate how works InlineMenus and Callback handlers.
+Command "/start" will start bot.
+Send any english text to bot and it will be checked for mistakes. Bot will propose you some fixes in case of found mistake.
 
 Requirements
 ---------------
 
-- Ubuntu 14.04 or later with [Swift 4.2 or later](https://swift.org/getting-started/) / macOS with [Xcode 9.3 or later](https://swift.org/download/)
+- Ubuntu 14.04 or later with [Swift 5.0 or later](https://swift.org/getting-started/) / macOS with [Xcode 10.2 beta 4 or later](https://swift.org/download/)
 - Telegram account and a Telegram App for any platform
 - [Swift Package Manager (SPM)](https://github.com/apple/swift-package-manager/blob/master/Documentation/Usage.md) for dependencies 
 - [Vapor 3](https://vapor.codes) (optionally, for bots with database and other server side stuff)
