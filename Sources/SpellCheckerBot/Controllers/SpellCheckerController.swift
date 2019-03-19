@@ -39,17 +39,17 @@ class SpellCheckerController {
         
         return InlineKeyboardMarkup(inlineKeyboard: menuButtons)
     }
-
+    
     func start(_ update: Update, _ context: BotContext?) throws {
         guard let message = update.message else { return }
         try respond(to: message, text: "Send text to bot, you want to spellcheck ✅\n\n\(attentionText)")
     }
-
+    
     func spellCheck(_ update: Update, _ context: BotContext?) throws {
         guard let message = update.message,
             let text = message.text,
             let user = message.from else { return }
-
+        
         spellChecker.check(text, lang: .en, format: .plain) { [unowned self] (checks) in
             guard !checks.isEmpty else {
                 try self.congrat(message: message)
@@ -60,7 +60,7 @@ class SpellCheckerController {
             flow.start(text, checks: checks)
             
             self.sessions[user.id] = flow
-
+            
             try self.begin(flow, to: message)
         }
     }
@@ -126,7 +126,7 @@ private extension SpellCheckerController {
     }
     
     func congrat(message: Message) throws {
-		try message.reply(text: "👏 Congratulate! Your text is without any mistakes!", from: bot)
+        try message.reply(text: "👏 Congratulate! Your text is without any mistakes!", from: bot)
     }
     
     func cancel(message: Message) throws {

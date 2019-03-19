@@ -12,16 +12,16 @@ import Multipart
 protocol JSONEncodable: Encodable {}
 
 extension JSONEncodable {    
-	func encodeBody() throws -> Data {
-		return try JSONEncoder().encode(self)
-	}
+    func encodeBody() throws -> Data {
+        return try JSONEncoder().encode(self)
+    }
 }
 
 /// Represent Telegram type, which will be encoded as multipart/form-data on sending to server
 protocol MultipartEncodable: Encodable {}
 
 extension MultipartEncodable {
-	func encodeBody(boundary: [UInt8]) throws -> Data {
-		return try FormDataEncoder().encode(self, boundary: boundary)
-	}
+    func encodeBody(boundary: [UInt8]) throws -> Data {
+        return try FormDataEncoder().encode(self, boundary: boundary)
+    }
 }

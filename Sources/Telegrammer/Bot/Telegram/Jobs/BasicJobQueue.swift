@@ -6,8 +6,6 @@
 //
 
 import Foundation
-import HeliumLogger
-import LoggerAPI
 import HTTP
 
 public class BasicJobQueue<C>: JobQueue {
@@ -25,7 +23,7 @@ public class BasicJobQueue<C>: JobQueue {
     public func shutdownQueue() {
         worker.shutdownGracefully { (error) in
             if let error = error {
-                Log.error(error.localizedDescription)
+                log.error(error.logMessage)
             }
         }
     }

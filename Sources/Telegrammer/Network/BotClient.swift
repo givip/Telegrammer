@@ -7,7 +7,6 @@
 
 import Foundation
 import HTTP
-import LoggerAPI
 
 public class BotClient {
     
@@ -44,7 +43,7 @@ public class BotClient {
         
         let promise = worker.eventLoop.newPromise(TelegramContainer<T>.self)
         
-        Log.info("Sending request:\n\(httpRequest.description)")
+        log.info("Sending request:\n\(httpRequest.description)")
         
         worker.eventLoop.execute {
             self.send(request: httpRequest).whenSuccess({ (container) in
@@ -78,31 +77,31 @@ public class BotClient {
 /*
         var futureClient: Future<HTTPClient>
         if let existingClient = client {
-            Log.info("Using existing HTTP client")
+            log.info("Using existing HTTP client")
             futureClient = Future<HTTPClient>.map(on: worker, { existingClient })
         } else {
             futureClient = HTTPClient
                 .connect(scheme: .https, hostname: host, port: port, on: worker, onError: { (error) in
-                    Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
-                    Log.error(error.localizedDescription)
+                    log.info("HTTP Client was down with error: \n\(error.logMessage)")
+                    log.error(error.logMessage)
                     self.client = nil
                 })
                 .do({ (freshClient) in
-                    Log.info("Creating new HTTP Client")
+                    log.info("Creating new HTTP Client")
                     self.client = freshClient
                 })
         }
         return futureClient
             .catch { (error) in
-                Log.info("HTTP Client was down with error: \n\(error.localizedDescription)")
-                Log.error(error.localizedDescription)
+                log.info("HTTP Client was down with error: \n\(error.logMessage)")
+                log.error(error.logMessage)
             }
             .then { (client) -> Future<HTTPResponse> in
-                Log.info("Sending request to vapor HTTPClient")
+                log.info("Sending request to vapor HTTPClient")
                 return client.send(request)
             }
             .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
-                Log.info("Decoding response from HTTPClient")
+                log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
         }
  */

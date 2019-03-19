@@ -19,22 +19,22 @@ import Foundation
  SeeAlso Telegram Bot API Reference:
  [Sending Files](https://core.telegram.org/bots/api#sending-files)
  */
- public enum FileInfo: Encodable {
-	
-	case fileId(String)
-	case url(String)
-	case file(InputFile)
-
-	public func encode(to encoder: Encoder) throws {
-		var container = encoder.singleValueContainer()
-		switch self {
-		case .fileId(let string):
-			try container.encode(string)
-		case .url(let string):
-			try container.encode(string)
-		case .file(let file):
-			try container.encode(file)
-		}
-	}
+public enum FileInfo: Encodable {
+    
+    case fileId(String)
+    case url(String)
+    case file(InputFile)
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case .fileId(let string):
+            try container.encode(string)
+        case .url(let string):
+            try container.encode(string)
+        case .file(let file):
+            try container.encode(file)
+        }
+    }
 }
 

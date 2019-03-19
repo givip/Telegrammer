@@ -7,8 +7,7 @@
 
 import Foundation
 import HTTP
-import HeliumLogger
-import LoggerAPI
+import Logging
 
 public final class Bot: BotProtocol {
 
@@ -43,8 +42,6 @@ public final class Bot: BotProtocol {
     }
 
     public init(settings: Settings, numThreads: Int = System.coreCount) throws {
-        Log.logger = settings.debugMode ? HeliumLogger(.verbose) : HeliumLogger(.error)
-
         self.settings = settings
         self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
         self.client = try BotClient(host: settings.serverHost,
@@ -56,14 +53,12 @@ public final class Bot: BotProtocol {
 
     func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
 
-        Log.verbose(logMessage(container))
+        log.info(logMessage(container))
 
         if let result = container.result {
             return Future.map(on: self.requestWorker, { result })
         } else {
-            let error = logError(container)
-            Log.error(error.localizedDescription)
-            throw error
+            throw logError(container)
         }
     }
 
@@ -96,7 +91,7 @@ public final class Bot: BotProtocol {
         return HTTPHeaders()
     }
 
-    func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> String {
+    func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> Logger.Message {
         var resultString = "[]"
 
         if let result = container.result {
@@ -111,12 +106,12 @@ public final class Bot: BotProtocol {
                 if let value = container.result as? Bool {
                     resultString = value.description
                 } else {
-                    Log.error(error.localizedDescription)
+                    log.error(error.logMessage)
                 }
             }
         }
 
-        return """
+        let logString = """
 
         Received response
         Code: \(container.errorCode ?? 0)
@@ -125,10 +120,16 @@ public final class Bot: BotProtocol {
         Result: \(resultString)
 
         """
+
+        return Logger.Message(stringLiteral: logString)
     }
 
     func logError<T: Codable>(_ container: TelegramContainer<T>) -> Error {
-        return CoreError(identifier: "DecodingErrors",
-                         reason: container.description ?? "Response error")
+        let error = CoreError(
+            identifier: "DecodingErrors",
+            reason: container.description ?? "Response error"
+        )
+        log.error(error.logMessage)
+        return error
     }
 }

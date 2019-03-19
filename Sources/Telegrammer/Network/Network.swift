@@ -15,8 +15,8 @@ public typealias Future = EventLoopFuture
 public typealias Promise = EventLoopPromise
 
 public protocol Connection {
-	var bot: Bot { get }
-	var dispatcher: Dispatcher { get }
-	var worker: Worker { get }
-	var running: Bool { get set }
+    var bot: Bot { get }
+    var dispatcher: Dispatcher { get }
+    var worker: Worker { get }
+    var running: Bool { get set }
 }

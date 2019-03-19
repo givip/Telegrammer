@@ -9,20 +9,20 @@ import Foundation
 
 /// Handler for CallbackQuery updates
 public class CallbackQueryHandler: Handler {
-	
-	public var name: String
-	
+    
+    public var name: String
+    
     let pattern: String
     let callback: HandlerCallback
     
     public init(
-		pattern: String,
-		callback: @escaping HandlerCallback,
-		name: String = String(describing: CallbackQueryHandler.self)
-		) {
+        pattern: String,
+        callback: @escaping HandlerCallback,
+        name: String = String(describing: CallbackQueryHandler.self)
+        ) {
         self.pattern = pattern
         self.callback = callback
-		self.name = name
+        self.name = name
     }
     
     public func check(update: Update) -> Bool {

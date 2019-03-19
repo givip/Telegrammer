@@ -9,10 +9,10 @@ import HTTP
 
 /// Handler for bot messages, can handle normal messages, channel posts, edited messages
 public class MessageHandler: Handler {
-	
+    
     /// Name of particular MessageHandler, needed for determine handlers instances of one class in groups
-	public var name: String
-	
+    public var name: String
+    
     /// Option Set for `MessageHandler`
     public struct Options: OptionSet {
         public let rawValue: Int
@@ -32,17 +32,17 @@ public class MessageHandler: Handler {
     let filters: Filters
     let callback: HandlerCallback
     let options: Options
-	
-	public init(
+    
+    public init(
         name: String = String(describing: MessageHandler.self),
-		filters: Filters = .all,
+        filters: Filters = .all,
         options: Options = [.messageUpdates, .channelPostUpdates],
         callback: @escaping HandlerCallback
-		) {
+        ) {
         self.filters = filters
         self.callback = callback
         self.options = options
-		self.name = name
+        self.name = name
     }
     
     public func check(update: Update) -> Bool {
@@ -52,7 +52,7 @@ public class MessageHandler: Handler {
             }
             if options.contains(.editedUpdates),
                 update.editedChannelPost != nil ||
-                update.editedMessage != nil {
+                    update.editedMessage != nil {
                 return true
             }
         }
