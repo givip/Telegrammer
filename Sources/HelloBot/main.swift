@@ -12,10 +12,12 @@ guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
 var settings = Bot.Settings(token: token, debugMode: true)
 
 ///Webhooks settings
-//settings.webhooksIp = Enviroment.get("TELEGRAM_BOT_IP")!
-//settings.webhooksUrl = Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!
-//settings.webhooksPort = Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!
-//settings.webhooksPublicCert = Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!
+//settings.webhooksConfig = Webhooks.Config(
+//    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
+//    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
+//    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
+//    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
+//)
 
 let bot = try! Bot(settings: settings)
 

@@ -17,10 +17,7 @@ public final class Bot: BotProtocol {
         public let debugMode: Bool
         public var serverHost: String = "api.telegram.org"
         public var serverPort: Int = 443
-        public var webhooksIp: String? = nil
-        public var webhooksUrl: String? = nil
-        public var webhooksPort: Int? = nil
-        public var webhooksPublicCert: String? = nil
+        public var webhooksConfig: Webhooks.Config? = nil
 
         public init(token: String, debugMode: Bool = true) {
             self.token = token

@@ -8,6 +8,14 @@ guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
     exit(1)
 }
 
+///Webhooks settings
+//settings.webhooksConfig = Webhooks.Config(
+//    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
+//    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
+//    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
+//    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
+//)
+
 do {
     let bot = try Bot(token: token)
     
