@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Logging
+import Logging_swift
 
 public struct Enviroment {
     /**
