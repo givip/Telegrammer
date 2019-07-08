@@ -175,7 +175,6 @@ def fetch_description(current_node)
 	while !current_node.nil? && current_node.name != 'table' &&
 			current_node.name != 'h4' do
 		text = current_node.text.strip
-		continue unless text.length != 0
 
 		if description.length != 0 then
 			description += "\n"
