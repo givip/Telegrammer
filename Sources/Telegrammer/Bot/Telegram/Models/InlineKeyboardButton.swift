@@ -13,6 +13,7 @@ public final class InlineKeyboardButton: Codable {
     enum CodingKeys: String, CodingKey {
         case text = "text"
         case url = "url"
+        case loginUrl = "login_url"
         case callbackData = "callback_data"
         case switchInlineQuery = "switch_inline_query"
         case switchInlineQueryCurrentChat = "switch_inline_query_current_chat"
@@ -25,6 +26,9 @@ public final class InlineKeyboardButton: Codable {
 
     /// Optional. HTTP or tg:// url to be opened when button is pressed
     public var url: String?
+
+    /// Optional. An HTTP URL used to automatically authorize the user. Can be used as a replacement for the Telegram Login Widget.
+    public var loginUrl: LoginUrl?
 
     /// Optional. Data to be sent in a callback query to the bot when button is pressed, 1-64 bytes
     public var callbackData: String?
@@ -50,9 +54,10 @@ public final class InlineKeyboardButton: Codable {
     public var pay: Bool?
 
 
-    public init (text: String, url: String? = nil, callbackData: String? = nil, switchInlineQuery: String? = nil, switchInlineQueryCurrentChat: String? = nil, callbackGame: CallbackGame? = nil, pay: Bool? = nil) {
+    public init (text: String, url: String? = nil, loginUrl: LoginUrl? = nil, callbackData: String? = nil, switchInlineQuery: String? = nil, switchInlineQueryCurrentChat: String? = nil, callbackGame: CallbackGame? = nil, pay: Bool? = nil) {
         self.text = text
         self.url = url
+        self.loginUrl = loginUrl
         self.callbackData = callbackData
         self.switchInlineQuery = switchInlineQuery
         self.switchInlineQueryCurrentChat = switchInlineQueryCurrentChat

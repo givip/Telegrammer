@@ -23,6 +23,7 @@ public final class ChatMember: Codable {
         case canRestrictMembers = "can_restrict_members"
         case canPinMessages = "can_pin_messages"
         case canPromoteMembers = "can_promote_members"
+        case isMember = "is_member"
         case canSendMessages = "can_send_messages"
         case canSendMediaMessages = "can_send_media_messages"
         case canSendOtherMessages = "can_send_other_messages"
@@ -59,11 +60,14 @@ public final class ChatMember: Codable {
     /// Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     public var canRestrictMembers: Bool?
 
-    /// Optional. Administrators only. True, if the administrator can pin messages, supergroups only
+    /// Optional. Administrators only. True, if the administrator can pin messages, groups and supergroups only
     public var canPinMessages: Bool?
 
     /// Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
     public var canPromoteMembers: Bool?
+
+    /// Optional. Restricted only. True, if the user is a member of the chat at the moment of the request
+    public var isMember: Bool?
 
     /// Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues
     public var canSendMessages: Bool?
@@ -78,7 +82,7 @@ public final class ChatMember: Codable {
     public var canAddWebPagePreviews: Bool?
 
 
-    public init (user: User, status: String, untilDate: Int? = nil, canBeEdited: Bool? = nil, canChangeInfo: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canInviteUsers: Bool? = nil, canRestrictMembers: Bool? = nil, canPinMessages: Bool? = nil, canPromoteMembers: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
+    public init (user: User, status: String, untilDate: Int? = nil, canBeEdited: Bool? = nil, canChangeInfo: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canInviteUsers: Bool? = nil, canRestrictMembers: Bool? = nil, canPinMessages: Bool? = nil, canPromoteMembers: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
         self.user = user
         self.status = status
         self.untilDate = untilDate
@@ -91,6 +95,7 @@ public final class ChatMember: Codable {
         self.canRestrictMembers = canRestrictMembers
         self.canPinMessages = canPinMessages
         self.canPromoteMembers = canPromoteMembers
+        self.isMember = isMember
         self.canSendMessages = canSendMessages
         self.canSendMediaMessages = canSendMediaMessages
         self.canSendOtherMessages = canSendOtherMessages
