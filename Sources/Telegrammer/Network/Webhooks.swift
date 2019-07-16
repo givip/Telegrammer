@@ -21,9 +21,9 @@ public class Webhooks: Connection {
         public var ip: String
         public var url: String
         public var port: Int
-        public var publicCert: Certificate
+        public var publicCert: Certificate?
 
-        public init(ip: String, url: String, port: Int, publicCert: Certificate) {
+        public init(ip: String, url: String, port: Int, publicCert: Certificate? = nil) {
             self.ip = ip
             self.url = url
             self.port = port
@@ -56,21 +56,24 @@ public class Webhooks: Connection {
         }
 
         var cert: InputFile? = nil
-        switch config.publicCert {
-        case .file(url: let url):
-            guard let fileHandle = FileHandle(forReadingAtPath: url) else {
-                let errorDescription = "Public key '\(config.publicCert)' was specified for HTTPS server, but wasn't found"
-                log.error(errorDescription.logMessage)
-                throw CoreError(identifier: "FileIO", reason: errorDescription)
+
+        if let publicCert = config.publicCert {
+            switch publicCert {
+            case .file(url: let url):
+                guard let fileHandle = FileHandle(forReadingAtPath: url) else {
+                    let errorDescription = "Public key '\(publicCert)' was specified for HTTPS server, but wasn't found"
+                    log.error(errorDescription.logMessage)
+                    throw CoreError(identifier: "FileIO", reason: errorDescription)
+                }
+                cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: url)
+            case .text(content: let textCert):
+                guard let strData = textCert.data(using: .utf8) else {
+                    let errorDescription = "Public key body '\(textCert)' was specified for HTTPS server, but it cannot be converted into Data type"
+                    log.error(errorDescription.logMessage)
+                    throw CoreError(identifier: "DataType", reason: errorDescription)
+                }
+                cert = InputFile(data: strData, filename: "public.pem")
             }
-            cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: url)
-        case .text(content: let textCert):
-            guard let strData = textCert.data(using: .utf8) else {
-                let errorDescription = "Public key body '\(textCert)' was specified for HTTPS server, but it cannot be converted into Data type"
-                log.error(errorDescription.logMessage)
-                throw CoreError(identifier: "DataType", reason: errorDescription)
-            }
-            cert = InputFile(data: strData, filename: "public.pem")
         }
 
         let params = Bot.SetWebhookParams(url: config.url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
