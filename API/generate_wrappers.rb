@@ -134,6 +134,9 @@ def deduce_result_type(description)
 	type_name = description[/invite link as (.+) on success/, 1]
 	return type_name unless type_name.nil?
 	
+	type_name = description[/(\w+) with the final results is returned/, 1]
+	return type_name unless type_name.nil?
+	
 	type_name = description[/An (.+) objects is returned/, 1]
 	return type_name unless type_name.nil?
 
@@ -175,7 +178,6 @@ def fetch_description(current_node)
 	while !current_node.nil? && current_node.name != 'table' &&
 			current_node.name != 'h4' do
 		text = current_node.text.strip
-		continue unless text.length != 0
 
 		if description.length != 0 then
 			description += "\n"

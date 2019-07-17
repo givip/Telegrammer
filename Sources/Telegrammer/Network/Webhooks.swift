@@ -9,8 +9,28 @@ import Foundation
 import HTTP
 import NIO
 
-class Webhooks: Connection {
-    
+/// Will take care of you Telegram webhooks updates
+public class Webhooks: Connection {
+
+    public struct Config {
+        public enum Certificate {
+            case file(url: String)
+            case text(content: String)
+        }
+
+        public var ip: String
+        public var url: String
+        public var port: Int
+        public var publicCert: Certificate?
+
+        public init(ip: String, url: String, port: Int, publicCert: Certificate? = nil) {
+            self.ip = ip
+            self.url = url
+            self.port = port
+            self.publicCert = publicCert
+        }
+    }
+
     public var bot: Bot
     public var dispatcher: Dispatcher
     public var worker: Worker
@@ -30,28 +50,36 @@ class Webhooks: Connection {
     }
     
     public func start() throws -> Future<Void> {
-        guard let ip = bot.settings.webhooksIp,
-            let url = bot.settings.webhooksUrl,
-            let port = bot.settings.webhooksPort else {
-                throw CoreError(identifier: "Webhooks",
-                                reason: "Initialization parameters wasn't found in enviroment variables")
+        guard let config = bot.settings.webhooksConfig else {
+            throw CoreError(identifier: "Webhooks",
+                            reason: "Initialization parameters wasn't found in enviroment variables")
         }
-        
+
         var cert: InputFile? = nil
-        
-        if let publicCert = bot.settings.webhooksPublicCert {
-            guard let fileHandle = FileHandle(forReadingAtPath: publicCert) else {
-                let errorDescription = "Public key '\(publicCert)' was specified for HTTPS server, but wasn't found"
-                log.error(errorDescription.logMessage)
-                throw CoreError(identifier: "FileIO", reason: errorDescription)
+
+        if let publicCert = config.publicCert {
+            switch publicCert {
+            case .file(url: let url):
+                guard let fileHandle = FileHandle(forReadingAtPath: url) else {
+                    let errorDescription = "Public key '\(publicCert)' was specified for HTTPS server, but wasn't found"
+                    log.error(errorDescription.logMessage)
+                    throw CoreError(identifier: "FileIO", reason: errorDescription)
+                }
+                cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: url)
+            case .text(content: let textCert):
+                guard let strData = textCert.data(using: .utf8) else {
+                    let errorDescription = "Public key body '\(textCert)' was specified for HTTPS server, but it cannot be converted into Data type"
+                    log.error(errorDescription.logMessage)
+                    throw CoreError(identifier: "DataType", reason: errorDescription)
+                }
+                cert = InputFile(data: strData, filename: "public.pem")
             }
-            cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: publicCert)
         }
-        
-        let params = Bot.SetWebhookParams(url: url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
+
+        let params = Bot.SetWebhookParams(url: config.url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
         return try bot.setWebhook(params: params).flatMap { (success) -> Future<Void> in
             log.info("setWebhook request result: \(success)")
-            return try self.listenWebhooks(on: ip, port: port).then { $0.onClose }
+            return try self.listenWebhooks(on: config.ip, port: config.port).then { $0.onClose }
         }
     }
     

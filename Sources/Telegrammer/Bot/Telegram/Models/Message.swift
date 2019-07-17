@@ -19,6 +19,7 @@ public final class Message: Codable {
         case forwardFromChat = "forward_from_chat"
         case forwardFromMessageId = "forward_from_message_id"
         case forwardSignature = "forward_signature"
+        case forwardSenderName = "forward_sender_name"
         case forwardDate = "forward_date"
         case replyToMessage = "reply_to_message"
         case editDate = "edit_date"
@@ -40,6 +41,7 @@ public final class Message: Codable {
         case contact = "contact"
         case location = "location"
         case venue = "venue"
+        case poll = "poll"
         case newChatMembers = "new_chat_members"
         case leftChatMember = "left_chat_member"
         case newChatTitle = "new_chat_title"
@@ -55,6 +57,7 @@ public final class Message: Codable {
         case successfulPayment = "successful_payment"
         case connectedWebsite = "connected_website"
         case passportData = "passport_data"
+        case replyMarkup = "reply_markup"
     }
 
     /// Unique message identifier inside this chat
@@ -80,6 +83,9 @@ public final class Message: Codable {
 
     /// Optional. For messages forwarded from channels, signature of the post author if present
     public var forwardSignature: String?
+
+    /// Optional. Sender's name for messages forwarded from users who disallow adding a link to their account in forwarded messages
+    public var forwardSenderName: String?
 
     /// Optional. For forwarded messages, date the original message was sent in Unix time
     public var forwardDate: Int?
@@ -144,6 +150,9 @@ public final class Message: Codable {
     /// Optional. Message is a venue, information about the venue
     public var venue: Venue?
 
+    /// Optional. Message is a native poll, information about the poll
+    public var poll: Poll?
+
     /// Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     public var newChatMembers: [User]?
 
@@ -189,8 +198,11 @@ public final class Message: Codable {
     /// Optional. Telegram Passport data
     public var passportData: PassportData?
 
+    /// Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
+    public var replyMarkup: InlineKeyboardMarkup?
 
-    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, captionEntities: [MessageEntity]? = nil, audio: Audio? = nil, document: Document? = nil, animation: Animation? = nil, game: Game? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, voice: Voice? = nil, videoNote: VideoNote? = nil, caption: String? = nil, contact: Contact? = nil, location: Location? = nil, venue: Venue? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil) {
+
+    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, captionEntities: [MessageEntity]? = nil, audio: Audio? = nil, document: Document? = nil, animation: Animation? = nil, game: Game? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, voice: Voice? = nil, videoNote: VideoNote? = nil, caption: String? = nil, contact: Contact? = nil, location: Location? = nil, venue: Venue? = nil, poll: Poll? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
         self.messageId = messageId
         self.from = from
         self.date = date
@@ -199,6 +211,7 @@ public final class Message: Codable {
         self.forwardFromChat = forwardFromChat
         self.forwardFromMessageId = forwardFromMessageId
         self.forwardSignature = forwardSignature
+        self.forwardSenderName = forwardSenderName
         self.forwardDate = forwardDate
         self.replyToMessage = replyToMessage
         self.editDate = editDate
@@ -220,6 +233,7 @@ public final class Message: Codable {
         self.contact = contact
         self.location = location
         self.venue = venue
+        self.poll = poll
         self.newChatMembers = newChatMembers
         self.leftChatMember = leftChatMember
         self.newChatTitle = newChatTitle
@@ -235,5 +249,6 @@ public final class Message: Codable {
         self.successfulPayment = successfulPayment
         self.connectedWebsite = connectedWebsite
         self.passportData = passportData
+        self.replyMarkup = replyMarkup
     }
 }

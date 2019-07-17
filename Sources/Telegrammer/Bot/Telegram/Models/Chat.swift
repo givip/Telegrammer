@@ -56,7 +56,7 @@ public final class Chat: Codable {
     /// Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     public var inviteLink: String?
 
-    /// Optional. Pinned message, for supergroups and channel chats. Returned only in getChat.
+    /// Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
     public var pinnedMessage: Message?
 
     /// Optional. For supergroups, name of group sticker set. Returned only in getChat.

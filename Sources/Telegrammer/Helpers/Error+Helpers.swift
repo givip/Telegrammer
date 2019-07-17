@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Logging
+import Logging_swift
 
 public extension Error {
     var logMessage: Logger.Message {

@@ -100,7 +100,7 @@ public extension SynchronizedArray {
     /// - Returns: The index of the first element for which predicate returns true. If no elements in the collection satisfy the given predicate, returns nil.
     func index(where predicate: (Element) -> Bool) -> Int? {
         var result: Int?
-        queue.sync { result = self.array.index(where: predicate) }
+        queue.sync { result = self.array.firstIndex(where: predicate) }
         return result
     }
 
@@ -314,7 +314,7 @@ public extension SynchronizedArray {
         queue.async(flags: .barrier) {
             var elements = [Element]()
 
-            while let index = self.array.index(where: predicate) {
+            while let index = self.array.firstIndex(where: predicate) {
                 elements.append(self.array.remove(at: index))
             }
 
@@ -383,7 +383,7 @@ public extension SynchronizedArray where Element: Equatable {
     /// - Parameter element: An element to search for in the collection.
     func remove(_ element: Element, completion: (() -> Void)? = nil) {
         queue.async(flags: .barrier) {
-            guard let index = self.array.index(of: element) else { return }
+            guard let index = self.array.firstIndex(of: element) else { return }
             self.array.remove(at: index)
             DispatchQueue.main.async { completion?() }
         }

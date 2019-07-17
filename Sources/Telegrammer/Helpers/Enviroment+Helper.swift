@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Logging
+import Logging_swift
 
 public struct Enviroment {
     /**
@@ -17,7 +17,7 @@ public struct Enviroment {
      - Returns: Optional String
      */
     public static func get(_ key: String) -> String? {
-        log.info("Searching Telegram bot TOKEN in enviroment variable \(key)")
+        log.info("Searching enviroment variable \(key)")
         return ProcessInfo.processInfo.environment[key]
     }
 }
