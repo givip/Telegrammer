@@ -19,6 +19,8 @@ public final class Bot: BotProtocol {
         public var serverPort: Int = 443
         public var webhooksConfig: Webhooks.Config? = nil
 
+        public var proxyConfig: ProxyConfig? = nil
+        
         public init(token: String, debugMode: Bool = true) {
             self.token = token
             self.debugMode = debugMode
@@ -44,7 +46,10 @@ public final class Bot: BotProtocol {
         self.client = try BotClient(host: settings.serverHost,
                                     port: settings.serverPort,
                                     token: settings.token,
-                                    worker: self.requestWorker)
+                                    worker: self.requestWorker,
+                                    proxyConfig: settings.proxyConfig)
+        
+        
         self.boundary = String.random(ofLength: 20)
     }
 
@@ -129,4 +134,9 @@ public final class Bot: BotProtocol {
         log.error(error.logMessage)
         return error
     }
+}
+
+public struct ProxyConfig {
+    let proxyHost: String
+    let proxyPort: Int
 }

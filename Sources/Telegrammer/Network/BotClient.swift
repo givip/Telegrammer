@@ -19,13 +19,29 @@ public class BotClient {
 
     let worker: Worker
     let callbackWorker: Worker
+    let urlSessionConfig: URLSessionConfiguration
     
-    public init(host: String, port: Int, token: String, worker: Worker) throws {
+    public init(host: String,
+                port: Int,
+                token: String,
+                worker: Worker,
+                proxyConfig: ProxyConfig? = nil) throws {
         self.host = host
         self.port = port
         self.token = token
         self.worker = worker
         self.callbackWorker = MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        
+        if let proxyConfig = proxyConfig {
+            let config = URLSessionConfiguration.default
+            config.connectionProxyDictionary = [AnyHashable: Any]()
+            config.connectionProxyDictionary?[kCFNetworkProxiesHTTPEnable as String] = 1
+            config.connectionProxyDictionary?[kCFStreamPropertyHTTPSProxyHost as String] = proxyConfig.proxyHost
+            config.connectionProxyDictionary?[kCFStreamPropertyHTTPSProxyPort as String] = proxyConfig.proxyPort
+            self.urlSessionConfig = config
+        } else {
+            self.urlSessionConfig = URLSessionConfiguration.default
+        }
     }
     
     /// Sends request to api.telegram.org, and receive TelegramContainer object
@@ -55,8 +71,8 @@ public class BotClient {
     
     private func send<T: Codable>(request: HTTPRequest) -> Future<TelegramContainer<T>> {
             let promise = worker.eventLoop.newPromise(of: TelegramContainer<T>.self)
-
-            URLSession.shared.dataTask(with: request.urlRequest) { (data, response, error) in
+        
+            URLSession(configuration: urlSessionConfig).dataTask(with: request.urlRequest) { (data, response, error) in
                 if let error = error {
                     promise.fail(error: error)
                     return
