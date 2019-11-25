@@ -20,7 +20,7 @@ public final class Video: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Video width as defined by sender

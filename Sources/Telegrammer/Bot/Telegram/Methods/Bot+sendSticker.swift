@@ -43,7 +43,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to send .webp stickers. On success, the sent Message is returned.
+     Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
 
      SeeAlso Telegram Bot API Reference:
      [SendStickerParams](https://core.telegram.org/bots/api#sendsticker)
