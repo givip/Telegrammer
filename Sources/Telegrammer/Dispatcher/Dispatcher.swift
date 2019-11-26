@@ -5,8 +5,10 @@
 //  Created by Givi Pataridze on 09.04.2018.
 //
 
+import Dispatch
+import Foundation
 import NIO
-import HTTP
+import AsyncHTTPClient
 
 /**
  This class dispatches all kinds of updates to its registered handlers.
@@ -29,11 +31,13 @@ public class Dispatcher {
     public init(bot: Bot, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
         self.bot = bot
         self.worker = worker
-        self.updateQueue = DispatchQueue(label: "TLGRM-UPDATES-QUEUE",
-                                         qos: .default,
-                                         attributes: .concurrent,
-                                         autoreleaseFrequency: .inherit,
-                                         target: nil)
+        self.updateQueue = DispatchQueue(
+            label: "TLGRM-UPDATES-QUEUE",
+            qos: .default,
+            attributes: .concurrent,
+            autoreleaseFrequency: .inherit,
+            target: nil
+        )
         self.handlersQueue = HandlersQueue()
     }
 
@@ -102,21 +106,40 @@ public extension Dispatcher {
 private extension Dispatcher {
     func submit(update: Update) {
         handlersQueue.next(for: update).forEach { (handler) in
-            _ = worker.eventLoop.submit { () -> Void in
+            _ = worker.next().submit { () -> Void in
                 try handler.handle(update: update, dispatcher: self)
             }
         }
     }
 }
 
-extension Dispatcher: HTTPServerResponder {
-    public func respond(to request: HTTPRequest, on worker: Worker) -> Future<HTTPResponse> {
+extension Dispatcher {
+    public func respond(to request: HTTPClient.Request, on worker: Worker) -> Future<HTTPClient.Response> {
         log.info("""
             \nReceived telegram webhook request
             
             \(request.description)
             
             """)
+        guard let body = request.body else {
+            return worker.next().submit {
+                HTTPClient.Response(
+                    host: request.host,
+                    status: .badRequest,
+                    headers: .empty,
+                    body: nil
+                )
+            }
+        }
+
+        body.stream(
+
+        return worker.next()
+            .flatSubmit { () -> Future<HTTPClient.Response> in
+                let data = body.
+                try JSONDecoder().decode(Update.self, from: Data())
+        }
+
         return request.body.consumeData(on: worker)
             .flatMap { (data) -> EventLoopFuture<Update> in
                 return Future.map(on: worker, { try JSONDecoder().decode(Update.self, from: data) })

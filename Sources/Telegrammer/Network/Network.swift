@@ -6,7 +6,7 @@
 //
 
 import NIO
-import HTTP
+import AsyncHTTPClient
 
 /// Convenience shorthand for `EventLoopFuture`.
 public typealias Future = EventLoopFuture

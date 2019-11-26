@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HTTP
+import AsyncHTTPClient
 
 enum Lang: String {
     case ru

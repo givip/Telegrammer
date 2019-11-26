@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HTTP
+import AsyncHTTPClient
 import NIO
 
 public class DailyJob<C>: Job {

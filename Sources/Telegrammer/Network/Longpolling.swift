@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import HTTP
+import NIO
+import AsyncHTTPClient
 
 public class Longpolling: Connection {
     
@@ -38,13 +39,13 @@ public class Longpolling: Connection {
     public func start() throws -> Future<Void> {
         self.running = true
         
-        let promise = worker.eventLoop.newPromise(Void.self)
+        let promise = worker.next().newPromise(Void.self)
         
         pollingPromise = promise
         
         let params = Bot.GetUpdatesParams(offset: nil, limit: limit, timeout: pollingTimeout, allowedUpdates: allowedUpdates)
         
-        _ = worker.eventLoop.submit {
+        _ = worker.next().submit {
             try self.bot.deleteWebhook().whenSuccess({ (success) in
                 guard success else { return }
                 self.longpolling(with: params)
@@ -56,8 +57,8 @@ public class Longpolling: Connection {
     
     public func stop() {
         running = false
-        worker.eventLoop.execute {
-            self.pollingPromise?.succeed()
+        worker.next().execute {
+            self.pollingPromise?.succeed(_)
         }
     }
     

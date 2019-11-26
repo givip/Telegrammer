@@ -6,19 +6,14 @@
 //
 
 import Foundation
-#if canImport(FoundationNetworking)
-import FoundationNetworking
-#endif
-import HTTP
+import AsyncHTTPClient
 
-extension HTTPRequest {
-    var urlRequest: URLRequest {
-        var request = URLRequest(url: self.url)
-        request.httpMethod = "POST"
-        request.httpBody = self.body.data
-        self.headers.forEach { header in
-            request.addValue(header.value, forHTTPHeaderField: header.name)
-        }
-        return request
+extension HTTPClient.Request {
+    var description: String {
+        """
+        \(self.method.rawValue) \(self.url.absoluteString)
+        \(self.headers.description)
+        \(self.body.debugDescription)
+        """
     }
 }

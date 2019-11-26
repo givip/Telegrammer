@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 
 public protocol BotContext { }
 

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Multipart
+import MultipartKit
 
 /// Represent Telegram type, which will be encoded as Json on sending to server
 protocol JSONEncodable: Encodable {}

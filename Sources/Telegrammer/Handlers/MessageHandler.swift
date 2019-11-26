@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 
 /// Handler for bot messages, can handle normal messages, channel posts, edited messages
 public class MessageHandler: Handler {

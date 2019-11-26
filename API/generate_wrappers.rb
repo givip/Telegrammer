@@ -350,7 +350,7 @@ def generate_method(f, node)
 	File.open("#{API_DIR}/#{models_dir}/Bot+#{method_name}.swift", "wb") { | out |
 		out.write METHOD_HEADER
         out.write "\n"
-        out.write "import HTTP\n"
+#        out.write "import AsyncHTTPClient\n"
         out.write "\n"
 		out.write "public extension Bot {\n"
 		out.write "\n"
@@ -424,7 +424,8 @@ def generate_method(f, node)
         method_name_capitalized = method_name.dup
         method_name_capitalized = "#{method_name_capitalized.capitalize_first}Params"
 
-		body_param = ", body: HTTPBody(), headers: HTTPHeaders()"
+#		body_param = ", body: HTTPBody(), headers: HTTPHeaders()"
+        body_param = ""
 
         #Generate description
         method_description = ""
@@ -486,7 +487,9 @@ def generate_method(f, node)
 	
 	out.write "#{TWO}let response: Future<TelegramContainer<#{result_type}>>\n"\
 			  "#{TWO}response = try client.respond(endpoint: \"#{method_name}\"#{body_param})\n"\
-			  "#{TWO}return response.flatMap(to: #{result_type}.self) { try self.wrap($0) }\n"\
+              "#{TWO}return response.flatMapThrowing { (container) -> #{result_type} in\n"\
+              "#{THREE}return try self.processContainer(container)\n"\
+              "#{TWO}}\n"\
 			  "#{ONE}}\n"\
 			  "}\n"
 	}

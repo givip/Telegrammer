@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import HTTP
+import NIO
+import AsyncHTTPClient
 
 public class BasicJobQueue<C>: JobQueue {
 

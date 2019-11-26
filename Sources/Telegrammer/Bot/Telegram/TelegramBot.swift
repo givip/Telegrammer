@@ -6,6 +6,6 @@
 //
 
 import Foundation
-import Logging_swift
+import Logging
 
 let log = Logger(label: "com.gp-apps.telegrammer")

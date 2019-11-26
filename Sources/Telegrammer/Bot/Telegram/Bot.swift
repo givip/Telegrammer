@@ -6,8 +6,13 @@
 //
 
 import Foundation
-import HTTP
-import Logging_swift
+import Logging
+import NIO
+import NIOHTTP1
+import AsyncHTTPClient
+
+
+public typealias Worker = EventLoopGroup
 
 public final class Bot: BotProtocol {
 
@@ -48,30 +53,31 @@ public final class Bot: BotProtocol {
         self.boundary = String.random(ofLength: 20)
     }
 
-    func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
+    func processContainer<T: Codable>(_ container: TelegramContainer<T>) throws -> T {
 
         log.info(logMessage(container))
 
         if let result = container.result {
-            return Future.map(on: self.requestWorker, { result })
+            return result
+//            return requestWorker.next().submit { result }
         } else {
             throw logError(container)
         }
     }
 
-    func httpBody(for object: Encodable?) throws -> HTTPBody {
-        guard let object = object else { return HTTPBody() }
+    func httpBody(for object: Encodable?) throws -> HTTPClient.Body {
+        guard let object = object else { return HTTPClient.Body.empty }
 
         if let object = object as? JSONEncodable {
-            return HTTPBody(data: try object.encodeBody())
+            return HTTPClient.Body.data(try object.encodeBody())
         }
 
         if let object = object as? MultipartEncodable {
             let boundaryBytes = boundary.utf8.map { $0 }
-            return HTTPBody(data: try object.encodeBody(boundary: boundaryBytes))
+            return HTTPClient.Body.data(try object.encodeBody(boundary: boundaryBytes))
         }
 
-        return HTTPBody()
+        return HTTPClient.Body.string("")
     }
 
     func httpHeaders(for object: Encodable?) -> HTTPHeaders {

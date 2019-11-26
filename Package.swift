@@ -5,6 +5,9 @@ import PackageDescription
 
 let package = Package(
     name: "Telegrammer",
+    platforms: [
+        .macOS(.v10_14)
+    ],
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
         .executable(name: "EchoBot", targets: ["EchoBot"]),
@@ -13,15 +16,15 @@ let package = Package(
         .executable(name: "SpellCheckerBot", targets: ["SpellCheckerBot"])
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/http.git", from: "3.0.0"),
-        .package(url: "https://github.com/vapor/crypto.git", from: "3.1.0"),
-        .package(url: "https://github.com/vapor/multipart.git", from: "3.0.0"),
-        .package(url: "https://github.com/givip/swift-log.git", .exact("1.1.0-Logging-swift"))
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
+        .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0"),
+        .package(url: "https://github.com/vapor/multipart-kit.git", from: "4.0.0-beta"),
+        .package(url: "https://github.com/vapor/open-crypto.git", from: "4.0.0-alpha.2"),
     ],
     targets: [
         .target(
             name: "Telegrammer",
-            dependencies: ["HTTP", "Multipart", "Crypto", "Logging-swift"]),
+            dependencies: ["AsyncHTTPClient", "MultipartKit", "OpenCrypto", "Logging"]),
         .target(name: "EchoBot", dependencies: ["Telegrammer"]),
         .target(name: "HelloBot", dependencies: ["Telegrammer"]),
         .target(name: "SchedulerBot", dependencies: ["Telegrammer"]),

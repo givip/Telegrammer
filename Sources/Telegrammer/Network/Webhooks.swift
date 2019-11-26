@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HTTP
+import AsyncHTTPClient
 import NIO
 
 /// Will take care of you Telegram webhooks updates
