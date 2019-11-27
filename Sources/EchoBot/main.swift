@@ -12,13 +12,13 @@ guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
 /// Initializind Bot settings (token, debugmode)
 var settings = Bot.Settings(token: token)
 
-///Webhooks settings
-settings.webhooksConfig = Webhooks.Config(
-    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
-    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
-    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
-    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
-)
+///Webhooks settings, uncomment if you are testing Webhooks
+//settings.webhooksConfig = Webhooks.Config(
+//    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
+//    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
+//    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
+//    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
+//)
 
 let bot = try! Bot(settings: settings)
 
@@ -60,11 +60,11 @@ do {
     ///Creating and adding handler for command /echo
     let commandHandler = CommandHandler(commands: ["/echo"], callback: echoModeSwitch)
     dispatcher.add(handler: commandHandler)
-    
+
     ///Creating and adding handler for ordinary text messages
     let echoHandler = MessageHandler(filters: Filters.text, callback: echoResponse)
     dispatcher.add(handler: echoHandler)
-    
+
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
     

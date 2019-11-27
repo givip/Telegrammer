@@ -26,7 +26,7 @@ class JobQueueTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "JobQueue.runOnce has finished")
 
-        try! BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int(delay))) {
+        try! BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int64(delay))) {
             finishDate = Date()
             count += 1
             expectation.fulfill()
@@ -49,11 +49,11 @@ class JobQueueTests: XCTestCase {
             XCTAssert(false, "Job shouldn't be executed")
         }
 
-        XCTAssertThrowsError(try BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int(0)), jobBlock), "Exception wasn't received") { error in
+        XCTAssertThrowsError(try BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int64(0)), jobBlock), "Exception wasn't received") { error in
             debugPrint("Error \(error.localizedDescription) was successfully thrown")
         }
 
-        XCTAssertThrowsError(try BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int(-1)), jobBlock), "Exception wasn't received") { error in
+        XCTAssertThrowsError(try BasicJobQueue<Any>.runOnce(on: bot, interval: .seconds(Int64(-1)), jobBlock), "Exception wasn't received") { error in
             debugPrint("Error \(error.localizedDescription) was successfully thrown")
         }
     }
@@ -77,7 +77,7 @@ class JobQueueTests: XCTestCase {
             expectations.append(XCTestExpectation(description: "Job run #\(i)"))
         }
 
-        let job = RepeatableJob<Any>(when: Date(), interval: .milliseconds(Int(delay * 1000))) { _ in
+        let job = RepeatableJob<Any>(when: Date(), interval: .milliseconds(Int64(delay * 1000))) { _ in
             let currentDate = Date()
             finishDate = currentDate
 
@@ -102,11 +102,11 @@ class JobQueueTests: XCTestCase {
 
         var performed = false
 
-        _ = queue.worker.eventLoop
+        _ = queue.worker.next()
             .submit { () -> Void in
                 performed = true
             }
-            .do { result in
+            .whenSuccess { result in
                 XCTAssertTrue(performed, "At this point job shouldn't be performed")
         }
 
@@ -118,7 +118,7 @@ class JobQueueTests: XCTestCase {
 
         expectation.isInverted = true
 
-        _ = queue.worker.eventLoop.submit { () -> Void in
+        _ = queue.worker.next().submit { () -> Void in
             XCTAssert(false, "At this point job should be shutdowned")
         }
 

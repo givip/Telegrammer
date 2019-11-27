@@ -19,16 +19,17 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0"),
         .package(url: "https://github.com/vapor/multipart-kit.git", from: "4.0.0-beta"),
-        .package(url: "https://github.com/vapor/open-crypto.git", from: "4.0.0-alpha.2"),
+        .package(url: "https://github.com/apple/swift-nio-extras.git", from: "1.0.0"),
     ],
     targets: [
         .target(
             name: "Telegrammer",
-            dependencies: ["AsyncHTTPClient", "MultipartKit", "OpenCrypto", "Logging"]),
+            dependencies: ["AsyncHTTPClient", "MultipartKit", "Logging"]),
         .target(name: "EchoBot", dependencies: ["Telegrammer"]),
         .target(name: "HelloBot", dependencies: ["Telegrammer"]),
         .target(name: "SchedulerBot", dependencies: ["Telegrammer"]),
         .target(name: "SpellCheckerBot", dependencies: ["Telegrammer"]),
+        .target(name: "TestWebhooksLocally", dependencies: ["Telegrammer"]),
         .testTarget(name: "TelegrammerTests", dependencies: ["Telegrammer"])
     ]
 )

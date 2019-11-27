@@ -8,6 +8,7 @@
 import Dispatch
 import Foundation
 import NIO
+import Logging
 import AsyncHTTPClient
 
 /**
@@ -53,6 +54,20 @@ public class Dispatcher {
             updateQueue.async {
                 self.submit(update: update)
             }
+        }
+    }
+
+    public func enqueue(bytebuffer: ByteBuffer) {
+        guard let data = bytebuffer.getBytes(at: 0, length: bytebuffer.writerIndex) else {
+            return
+        }
+        do {
+            let update = try JSONDecoder().decode(Update.self, from: Data(data))
+            updateQueue.async {
+                self.submit(update: update)
+            }
+        } catch {
+            log.error(error.logMessage)
         }
     }
 }
@@ -113,51 +128,3 @@ private extension Dispatcher {
     }
 }
 
-extension Dispatcher {
-    public func respond(to request: HTTPClient.Request, on worker: Worker) -> Future<HTTPClient.Response> {
-        log.info("""
-            \nReceived telegram webhook request
-            
-            \(request.description)
-            
-            """)
-        guard let body = request.body else {
-            return worker.next().submit {
-                HTTPClient.Response(
-                    host: request.host,
-                    status: .badRequest,
-                    headers: .empty,
-                    body: nil
-                )
-            }
-        }
-
-        body.stream(
-
-        return worker.next()
-            .flatSubmit { () -> Future<HTTPClient.Response> in
-                let data = body.
-                try JSONDecoder().decode(Update.self, from: Data())
-        }
-
-        return request.body.consumeData(on: worker)
-            .flatMap { (data) -> EventLoopFuture<Update> in
-                return Future.map(on: worker, { try JSONDecoder().decode(Update.self, from: data) })
-            }
-            .do { (update) in
-                log.info("Update \(update.updateId) enqueued to handlers")
-                self.enqueue(updates: [update])
-            }
-            .flatMap { (update) -> EventLoopFuture<HTTPResponse> in
-                let ok = HTTPResponse(status: .ok)
-                log.info("\nResponding: \(ok.description)")
-                return Future.map(on: worker, { ok })
-            }
-            .catchFlatMap { (error) -> (EventLoopFuture<HTTPResponse>) in
-                let bad = HTTPResponse(status: .badRequest)
-                log.info("\nResponding: \(bad.description)")
-                log.error(error.logMessage)
-                return Future.map(on: worker, { bad })
-        }
-    }
-}

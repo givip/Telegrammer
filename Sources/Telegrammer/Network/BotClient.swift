@@ -62,64 +62,12 @@ public class BotClient {
     }
     
     private func send<T: Codable>(request: HTTPClient.Request) -> Future<TelegramContainer<T>> {
-//            let promise = worker.next().makePromise(of: TelegramContainer<T>.self)
-
-//            URLSession.shared.dataTask(with: request.urlRequest) { (data, response, error) in
-//                if let error = error {
-//                    promise.fail(error: error)
-//                    return
-//                }
-//                if let data = data {
-//                    do {
-//                        let response = try JSONDecoder().decode(TelegramContainer<T>.self, from: data)
-//                        promise.succeed(result: response)
-//                    } catch {
-//                        promise.fail(error: error)
-//                    }
-//                }
-//            }.resume()
-//
-//            return promise.futureResult
-
-        //Due to memory leak in HTTPClient, temporarely switching on URLSession
-
         return client
             .execute(request: request)
             .flatMapThrowing({ (response) -> TelegramContainer<T> in
                 log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
             })
-
-
-//        var futureClient: Future<HTTPClient>
-//        if let existingClient = client {
-//            log.info("Using existing HTTP client")
-//            futureClient = Future<HTTPClient>.map(on: worker, { existingClient })
-//        } else {
-//            futureClient = HTTPClient
-//                .connect(scheme: .https, hostname: host, port: port, on: worker, onError: { (error) in
-//                    log.info("HTTP Client was down with error: \n\(error.logMessage)")
-//                    log.error(error.logMessage)
-//                    self.client = nil
-//                })
-//                .do({ (freshClient) in
-//                    log.info("Creating new HTTP Client")
-//                    self.client = freshClient
-//                })
-//        }
-//        return futureClient
-//            .catch { (error) in
-//                log.info("HTTP Client was down with error: \n\(error.logMessage)")
-//                log.error(error.logMessage)
-//            }
-//            .then { (client) -> Future<HTTPResponse> in
-//                log.info("Sending request to vapor HTTPClient")
-//                return client.send(request)
-//            }
-//            .map(to: TelegramContainer<T>.self) { (response) -> TelegramContainer<T> in
-//                log.info("Decoding response from HTTPClient")
-//                return try self.decode(response: response)
-//        }
     }
     
     func decode<T: Encodable>(response: HTTPClient.Response) throws -> TelegramContainer<T> {

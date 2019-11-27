@@ -10,6 +10,6 @@ import NIO
 
 extension TimeAmount {
     var seconds: Int64 {
-        return Int(round(Double(self.nanoseconds) / 1_000_000_000.0))
+        return Int64(round(Double(self.nanoseconds) / 1_000_000_000.0))
     }
 }

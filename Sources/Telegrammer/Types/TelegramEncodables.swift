@@ -21,7 +21,7 @@ extension JSONEncodable {
 protocol MultipartEncodable: Encodable {}
 
 extension MultipartEncodable {
-    func encodeBody(boundary: [UInt8]) throws -> Data {
+    func encodeBody(boundary: String) throws -> String {
         return try FormDataEncoder().encode(self, boundary: boundary)
     }
 }

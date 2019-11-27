@@ -54,15 +54,37 @@ public final class Bot: BotProtocol {
     }
 
     func processContainer<T: Codable>(_ container: TelegramContainer<T>) throws -> T {
-
-        log.info(logMessage(container))
-
-        if let result = container.result {
-            return result
-//            return requestWorker.next().submit { result }
-        } else {
-            throw logError(container)
+        guard container.ok else {
+            let desc = """
+            Received BAD response from Telegram
+            Code: \(container.errorCode ?? -1)
+            Description: \(container.description ?? "Empty")
+            """
+            throw CoreError(
+                type: .server,
+                description: desc,
+                reason: "Response marked as `Ok`, but doesn't contain `result` field."
+            )
         }
+
+        guard let result = container.result else {
+            throw CoreError(
+                type: .server,
+                reason: "Response marked as `Ok`, but doesn't contain `result` field."
+            )
+        }
+
+        let logString = """
+
+        Received response from Telegram
+        Code: \(container.errorCode ?? 0)
+        Status OK: \(container.ok)
+        Description: \(container.description ?? "Empty")
+
+        """
+        log.debug(Logger.Message(stringLiteral: logString))
+
+        return result
     }
 
     func httpBody(for object: Encodable?) throws -> HTTPClient.Body {
@@ -73,8 +95,7 @@ public final class Bot: BotProtocol {
         }
 
         if let object = object as? MultipartEncodable {
-            let boundaryBytes = boundary.utf8.map { $0 }
-            return HTTPClient.Body.data(try object.encodeBody(boundary: boundaryBytes))
+            return HTTPClient.Body.string(try object.encodeBody(boundary: boundary))
         }
 
         return HTTPClient.Body.string("")
@@ -92,47 +113,5 @@ public final class Bot: BotProtocol {
         }
 
         return HTTPHeaders()
-    }
-
-    func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> Logger.Message {
-        var resultString = "[]"
-
-        if let result = container.result {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            do {
-                let data = try encoder.encode(result)
-                if let json = String(data: data, encoding: .utf8) {
-                    resultString = json
-                }
-            } catch {
-                if let value = container.result as? Bool {
-                    resultString = value.description
-                } else {
-                    log.error(error.logMessage)
-                }
-            }
-        }
-
-        let logString = """
-
-        Received response
-        Code: \(container.errorCode ?? 0)
-        Status OK: \(container.ok)
-        Description: \(container.description ?? "Empty")
-        Result: \(resultString)
-
-        """
-
-        return Logger.Message(stringLiteral: logString)
-    }
-
-    func logError<T: Codable>(_ container: TelegramContainer<T>) -> Error {
-        let error = CoreError(
-            identifier: "DecodingErrors",
-            reason: container.description ?? "Response error"
-        )
-        log.error(error.logMessage)
-        return error
     }
 }

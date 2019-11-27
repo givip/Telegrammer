@@ -41,7 +41,10 @@ public class DailyJob<C>: Job {
         self.days = days
 
         if days.isEmpty {
-            throw CoreError(identifier: "DailyJob", reason: "DailyJob cannot be initialized with empty `days` param")
+            throw CoreError(
+                type: .internal,
+                reason: "DailyJob cannot be initialized with empty `days` param"
+            )
         }
 
         let currentDate = Date()

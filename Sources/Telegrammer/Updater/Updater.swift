@@ -69,7 +69,7 @@ public final class Updater {
             longpollingConnection.stop()
         }
         if let webhooksListener = webhooksListener {
-            webhooksListener.stop()
+            _ = try? webhooksListener.stop()
         }
     }
 }

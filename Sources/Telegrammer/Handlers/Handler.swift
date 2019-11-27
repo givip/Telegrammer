@@ -24,7 +24,7 @@ public protocol Handler {
 }
 
 extension Handler {
-    var name: String {
+    public var name: String {
         return String(describing: Self.self)
     }
 }
