@@ -14,21 +14,15 @@ public class BotClient {
     
     let host: String
     let port: Int
-    
     let token: String
 
     var client: HTTPClient
-
-    let worker: Worker
-    let callbackWorker: Worker
     
-    public init(host: String, port: Int, token: String, worker: Worker) throws {
+    public init(host: String, port: Int, token: String, worker: HTTPClient.EventLoopGroupProvider) throws {
         self.host = host
         self.port = port
         self.token = token
-        self.worker = worker
-        self.callbackWorker = MultiThreadedEventLoopGroup(numberOfThreads: 1)
-        self.client = HTTPClient(eventLoopGroupProvider: .createNew)
+        self.client = HTTPClient(eventLoopGroupProvider: worker)
     }
     
     /// Sends request to api.telegram.org, and receive TelegramContainer object

@@ -36,8 +36,8 @@ public final class Bot: BotProtocol {
     /// Bot parameters container
     public let settings: Settings
 
-    let requestWorker: Worker
     let boundary: String
+    let clientWorker: MultiThreadedEventLoopGroup
 
     public convenience init(token: String) throws {
         try self.init(settings: Bot.Settings(token: token))
@@ -45,12 +45,13 @@ public final class Bot: BotProtocol {
 
     public init(settings: Settings, numThreads: Int = System.coreCount) throws {
         self.settings = settings
-        self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
+        self.clientWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
+        let groupProvider = HTTPClient.EventLoopGroupProvider.shared(self.clientWorker)
         self.client = try BotClient(
             host: settings.serverHost,
             port: settings.serverPort,
             token: settings.token,
-            worker: self.requestWorker
+            worker: groupProvider
         )
         self.boundary = String.random(ofLength: 20)
     }
