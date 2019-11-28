@@ -44,7 +44,12 @@ public class Longpolling: Connection {
         
         pollingPromise = promise
         
-        let params = Bot.GetUpdatesParams(offset: nil, limit: limit, timeout: pollingTimeout, allowedUpdates: allowedUpdates)
+        let params = Bot.GetUpdatesParams(
+            offset: nil,
+            limit: limit,
+            timeout: pollingTimeout,
+            allowedUpdates: allowedUpdates
+        )
         
         _ = worker.next().submit {
             try self.bot.deleteWebhook().whenSuccess({ (success) in

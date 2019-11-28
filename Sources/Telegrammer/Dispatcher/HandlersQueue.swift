@@ -35,7 +35,10 @@ public final class HandlersQueue {
     private var _handlersGroup: [[Handler]] = []
     private var _errorHandlers: [ErrorHandler] = []
     
-    private let concurrentQueue = DispatchQueue(label: "TLGRM-HANDLERS-QUEUE", attributes: .concurrent)
+    private let concurrentQueue = DispatchQueue(
+        label: "TLGRM-HANDLERS-QUEUE",
+        attributes: .concurrent
+    )
     
     public func add(_ handler: Handler, to group: HandlerGroup) {
         concurrentQueue.async(flags: .barrier) {
@@ -72,14 +75,19 @@ public final class HandlersQueue {
     }
     
     private func sortGroups() {
-        _handlersGroup = self._handlers.keys.sorted { $0.id < $1.id }.compactMap { _handlers[$0] }
+        _handlersGroup = self._handlers
+            .keys
+            .sorted { $0.id < $1.id }
+            .compactMap { _handlers[$0] }
     }
     
     public func next(for update: Update) -> [Handler] {
         var handlers: [Handler] = []
         for group in _handlersGroup {
             concurrentQueue.sync {
-                guard let handler = group.first(where: { $0.check(update: update) }) else { return }
+                guard let handler = group.first(where: { $0.check(update: update) }) else {
+                    return
+                }
                 handlers.append(handler)
             }
         }

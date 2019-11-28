@@ -26,6 +26,9 @@ public class Webhooks: Connection {
         public init(ip: String, url: String, port: Int, publicCert: Certificate? = nil) {
             self.ip = ip
             self.url = url
+            if !Const.WebhooksSupportedPorts.contains(port) {
+                log.warning("Choosed port \(port) isn't supported by Telegram servers.")
+            }
             self.port = port
             self.publicCert = publicCert
         }
