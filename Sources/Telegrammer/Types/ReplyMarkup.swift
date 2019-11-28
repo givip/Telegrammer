@@ -5,12 +5,14 @@
 //  Created by Givi Pataridze on 01.03.2018.
 //
 
+import MultipartKit
+
 /** Enum for InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply
  
  SeeAlso Telegram Bot API Reference:
  [Reply Markups](https://core.telegram.org/bots/2-0-intro#new-inline-keyboards)
  */
-public enum ReplyMarkup: Codable, MultipartPartNestedConvertible {
+public enum ReplyMarkup: Codable, MultipartPartConvertible {
     case inlineKeyboardMarkup(InlineKeyboardMarkup)
     case replyKeyboardMarkup(ReplyKeyboardMarkup)
     case replyKeyboardRemove(ReplyKeyboardRemove)

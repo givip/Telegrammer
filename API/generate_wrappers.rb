@@ -302,7 +302,10 @@ def generate_model_file(f, node)
 			init_params_block << "#{var_name_camel}: #{correct_var_type_init}, "
 			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
-        
+        if type_name == "MaskPosition" then
+            out.write "import MultipartKit\n\n"
+        end
+
         out.write "/**\n"
         description.each_line { |line|
             out.write " #{line.strip}\n"
@@ -316,7 +319,7 @@ def generate_model_file(f, node)
         var_protocol = "Codable"
 
         if type_name == "MaskPosition" then
-            var_protocol += ", MultipartPartNestedConvertible"
+            var_protocol += ", MultipartPartConvertible"
         end
 
         if type_name.start_with?('InputMedia') then

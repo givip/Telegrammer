@@ -8,19 +8,14 @@
 import Foundation
 import MultipartKit
 
-public protocol MultipartPartNestedConvertible: MultipartPartConvertible {}
-
-public extension MultipartPartNestedConvertible where Self: Codable {
+public extension MultipartPartConvertible where Self: Codable {
     init?(multipart: MultipartPart) {
-        guard let bytes = multipart.body.getBytes(
-            at: 0,
-            length: multipart.body.writerIndex
-            ) else {
-                return nil
+        guard let data = Data(multipart: multipart) else {
+            return nil
         }
 
         do {
-            self = try JSONDecoder().decode(Self.self, from: Data(bytes))
+            self = try JSONDecoder().decode(Self.self, from: data)
         } catch {
             log.error(error.logMessage)
             return nil
