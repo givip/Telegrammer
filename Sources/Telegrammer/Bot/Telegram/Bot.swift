@@ -6,8 +6,15 @@
 //
 
 import Foundation
-import HTTP
-import Logging_swift
+import Logging
+import NIO
+import NIOHTTP1
+import AsyncHTTPClient
+
+//TODO: Implement our own LogHandler
+let log = Logger(label: "com.gp-apps.telegrammer")
+
+public typealias Worker = EventLoopGroup
 
 public final class Bot: BotProtocol {
 
@@ -31,8 +38,8 @@ public final class Bot: BotProtocol {
     /// Bot parameters container
     public let settings: Settings
 
-    let requestWorker: Worker
     let boundary: String
+    let clientWorker: MultiThreadedEventLoopGroup
 
     public convenience init(token: String) throws {
         try self.init(settings: Bot.Settings(token: token))
@@ -40,93 +47,80 @@ public final class Bot: BotProtocol {
 
     public init(settings: Settings, numThreads: Int = System.coreCount) throws {
         self.settings = settings
-        self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
-        self.client = try BotClient(host: settings.serverHost,
-                                    port: settings.serverPort,
-                                    token: settings.token,
-                                    worker: self.requestWorker)
+        self.clientWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
+        let groupProvider = HTTPClient.EventLoopGroupProvider.shared(self.clientWorker)
+        self.client = try BotClient(
+            host: settings.serverHost,
+            port: settings.serverPort,
+            token: settings.token,
+            worker: groupProvider
+        )
         self.boundary = String.random(ofLength: 20)
     }
 
-    func wrap<T: Codable>(_ container: TelegramContainer<T>) throws -> Future<T> {
-
-        log.info(logMessage(container))
-
-        if let result = container.result {
-            return Future.map(on: self.requestWorker, { result })
-        } else {
-            throw logError(container)
+    func processContainer<T: Codable>(_ container: TelegramContainer<T>) throws -> T {
+        guard container.ok else {
+            let desc = """
+            Response marked as `not Ok`, it seems something wrong with request
+            Code: \(container.errorCode ?? -1)
+            \(container.description ?? "Empty")
+            """
+            let error = CoreError(
+                type: .server,
+                description: desc
+            )
+            log.error(error.logMessage)
+            throw error
         }
+
+        guard let result = container.result else {
+            let error = CoreError(
+                type: .server,
+                reason: "Response marked as `Ok`, but doesn't contain `result` field."
+            )
+            log.error(error.logMessage)
+            throw error
+        }
+
+        let logString = """
+
+        Response:
+        Code: \(container.errorCode ?? 0)
+        Status OK: \(container.ok)
+        Description: \(container.description ?? "Empty")
+
+        """
+        log.info(logString.logMessage)
+        return result
     }
 
-    func httpBody(for object: Encodable?) throws -> HTTPBody {
-        guard let object = object else { return HTTPBody() }
+    func httpBody(for object: Encodable?) throws -> HTTPClient.Body? {
+        guard let object = object else {
+            return nil
+        }
 
         if let object = object as? JSONEncodable {
-            return HTTPBody(data: try object.encodeBody())
+            return .data(try object.encodeBody())
         }
 
         if let object = object as? MultipartEncodable {
-            let boundaryBytes = boundary.utf8.map { $0 }
-            return HTTPBody(data: try object.encodeBody(boundary: boundaryBytes))
+            return .string(try object.encodeBody(boundary: boundary))
         }
 
-        return HTTPBody()
+        return nil
     }
 
     func httpHeaders(for object: Encodable?) -> HTTPHeaders {
         guard let object = object else { return HTTPHeaders() }
 
         if object is JSONEncodable {
-            return HTTPHeaders.contentJson
+            return .contentJson
         }
 
         if object is MultipartEncodable {
-            return HTTPHeaders.typeFormData(boundary: boundary)
+            return .typeFormData(boundary: boundary)
         }
 
-        return HTTPHeaders()
-    }
-
-    func logMessage<T: Codable>(_ container: TelegramContainer<T>) -> Logger.Message {
-        var resultString = "[]"
-
-        if let result = container.result {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            do {
-                let data = try encoder.encode(result)
-                if let json = String(data: data, encoding: .utf8) {
-                    resultString = json
-                }
-            } catch {
-                if let value = container.result as? Bool {
-                    resultString = value.description
-                } else {
-                    log.error(error.logMessage)
-                }
-            }
-        }
-
-        let logString = """
-
-        Received response
-        Code: \(container.errorCode ?? 0)
-        Status OK: \(container.ok)
-        Description: \(container.description ?? "Empty")
-        Result: \(resultString)
-
-        """
-
-        return Logger.Message(stringLiteral: logString)
-    }
-
-    func logError<T: Codable>(_ container: TelegramContainer<T>) -> Error {
-        let error = CoreError(
-            identifier: "DecodingErrors",
-            reason: container.description ?? "Response error"
-        )
-        log.error(error.logMessage)
-        return error
+        return .empty
     }
 }

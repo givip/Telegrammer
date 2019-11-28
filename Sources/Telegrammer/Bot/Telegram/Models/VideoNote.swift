@@ -18,7 +18,7 @@ public final class VideoNote: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Video width and height (diameter of the video message) as defined by sender

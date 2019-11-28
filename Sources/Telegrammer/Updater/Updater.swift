@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 09.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 import NIO
 
 /**
@@ -69,7 +69,7 @@ public final class Updater {
             longpollingConnection.stop()
         }
         if let webhooksListener = webhooksListener {
-            webhooksListener.stop()
+            _ = try? webhooksListener.stop()
         }
     }
 }

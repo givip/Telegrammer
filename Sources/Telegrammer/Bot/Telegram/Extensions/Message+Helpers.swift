@@ -18,10 +18,12 @@ public extension Message {
      - Throws: Throws on errors
      */
     func reply(text: String, from bot: Bot, parseMode: ParseMode? = nil, replyMarkup: ReplyMarkup? = nil) throws {
-        let params = Bot.SendMessageParams(chatId: .chat(chat.id),
-                                           text: text,
-                                           parseMode: parseMode,
-                                           replyMarkup: replyMarkup)
+        let params = Bot.SendMessageParams(
+            chatId: .chat(chat.id),
+            text: text,
+            parseMode: parseMode,
+            replyMarkup: replyMarkup
+        )
         try bot.sendMessage(params: params)
     }
     
@@ -37,10 +39,12 @@ public extension Message {
      - Throws: Throws on errors
      */
     func edit(text: String, from bot: Bot, parseMode: ParseMode? = nil, replyMarkup: InlineKeyboardMarkup? = nil) throws {
-        let params = Bot.EditMessageTextParams(chatId: .chat(chat.id),
-                                               text: text,
-                                               parseMode: parseMode,
-                                               replyMarkup: replyMarkup)
+        let params = Bot.EditMessageTextParams(
+            chatId: .chat(chat.id),
+            text: text,
+            parseMode: parseMode,
+            replyMarkup: replyMarkup
+        )
         try bot.editMessageText(params: params)
     }
     
@@ -53,7 +57,10 @@ public extension Message {
      - Throws: Throws on errors
      */
     func delete(from bot: Bot) throws {
-        let params = Bot.DeleteMessageParams(chatId: .chat(chat.id), messageId: messageId)
+        let params = Bot.DeleteMessageParams(
+            chatId: .chat(chat.id),
+            messageId: messageId
+        )
         try bot.deleteMessage(params: params)
     }
 }

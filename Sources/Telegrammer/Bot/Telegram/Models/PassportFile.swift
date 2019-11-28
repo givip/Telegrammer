@@ -16,7 +16,7 @@ public final class PassportFile: Codable {
         case fileDate = "file_date"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// File size

@@ -5,7 +5,8 @@
 //  Created by Givi Pataridze on 26.02.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
+import NIOHTTP1
 
 extension HTTPHeaders {
     static var contentJson: HTTPHeaders {
@@ -34,5 +35,9 @@ extension HTTPHeaders {
         }
         
         return HTTPHeaders(headers)
+    }
+
+    static var empty: HTTPHeaders {
+        return HTTPHeaders()
     }
 }

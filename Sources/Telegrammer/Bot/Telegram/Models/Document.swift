@@ -18,7 +18,7 @@ public final class Document: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique file identifier
+    /// Identifier for this file
     public var fileId: String
 
     /// Optional. Document thumbnail as defined by sender
