@@ -19,16 +19,16 @@ public class Dispatcher {
 
     /// Telegram bot instance
     public let bot: Bot
-    
+
     /// Queue in which passes all incoming updates
     public let updateQueue: DispatchQueue
-    
+
     /// Worker which handle updates with appropriate handlers. Uses all available CPU cores by default.
     public let worker: Worker
-    
+
     /// Queue which keep all added handlers and gives appropriates
     public var handlersQueue: HandlersQueue
-    
+
     public init(bot: Bot, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
         self.bot = bot
         self.worker = worker
@@ -84,7 +84,7 @@ public extension Dispatcher {
      - group: Group of `Dispatcher`'s handler queue, `zero` group by default
      */
     func add(handler: Handler, to group: HandlerGroup = .zero) {
-        self.handlersQueue.add(handler, to: group)
+        handlersQueue.add(handler, to: group)
     }
 
     /**
@@ -97,7 +97,7 @@ public extension Dispatcher {
      - group: Group from which handlers will be removed
      */
     func remove(handler: Handler, from group: HandlerGroup) {
-        self.handlersQueue.remove(handler, from: group)
+        handlersQueue.remove(handler, from: group)
     }
 }
 

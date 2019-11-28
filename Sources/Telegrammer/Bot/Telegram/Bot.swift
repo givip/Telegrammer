@@ -90,7 +90,7 @@ public final class Bot: BotProtocol {
         Description: \(container.description ?? "Empty")
 
         """
-        log.debug(logString.logMessage)
+        log.info(logString.logMessage)
         return result
     }
 
