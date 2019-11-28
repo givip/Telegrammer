@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 
 /**
  Handler class to handle Telegram commands.
@@ -63,14 +63,18 @@ public class CommandHandler: Handler {
             let entities = message.entities else { return false }
         
         let types = entities.compactMap { (entity) -> String? in
-            let nsRange = NSRange(location: entity.offset, length: entity.length)
-            guard let range = Range(nsRange, in: text) else { return nil }
-            return String(text[range])
+            let start = text.index(text.startIndex, offsetBy: entity.offset)
+            let end = text.index(start, offsetBy: entity.length-1)
+            return String(text[start...end])
         }
         return !commands.intersection(types).isEmpty
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, nil)
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

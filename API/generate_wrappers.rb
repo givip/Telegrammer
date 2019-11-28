@@ -7,7 +7,7 @@ Bundler.require(:default)
 require 'fileutils'
 
 HTML_FILE = 'api.html'
-API_DIR = '../Sources/Telegrammer/Bot'
+API_DIR = '../Sources/Telegrammer/Bot/Telegram'
 API_FILE = 'api.txt'
 
 TYPE_HEADER = <<EOT
@@ -302,7 +302,10 @@ def generate_model_file(f, node)
 			init_params_block << "#{var_name_camel}: #{correct_var_type_init}, "
 			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
-        
+        if type_name == "MaskPosition" then
+            out.write "import MultipartKit\n\n"
+        end
+
         out.write "/**\n"
         description.each_line { |line|
             out.write " #{line.strip}\n"
@@ -316,7 +319,7 @@ def generate_model_file(f, node)
         var_protocol = "Codable"
 
         if type_name == "MaskPosition" then
-            var_protocol += ", MultipartPartNestedConvertible"
+            var_protocol += ", MultipartPartConvertible"
         end
 
         if type_name.start_with?('InputMedia') then
@@ -350,7 +353,7 @@ def generate_method(f, node)
 	File.open("#{API_DIR}/#{models_dir}/Bot+#{method_name}.swift", "wb") { | out |
 		out.write METHOD_HEADER
         out.write "\n"
-        out.write "import HTTP\n"
+#        out.write "import AsyncHTTPClient\n"
         out.write "\n"
 		out.write "public extension Bot {\n"
 		out.write "\n"
@@ -424,7 +427,8 @@ def generate_method(f, node)
         method_name_capitalized = method_name.dup
         method_name_capitalized = "#{method_name_capitalized.capitalize_first}Params"
 
-		body_param = ", body: HTTPBody(), headers: HTTPHeaders()"
+#		body_param = ", body: HTTPBody(), headers: HTTPHeaders()"
+        body_param = ""
 
         #Generate description
         method_description = ""
@@ -484,9 +488,11 @@ def generate_method(f, node)
 		body_param = ", body: body, headers: headers"
 	end
 	
-	out.write "#{TWO}let response: Future<TelegramContainer<#{result_type}>>\n"\
-			  "#{TWO}response = try client.respond(endpoint: \"#{method_name}\"#{body_param})\n"\
-			  "#{TWO}return response.flatMap(to: #{result_type}.self) { try self.wrap($0) }\n"\
+	out.write "#{TWO}return try client\n"\
+              "#{THREE}.request(endpoint: \"#{method_name}\"#{body_param})\n"\
+              "#{THREE}.flatMapThrowing { (container) -> #{result_type} in\n"\
+              "#{FOUR}return try self.processContainer(container)\n"\
+              "#{TWO}}\n"\
 			  "#{ONE}}\n"\
 			  "}\n"
 	}

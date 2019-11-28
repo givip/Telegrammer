@@ -50,19 +50,25 @@ class SpellCheckerController {
             let text = message.text,
             let user = message.from else { return }
         
-        spellChecker.check(text, lang: .en, format: .plain) { [unowned self] (checks) in
-            guard !checks.isEmpty else {
-                try self.congrat(message: message)
-                return
+        try spellChecker
+            .check(text, lang: .en, format: .plain)
+            .whenSuccess { (checks) in
+                do {
+                    guard !checks.isEmpty else {
+                        try self.congrat(message: message)
+                        return
+                    }
+
+                    let flow = YaSpellFlow()
+                    flow.start(text, checks: checks)
+
+                    self.sessions[user.id] = flow
+
+                    try self.begin(flow, to: message)
+                } catch {
+                    print(error.localizedDescription)
+                }
             }
-            
-            let flow = YaSpellFlow()
-            flow.start(text, checks: checks)
-            
-            self.sessions[user.id] = flow
-            
-            try self.begin(flow, to: message)
-        }
     }
     
     func inline(_ update: Update, _ context: BotContext?) throws {

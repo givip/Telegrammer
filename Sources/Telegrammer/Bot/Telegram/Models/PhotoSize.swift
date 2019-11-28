@@ -17,7 +17,7 @@ public final class PhotoSize: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Photo width

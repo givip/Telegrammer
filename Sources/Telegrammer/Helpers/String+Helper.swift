@@ -7,7 +7,10 @@
 
 
 import Foundation
+import Logging
+#if os(Linux)
 import COperatingSystem
+#endif
 
 public extension String {
     
@@ -74,8 +77,6 @@ public extension String {
         return regexp.numberOfMatches(in: self, options: [], range: range) != 0
     }
 }
-
-import Logging_swift
 
 public extension String {
     var logMessage: Logger.Message {

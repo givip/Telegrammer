@@ -21,7 +21,7 @@ public final class Animation: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique file identifier
+    /// Identifier for this file
     public var fileId: String
 
     /// Video width as defined by sender

@@ -15,17 +15,18 @@ public final class ChatMember: Codable {
         case status = "status"
         case untilDate = "until_date"
         case canBeEdited = "can_be_edited"
-        case canChangeInfo = "can_change_info"
         case canPostMessages = "can_post_messages"
         case canEditMessages = "can_edit_messages"
         case canDeleteMessages = "can_delete_messages"
-        case canInviteUsers = "can_invite_users"
         case canRestrictMembers = "can_restrict_members"
-        case canPinMessages = "can_pin_messages"
         case canPromoteMembers = "can_promote_members"
+        case canChangeInfo = "can_change_info"
+        case canInviteUsers = "can_invite_users"
+        case canPinMessages = "can_pin_messages"
         case isMember = "is_member"
         case canSendMessages = "can_send_messages"
         case canSendMediaMessages = "can_send_media_messages"
+        case canSendPolls = "can_send_polls"
         case canSendOtherMessages = "can_send_other_messages"
         case canAddWebPagePreviews = "can_add_web_page_previews"
     }
@@ -36,68 +37,72 @@ public final class ChatMember: Codable {
     /// The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
     public var status: String
 
-    /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user, unix time
+    /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
     public var untilDate: Int?
 
     /// Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     public var canBeEdited: Bool?
 
-    /// Optional. Administrators only. True, if the administrator can change the chat title, photo and other settings
-    public var canChangeInfo: Bool?
-
-    /// Optional. Administrators only. True, if the administrator can post in the channel, channels only
+    /// Optional. Administrators only. True, if the administrator can post in the channel; channels only
     public var canPostMessages: Bool?
 
-    /// Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages, channels only
+    /// Optional. Administrators only. True, if the administrator can edit messages of other users and can pin messages; channels only
     public var canEditMessages: Bool?
 
     /// Optional. Administrators only. True, if the administrator can delete messages of other users
     public var canDeleteMessages: Bool?
 
-    /// Optional. Administrators only. True, if the administrator can invite new users to the chat
-    public var canInviteUsers: Bool?
-
     /// Optional. Administrators only. True, if the administrator can restrict, ban or unban chat members
     public var canRestrictMembers: Bool?
-
-    /// Optional. Administrators only. True, if the administrator can pin messages, groups and supergroups only
-    public var canPinMessages: Bool?
 
     /// Optional. Administrators only. True, if the administrator can add new administrators with a subset of his own privileges or demote administrators that he has promoted, directly or indirectly (promoted by administrators that were appointed by the user)
     public var canPromoteMembers: Bool?
 
+    /// Optional. Administrators and restricted only. True, if the user is allowed to change the chat title, photo and other settings
+    public var canChangeInfo: Bool?
+
+    /// Optional. Administrators and restricted only. True, if the user is allowed to invite new users to the chat
+    public var canInviteUsers: Bool?
+
+    /// Optional. Administrators and restricted only. True, if the user is allowed to pin messages; groups and supergroups only
+    public var canPinMessages: Bool?
+
     /// Optional. Restricted only. True, if the user is a member of the chat at the moment of the request
     public var isMember: Bool?
 
-    /// Optional. Restricted only. True, if the user can send text messages, contacts, locations and venues
+    /// Optional. Restricted only. True, if the user is allowed to send text messages, contacts, locations and venues
     public var canSendMessages: Bool?
 
-    /// Optional. Restricted only. True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
+    /// Optional. Restricted only. True, if the user is allowed to send audios, documents, photos, videos, video notes and voice notes
     public var canSendMediaMessages: Bool?
 
-    /// Optional. Restricted only. True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
+    /// Optional. Restricted only. True, if the user is allowed to send polls
+    public var canSendPolls: Bool?
+
+    /// Optional. Restricted only. True, if the user is allowed to send animations, games, stickers and use inline bots
     public var canSendOtherMessages: Bool?
 
-    /// Optional. Restricted only. True, if user may add web page previews to his messages, implies can_send_media_messages
+    /// Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
     public var canAddWebPagePreviews: Bool?
 
 
-    public init (user: User, status: String, untilDate: Int? = nil, canBeEdited: Bool? = nil, canChangeInfo: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canInviteUsers: Bool? = nil, canRestrictMembers: Bool? = nil, canPinMessages: Bool? = nil, canPromoteMembers: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
+    public init (user: User, status: String, untilDate: Int? = nil, canBeEdited: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canRestrictMembers: Bool? = nil, canPromoteMembers: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
         self.user = user
         self.status = status
         self.untilDate = untilDate
         self.canBeEdited = canBeEdited
-        self.canChangeInfo = canChangeInfo
         self.canPostMessages = canPostMessages
         self.canEditMessages = canEditMessages
         self.canDeleteMessages = canDeleteMessages
-        self.canInviteUsers = canInviteUsers
         self.canRestrictMembers = canRestrictMembers
-        self.canPinMessages = canPinMessages
         self.canPromoteMembers = canPromoteMembers
+        self.canChangeInfo = canChangeInfo
+        self.canInviteUsers = canInviteUsers
+        self.canPinMessages = canPinMessages
         self.isMember = isMember
         self.canSendMessages = canSendMessages
         self.canSendMediaMessages = canSendMediaMessages
+        self.canSendPolls = canSendPolls
         self.canSendOtherMessages = canSendOtherMessages
         self.canAddWebPagePreviews = canAddWebPagePreviews
     }

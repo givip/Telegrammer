@@ -17,7 +17,7 @@ public final class Voice: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Duration of the audio in seconds as defined by sender

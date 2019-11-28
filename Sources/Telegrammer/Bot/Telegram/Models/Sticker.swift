@@ -14,6 +14,7 @@ public final class Sticker: Codable {
         case fileId = "file_id"
         case width = "width"
         case height = "height"
+        case isAnimated = "is_animated"
         case thumb = "thumb"
         case emoji = "emoji"
         case setName = "set_name"
@@ -21,7 +22,7 @@ public final class Sticker: Codable {
         case fileSize = "file_size"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Sticker width
@@ -29,6 +30,9 @@ public final class Sticker: Codable {
 
     /// Sticker height
     public var height: Int
+
+    /// True, if the sticker is animated
+    public var isAnimated: Bool
 
     /// Optional. Sticker thumbnail in the .webp or .jpg format
     public var thumb: PhotoSize?
@@ -46,10 +50,11 @@ public final class Sticker: Codable {
     public var fileSize: Int?
 
 
-    public init (fileId: String, width: Int, height: Int, thumb: PhotoSize? = nil, emoji: String? = nil, setName: String? = nil, maskPosition: MaskPosition? = nil, fileSize: Int? = nil) {
+    public init (fileId: String, width: Int, height: Int, isAnimated: Bool, thumb: PhotoSize? = nil, emoji: String? = nil, setName: String? = nil, maskPosition: MaskPosition? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.width = width
         self.height = height
+        self.isAnimated = isAnimated
         self.thumb = thumb
         self.emoji = emoji
         self.setName = setName

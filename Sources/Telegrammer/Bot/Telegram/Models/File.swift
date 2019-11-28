@@ -17,7 +17,7 @@ public final class File: Codable {
         case filePath = "file_path"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file
     public var fileId: String
 
     /// Optional. File size, if known

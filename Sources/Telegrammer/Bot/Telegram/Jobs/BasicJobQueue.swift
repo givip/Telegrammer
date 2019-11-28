@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import HTTP
+import NIO
+import AsyncHTTPClient
 
 public class BasicJobQueue<C>: JobQueue {
 
@@ -33,14 +34,17 @@ public class BasicJobQueue<C>: JobQueue {
         let startTime = job.startTime.timeIntervalSince(Date())
 
         if startTime < 0 {
-            throw CoreError(identifier: "JobQueue", reason: "Job start date is in the past, skipping this job")
+            throw CoreError(
+                type: .internal,
+                reason: "Job start date is in the past, skipping this job"
+            )
         }
 
         let typeErasedJob = AnyJob(job)
 
         jobs.append(typeErasedJob)
         
-        return worker.eventLoop.scheduleTask(in: .seconds(Int(round(startTime)))) { () -> J in
+        return worker.next().scheduleTask(in: .seconds(Int64(round(startTime)))) { () -> J in
             try typeErasedJob.run(self.bot)
             return job
         }
@@ -57,9 +61,9 @@ public class BasicJobQueue<C>: JobQueue {
 
         jobs.append(typeErasedJob)
 
-        let initialDelay: TimeAmount = .seconds(Int(round(startTime)))
+        let initialDelay: TimeAmount = .seconds(Int64(round(startTime)))
 
-        return worker.eventLoop.scheduleRepeatedTask(initialDelay: initialDelay, delay: typeErasedJob.interval) { _ in
+        return worker.next().scheduleRepeatedTask(initialDelay: initialDelay, delay: typeErasedJob.interval) { _ in
             try typeErasedJob.run(self.bot)
         }
     }
