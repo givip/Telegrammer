@@ -52,10 +52,10 @@ public class Longpolling: Connection {
         )
         
         _ = worker.next().submit {
-            try self.bot.deleteWebhook().whenSuccess({ (success) in
+            try self.bot.deleteWebhook().whenSuccess { (success) in
                 guard success else { return }
                 self.longpolling(with: params)
-            })
+            }
         }
         
         return promise.futureResult
