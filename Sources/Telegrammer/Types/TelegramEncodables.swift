@@ -11,7 +11,7 @@ import MultipartKit
 /// Represent Telegram type, which will be encoded as Json on sending to server
 protocol JSONEncodable: Encodable {}
 
-extension JSONEncodable {    
+extension JSONEncodable {
     func encodeBody() throws -> Data {
         return try JSONEncoder().encode(self)
     }

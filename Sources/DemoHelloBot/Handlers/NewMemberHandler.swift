@@ -27,7 +27,11 @@ class NewMemberHandler: Handler {
         return true
     }
     
-    func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update)
+    func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
 }

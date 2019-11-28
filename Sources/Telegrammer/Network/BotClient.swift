@@ -70,7 +70,7 @@ public class BotClient {
 
 extension HTTPClient.Body {
     static var empty: HTTPClient.Body {
-        return HTTPClient.Body.string("")
+        return .string("")
     }
 }
 

@@ -92,31 +92,33 @@ public final class Bot: BotProtocol {
         return result
     }
 
-    func httpBody(for object: Encodable?) throws -> HTTPClient.Body {
-        guard let object = object else { return HTTPClient.Body.empty }
+    func httpBody(for object: Encodable?) throws -> HTTPClient.Body? {
+        guard let object = object else {
+            return nil
+        }
 
         if let object = object as? JSONEncodable {
-            return HTTPClient.Body.data(try object.encodeBody())
+            return .data(try object.encodeBody())
         }
 
         if let object = object as? MultipartEncodable {
-            return HTTPClient.Body.string(try object.encodeBody(boundary: boundary))
+            return .string(try object.encodeBody(boundary: boundary))
         }
 
-        return HTTPClient.Body.string("")
+        return nil
     }
 
     func httpHeaders(for object: Encodable?) -> HTTPHeaders {
         guard let object = object else { return HTTPHeaders() }
 
         if object is JSONEncodable {
-            return HTTPHeaders.contentJson
+            return .contentJson
         }
 
         if object is MultipartEncodable {
-            return HTTPHeaders.typeFormData(boundary: boundary)
+            return .typeFormData(boundary: boundary)
         }
 
-        return HTTPHeaders()
+        return .empty
     }
 }

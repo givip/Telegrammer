@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Telegrammer
 import AsyncHTTPClient
 
 enum Lang: String {
@@ -30,7 +31,7 @@ enum Command: String {
 protocol SpellChecker {
     associatedtype T
     var url: String { get }
-    func check(_ text: String, lang: Lang, format: Format, callback: @escaping ([T]) throws -> ())
+    func check(_ text: String, lang: Lang, format: Format) throws -> Future<[T]>
 }
 
 protocol SpellFlow {

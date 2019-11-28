@@ -10,26 +10,27 @@ let package = Package(
     ],
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
-        .executable(name: "EchoBot", targets: ["EchoBot"]),
-        .executable(name: "HelloBot", targets: ["HelloBot"]),
-        .executable(name: "SchedulerBot", targets: ["SchedulerBot"]),
-        .executable(name: "SpellCheckerBot", targets: ["SpellCheckerBot"])
+        .executable(name: "EchoBot", targets: ["DemoEchoBot"]),
+        .executable(name: "HelloBot", targets: ["DemoHelloBot"]),
+        .executable(name: "SchedulerBot", targets: ["DemoSchedulerBot"]),
+        .executable(name: "SpellCheckerBot", targets: ["DemoSpellCheckerBot"]),
+        .executable(name: "WebhooksLocally", targets: ["DemoWebhooksLocally"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.2.0"),
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.0.0"),
-        .package(url: "https://github.com/vapor/multipart-kit.git", from: "4.0.0-beta"),
-        .package(url: "https://github.com/apple/swift-nio-extras.git", from: "1.0.0"),
+        .package(url: "https://github.com/vapor/multipart-kit.git", from: "4.0.0-beta")
     ],
     targets: [
         .target(
             name: "Telegrammer",
-            dependencies: ["AsyncHTTPClient", "MultipartKit", "Logging"]),
-        .target(name: "EchoBot", dependencies: ["Telegrammer"]),
-        .target(name: "HelloBot", dependencies: ["Telegrammer"]),
-        .target(name: "SchedulerBot", dependencies: ["Telegrammer"]),
-        .target(name: "SpellCheckerBot", dependencies: ["Telegrammer"]),
-        .target(name: "TestWebhooksLocally", dependencies: ["Telegrammer"]),
+            dependencies: ["AsyncHTTPClient", "MultipartKit", "Logging"]
+        ),
+        .target(name: "DemoEchoBot", dependencies: ["Telegrammer"]),
+        .target(name: "DemoHelloBot", dependencies: ["Telegrammer"]),
+        .target(name: "DemoSchedulerBot", dependencies: ["Telegrammer"]),
+        .target(name: "DemoSpellCheckerBot", dependencies: ["Telegrammer"]),
+        .target(name: "DemoWebhooksLocally", dependencies: ["Telegrammer"]),
         .testTarget(name: "TelegrammerTests", dependencies: ["Telegrammer"])
     ]
 )

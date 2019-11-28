@@ -39,7 +39,10 @@ func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
         userEchoModes[user.id] = true
     }
     
-    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
+    let params = Bot.SendMessageParams(
+        chatId: .chat(message.chat.id),
+        text: "Echo mode turned \(onText)"
+    )
     try bot.sendMessage(params: params)
 }
 

@@ -8,9 +8,7 @@
 import Foundation
 import Logging
 
-public class BotError: Error {
-    
-}
+public class BotError: Error {}
 
 public class CoreError: Error {
     public enum `Type` {
@@ -19,17 +17,17 @@ public class CoreError: Error {
         case server
     }
 
-    let type: Type
-    let description: String
-    let reason: String
+    public let type: Type
+    public let description: String
+    public let reason: String
 
-    init(type: Type, description: String = "", reason: String = "") {
+    public init(type: Type, description: String = "", reason: String = "") {
         self.type = type
         self.description = description
         self.reason = reason
     }
 
-    var localizedDescription: String {
+    public var localizedDescription: String {
         return """
 
         >>>Type: \(type)
