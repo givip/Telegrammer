@@ -46,10 +46,10 @@ public extension Bot {
     func getUserProfilePhotos(params: GetUserProfilePhotosParams) throws -> Future<UserProfilePhotos> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<UserProfilePhotos>>
-        response = try client.respond(endpoint: "getUserProfilePhotos", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> UserProfilePhotos in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getUserProfilePhotos", body: body, headers: headers)
+            .flatMapThrowing { (container) -> UserProfilePhotos in
+                return try self.processContainer(container)
         }
     }
 }

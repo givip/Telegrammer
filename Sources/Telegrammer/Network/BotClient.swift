@@ -40,36 +40,24 @@ public class BotClient {
     ///   - client: custom client, if not metioned, uses default
     /// - Returns: Container with response
     /// - Throws: Errors
-    func respond<T: Codable>(endpoint: String, body: HTTPClient.Body? = nil, headers: HTTPHeaders = .empty) throws -> Future<TelegramContainer<T>> {
+    func request<T: Codable>(endpoint: String, body: HTTPClient.Body? = nil, headers: HTTPHeaders = .empty) throws -> Future<TelegramContainer<T>> {
         let url = apiUrl(endpoint: endpoint)
-        let httpRequest = try HTTPClient.Request(
+        let request = try HTTPClient.Request(
             url: url,
             method: .POST,
             headers: headers,
             body: body
         )
-        
-        let promise = worker.next().makePromise(of: TelegramContainer<T>.self)
-        
-        log.info("Sending request:\n\(httpRequest.description)")
-        
-        worker.next().execute {
-            self.send(request: httpRequest).whenSuccess({ (container) in
-                promise.succeed(container)
-            })
-        }
-        return promise.futureResult
-    }
-    
-    private func send<T: Codable>(request: HTTPClient.Request) -> Future<TelegramContainer<T>> {
+
+        log.info("Sending request:\n\(request.description)")
+
         return client
             .execute(request: request)
             .flatMapThrowing({ (response) -> TelegramContainer<T> in
-                log.info("Decoding response from HTTPClient")
                 return try self.decode(response: response)
             })
     }
-    
+
     func decode<T: Encodable>(response: HTTPClient.Response) throws -> TelegramContainer<T> {
         guard let body = response.body else {
             throw BotError()

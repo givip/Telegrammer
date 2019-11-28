@@ -36,10 +36,10 @@ public extension Bot {
     func getChatMembersCount(params: GetChatMembersCountParams) throws -> Future<Int> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Int>>
-        response = try client.respond(endpoint: "getChatMembersCount", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Int in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getChatMembersCount", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Int in
+                return try self.processContainer(container)
         }
     }
 }

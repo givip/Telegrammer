@@ -61,10 +61,10 @@ public extension Bot {
     func sendPoll(params: SendPollParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Message>>
-        response = try client.respond(endpoint: "sendPoll", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Message in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "sendPoll", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Message in
+                return try self.processContainer(container)
         }
     }
 }

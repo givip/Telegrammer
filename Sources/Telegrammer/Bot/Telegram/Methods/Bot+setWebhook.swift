@@ -54,10 +54,10 @@ public extension Bot {
     func setWebhook(params: SetWebhookParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Bool>>
-        response = try client.respond(endpoint: "setWebhook", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Bool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "setWebhook", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Bool in
+                return try self.processContainer(container)
         }
     }
 }

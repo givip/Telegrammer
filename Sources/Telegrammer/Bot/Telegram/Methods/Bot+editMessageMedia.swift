@@ -56,10 +56,10 @@ public extension Bot {
     func editMessageMedia(params: EditMessageMediaParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<MessageOrBool>>
-        response = try client.respond(endpoint: "editMessageMedia", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> MessageOrBool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "editMessageMedia", body: body, headers: headers)
+            .flatMapThrowing { (container) -> MessageOrBool in
+                return try self.processContainer(container)
         }
     }
 }

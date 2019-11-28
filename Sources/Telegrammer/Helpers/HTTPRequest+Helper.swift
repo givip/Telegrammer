@@ -11,9 +11,15 @@ import AsyncHTTPClient
 extension HTTPClient.Request {
     var description: String {
         """
-        \(self.method.rawValue) \(self.url.absoluteString)
-        \(self.headers.description)
-        \(self.body.debugDescription)
+        Request: \(self.method.rawValue) \(self.url.absoluteString)
+        Headers: \(self.headers.description)
+        Body: \(self.body.debugDescription)
         """
+    }
+}
+
+extension HTTPClient.Body {
+    var description: String {
+        fatalError("Not implemented yet")
     }
 }

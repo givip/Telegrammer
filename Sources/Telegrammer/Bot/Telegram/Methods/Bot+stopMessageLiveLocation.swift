@@ -51,10 +51,10 @@ public extension Bot {
     func stopMessageLiveLocation(params: StopMessageLiveLocationParams? = nil) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<MessageOrBool>>
-        response = try client.respond(endpoint: "stopMessageLiveLocation", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> MessageOrBool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "stopMessageLiveLocation", body: body, headers: headers)
+            .flatMapThrowing { (container) -> MessageOrBool in
+                return try self.processContainer(container)
         }
     }
 }

@@ -46,44 +46,48 @@ public final class Bot: BotProtocol {
     public init(settings: Settings, numThreads: Int = System.coreCount) throws {
         self.settings = settings
         self.requestWorker = MultiThreadedEventLoopGroup(numberOfThreads: numThreads)
-        self.client = try BotClient(host: settings.serverHost,
-                                    port: settings.serverPort,
-                                    token: settings.token,
-                                    worker: self.requestWorker)
+        self.client = try BotClient(
+            host: settings.serverHost,
+            port: settings.serverPort,
+            token: settings.token,
+            worker: self.requestWorker
+        )
         self.boundary = String.random(ofLength: 20)
     }
 
     func processContainer<T: Codable>(_ container: TelegramContainer<T>) throws -> T {
         guard container.ok else {
             let desc = """
-            Received BAD response from Telegram
+            Response marked as `not Ok`, it seems something wrong with request
             Code: \(container.errorCode ?? -1)
-            Description: \(container.description ?? "Empty")
+            \(container.description ?? "Empty")
             """
-            throw CoreError(
+            let error = CoreError(
                 type: .server,
-                description: desc,
-                reason: "Response marked as `Ok`, but doesn't contain `result` field."
+                description: desc
             )
+            log.error(error.logMessage)
+            throw error
         }
 
         guard let result = container.result else {
-            throw CoreError(
+            let error = CoreError(
                 type: .server,
                 reason: "Response marked as `Ok`, but doesn't contain `result` field."
             )
+            log.error(error.logMessage)
+            throw error
         }
 
         let logString = """
 
-        Received response from Telegram
+        Response:
         Code: \(container.errorCode ?? 0)
         Status OK: \(container.ok)
         Description: \(container.description ?? "Empty")
 
         """
-        log.debug(Logger.Message(stringLiteral: logString))
-
+        log.debug(logString.logMessage)
         return result
     }
 

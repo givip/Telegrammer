@@ -71,10 +71,10 @@ public extension Bot {
     func sendVoice(params: SendVoiceParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Message>>
-        response = try client.respond(endpoint: "sendVoice", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Message in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "sendVoice", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Message in
+                return try self.processContainer(container)
         }
     }
 }

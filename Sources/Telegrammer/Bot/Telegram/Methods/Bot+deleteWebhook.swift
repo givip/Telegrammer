@@ -18,10 +18,10 @@ public extension Bot {
      */
     @discardableResult
     func deleteWebhook() throws -> Future<Bool> {
-        let response: Future<TelegramContainer<Bool>>
-        response = try client.respond(endpoint: "deleteWebhook")
-        return response.flatMapThrowing { (container) -> Bool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "deleteWebhook")
+            .flatMapThrowing { (container) -> Bool in
+                return try self.processContainer(container)
         }
     }
 }

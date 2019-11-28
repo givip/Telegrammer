@@ -41,10 +41,10 @@ public extension Bot {
     func uploadStickerFile(params: UploadStickerFileParams) throws -> Future<File> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<File>>
-        response = try client.respond(endpoint: "uploadStickerFile", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> File in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "uploadStickerFile", body: body, headers: headers)
+            .flatMapThrowing { (container) -> File in
+                return try self.processContainer(container)
         }
     }
 }

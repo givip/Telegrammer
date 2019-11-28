@@ -122,9 +122,8 @@ private extension Dispatcher {
     func submit(update: Update) {
         handlersQueue.next(for: update).forEach { (handler) in
             _ = worker.next().submit { () -> Void in
-                try handler.handle(update: update, dispatcher: self)
+                handler.handle(update: update, dispatcher: self)
             }
         }
     }
 }
-

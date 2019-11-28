@@ -69,10 +69,10 @@ public extension Bot {
     func answerInlineQuery(params: AnswerInlineQueryParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Bool>>
-        response = try client.respond(endpoint: "answerInlineQuery", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Bool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "answerInlineQuery", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Bool in
+                return try self.processContainer(container)
         }
     }
 }

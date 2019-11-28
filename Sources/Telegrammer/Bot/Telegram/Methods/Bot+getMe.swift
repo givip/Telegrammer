@@ -18,10 +18,10 @@ public extension Bot {
      */
     @discardableResult
     func getMe() throws -> Future<User> {
-        let response: Future<TelegramContainer<User>>
-        response = try client.respond(endpoint: "getMe")
-        return response.flatMapThrowing { (container) -> User in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getMe")
+            .flatMapThrowing { (container) -> User in
+                return try self.processContainer(container)
         }
     }
 }

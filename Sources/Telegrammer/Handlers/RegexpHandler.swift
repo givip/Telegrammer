@@ -44,7 +44,11 @@ public class RegexpHandler: Handler {
         return regexp.numberOfMatches(in: text, options: [], range: range) > 0
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, nil)
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

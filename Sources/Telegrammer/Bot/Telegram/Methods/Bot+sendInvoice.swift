@@ -146,10 +146,10 @@ public extension Bot {
     func sendInvoice(params: SendInvoiceParams) throws -> Future<Message> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Message>>
-        response = try client.respond(endpoint: "sendInvoice", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Message in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "sendInvoice", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Message in
+                return try self.processContainer(container)
         }
     }
 }

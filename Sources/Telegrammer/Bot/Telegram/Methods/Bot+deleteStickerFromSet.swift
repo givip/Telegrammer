@@ -36,10 +36,10 @@ public extension Bot {
     func deleteStickerFromSet(params: DeleteStickerFromSetParams) throws -> Future<Bool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Bool>>
-        response = try client.respond(endpoint: "deleteStickerFromSet", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Bool in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "deleteStickerFromSet", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Bool in
+                return try self.processContainer(container)
         }
     }
 }

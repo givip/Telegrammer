@@ -19,7 +19,7 @@ public class LoggerHandler: Handler {
         return true
     }
 
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
+    public func handle(update: Update, dispatcher: Dispatcher) {
         log.log(level: logLevel, update.logMessage)
     }
 }

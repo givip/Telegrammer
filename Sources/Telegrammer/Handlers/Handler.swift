@@ -20,7 +20,7 @@ public protocol Handler {
     var name: String { get }
     
     func check(update: Update) -> Bool
-    func handle(update: Update, dispatcher: Dispatcher) throws
+    func handle(update: Update, dispatcher: Dispatcher)
 }
 
 extension Handler {

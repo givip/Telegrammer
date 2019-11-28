@@ -488,10 +488,10 @@ def generate_method(f, node)
 		body_param = ", body: body, headers: headers"
 	end
 	
-	out.write "#{TWO}let response: Future<TelegramContainer<#{result_type}>>\n"\
-			  "#{TWO}response = try client.respond(endpoint: \"#{method_name}\"#{body_param})\n"\
-              "#{TWO}return response.flatMapThrowing { (container) -> #{result_type} in\n"\
-              "#{THREE}return try self.processContainer(container)\n"\
+	out.write "#{TWO}return try client\n"\
+              "#{THREE}.request(endpoint: \"#{method_name}\"#{body_param})\n"\
+              "#{THREE}.flatMapThrowing { (container) -> #{result_type} in\n"\
+              "#{FOUR}return try self.processContainer(container)\n"\
               "#{TWO}}\n"\
 			  "#{ONE}}\n"\
 			  "}\n"

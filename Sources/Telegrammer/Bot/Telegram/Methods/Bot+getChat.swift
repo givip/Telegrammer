@@ -36,10 +36,10 @@ public extension Bot {
     func getChat(params: GetChatParams) throws -> Future<Chat> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<Chat>>
-        response = try client.respond(endpoint: "getChat", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> Chat in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getChat", body: body, headers: headers)
+            .flatMapThrowing { (container) -> Chat in
+                return try self.processContainer(container)
         }
     }
 }

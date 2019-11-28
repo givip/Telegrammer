@@ -8,4 +8,5 @@
 import Foundation
 import Logging
 
+//TODO: Implement our own LogHandler
 let log = Logger(label: "com.gp-apps.telegrammer")

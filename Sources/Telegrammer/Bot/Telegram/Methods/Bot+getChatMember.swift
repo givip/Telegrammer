@@ -41,10 +41,10 @@ public extension Bot {
     func getChatMember(params: GetChatMemberParams) throws -> Future<ChatMember> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<ChatMember>>
-        response = try client.respond(endpoint: "getChatMember", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> ChatMember in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getChatMember", body: body, headers: headers)
+            .flatMapThrowing { (container) -> ChatMember in
+                return try self.processContainer(container)
         }
     }
 }

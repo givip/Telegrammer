@@ -52,10 +52,10 @@ public extension Bot {
     func getGameHighScores(params: GetGameHighScoresParams) throws -> Future<[GameHighScore]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<[GameHighScore]>>
-        response = try client.respond(endpoint: "getGameHighScores", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> [GameHighScore] in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getGameHighScores", body: body, headers: headers)
+            .flatMapThrowing { (container) -> [GameHighScore] in
+                return try self.processContainer(container)
         }
     }
 }

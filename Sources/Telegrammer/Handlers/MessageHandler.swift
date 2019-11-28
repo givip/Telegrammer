@@ -66,7 +66,11 @@ public class MessageHandler: Handler {
         return false
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, nil)
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

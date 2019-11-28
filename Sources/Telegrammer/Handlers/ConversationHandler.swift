@@ -54,7 +54,11 @@ public class ConversationHandler: Handler {
         return true
     }
     
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

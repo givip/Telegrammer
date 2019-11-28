@@ -36,10 +36,10 @@ public extension Bot {
     func getStickerSet(params: GetStickerSetParams) throws -> Future<StickerSet> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<StickerSet>>
-        response = try client.respond(endpoint: "getStickerSet", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> StickerSet in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getStickerSet", body: body, headers: headers)
+            .flatMapThrowing { (container) -> StickerSet in
+                return try self.processContainer(container)
         }
     }
 }

@@ -53,10 +53,10 @@ public extension Bot {
     func getUpdates(params: GetUpdatesParams? = nil) throws -> Future<[Update]> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
-        let response: Future<TelegramContainer<[Update]>>
-        response = try client.respond(endpoint: "getUpdates", body: body, headers: headers)
-        return response.flatMapThrowing { (container) -> [Update] in
-            return try self.processContainer(container)
+        return try client
+            .request(endpoint: "getUpdates", body: body, headers: headers)
+            .flatMapThrowing { (container) -> [Update] in
+                return try self.processContainer(container)
         }
     }
 }
