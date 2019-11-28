@@ -28,5 +28,3 @@ extension Handler {
         return String(describing: Self.self)
     }
 }
-
-public protocol ErrorHandler: Handler { }

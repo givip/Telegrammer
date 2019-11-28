@@ -23,17 +23,8 @@ public final class HandlersQueue {
         return handlers
     }
     
-    public var errorHandlers: [ErrorHandler] {
-        var errorHandlers: [ErrorHandler] = []
-        concurrentQueue.sync {
-            errorHandlers = _errorHandlers
-        }
-        return errorHandlers
-    }
-    
     private var _handlers: [HandlerGroup: [Handler]] = [:]
     private var _handlersGroup: [[Handler]] = []
-    private var _errorHandlers: [ErrorHandler] = []
     
     private let concurrentQueue = DispatchQueue(
         label: "TLGRM-HANDLERS-QUEUE",
@@ -64,14 +55,6 @@ public final class HandlersQueue {
                 self._handlers[group] = groupHandlers
             }
         }
-    }
-    
-    public func add(_ errorHandler: ErrorHandler) {
-        _errorHandlers.append(errorHandler)
-    }
-    
-    public func remove(_ errorHandler: ErrorHandler) {
-        _errorHandlers = _errorHandlers.filter( { $0.name != errorHandler.name } )
     }
     
     private func sortGroups() {

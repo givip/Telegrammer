@@ -42,7 +42,6 @@ public class Dispatcher {
         self.handlersQueue = HandlersQueue()
     }
 
-    
     /**
      Enqueue new updates array to Updates queue
 
@@ -57,15 +56,19 @@ public class Dispatcher {
         }
     }
 
+    /**
+     Enqueue update as ByteBuffer to Updates queue
+
+     - Parameters:
+     - bytebuffer: Array of Telegram updates
+     */
     public func enqueue(bytebuffer: ByteBuffer) {
         guard let data = bytebuffer.getBytes(at: 0, length: bytebuffer.writerIndex) else {
             return
         }
         do {
             let update = try JSONDecoder().decode(Update.self, from: Data(data))
-            updateQueue.async {
-                self.submit(update: update)
-            }
+            enqueue(updates: [update])
         } catch {
             log.error(error.logMessage)
         }
@@ -85,16 +88,6 @@ public extension Dispatcher {
     }
 
     /**
-     Add new error handler to group
-     
-     - Parameters:
-     - handler: Error Handler to add in `Dispatcher`'s handlers queue
-     */
-    func add(errorHandler: ErrorHandler) {
-        self.handlersQueue.add(errorHandler)
-    }
-
-    /**
      Remove handler from specific group of `Dispatchers`'s queue
      
      Note: If in one group present more then one handlers with the same name, they both will be deleted
@@ -105,16 +98,6 @@ public extension Dispatcher {
      */
     func remove(handler: Handler, from group: HandlerGroup) {
         self.handlersQueue.remove(handler, from: group)
-    }
-
-    /**
-     Removes error handler
-     
-     - Parameters:
-     - handler: Handler to be removed
-     */
-    func remove(errorHandler: ErrorHandler) {
-        self.handlersQueue.remove(errorHandler)
     }
 }
 

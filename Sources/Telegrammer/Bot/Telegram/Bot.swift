@@ -11,6 +11,8 @@ import NIO
 import NIOHTTP1
 import AsyncHTTPClient
 
+//TODO: Implement our own LogHandler
+let log = Logger(label: "com.gp-apps.telegrammer")
 
 public typealias Worker = EventLoopGroup
 
