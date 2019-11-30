@@ -9,7 +9,7 @@
 import Foundation
 import Logging
 #if os(Linux)
-import COperatingSystem
+import Glibc
 #endif
 
 public extension String {
@@ -63,7 +63,7 @@ public extension Int {
     
     static func random(_ lower: Int = 0, _ upper: Int = 100) -> Int {
         #if os(Linux)
-        return Int(COperatingSystem.random() % (upper - lower + 1))
+        return Int(Glibc.random() % (upper - lower + 1))
         #else
         return Int(arc4random_uniform(UInt32(upper - lower + 1)))
         #endif
