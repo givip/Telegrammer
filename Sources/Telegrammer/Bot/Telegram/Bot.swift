@@ -104,7 +104,7 @@ public final class Bot: BotProtocol {
         }
 
         if let object = object as? MultipartEncodable {
-            return .string(try object.encodeBody(boundary: boundary))
+            return .byteBuffer(try object.encodeBody(boundary: boundary))
         }
 
         return nil
