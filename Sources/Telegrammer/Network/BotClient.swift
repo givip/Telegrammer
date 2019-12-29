@@ -15,14 +15,24 @@ public class BotClient {
     let host: String
     let port: Int
     let token: String
-
     var client: HTTPClient
-    
-    public init(host: String, port: Int, token: String, worker: HTTPClient.EventLoopGroupProvider) throws {
+
+    /// Default init for BotClient (HTTP client), all parameters except `proxy` are oblibatory
+    /// - Parameters:
+    ///   - host: Host for requests (without scheme)
+    ///   - port: Port for requests
+    ///   - token: Bot auth token
+    ///   - proxy: Proxy parrameters
+    ///   - worker: Worker on which will be performed request
+    public init(host: String, port: Int, token: String, proxy: HTTPClient.Configuration.Proxy? = nil, worker: HTTPClient.EventLoopGroupProvider) throws {
         self.host = host
         self.port = port
         self.token = token
-        self.client = HTTPClient(eventLoopGroupProvider: worker)
+        let config = HTTPClient.Configuration(
+            certificateVerification: .fullVerification,
+            proxy: proxy
+        )
+        self.client = HTTPClient(eventLoopGroupProvider: worker, configuration: config)
     }
     
     /// Sends request to api.telegram.org, and receive TelegramContainer object
