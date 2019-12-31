@@ -25,7 +25,6 @@ public final class GameHighScore: Codable {
     /// Score
     public var score: Int
 
-
     public init (position: Int, user: User, score: Int) {
         self.position = position
         self.user = user

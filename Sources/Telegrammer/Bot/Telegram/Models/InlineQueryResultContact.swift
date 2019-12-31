@@ -57,7 +57,6 @@ public final class InlineQueryResultContact: Codable {
     /// Optional. Thumbnail height
     public var thumbHeight: Int?
 
-
     public init (type: String, id: String, phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id

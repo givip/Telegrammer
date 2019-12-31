@@ -57,7 +57,6 @@ public final class InlineQueryResultLocation: Codable {
     /// Optional. Thumbnail height
     public var thumbHeight: Int?
 
-
     public init (type: String, id: String, latitude: Float, longitude: Float, title: String, livePeriod: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id

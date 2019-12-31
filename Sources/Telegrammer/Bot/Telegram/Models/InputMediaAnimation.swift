@@ -45,7 +45,6 @@ public final class InputMediaAnimation: Encodable {
     /// Optional. Animation duration
     public var duration: Int?
 
-
     public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, width: Int? = nil, height: Int? = nil, duration: Int? = nil) {
         self.type = type
         self.media = media

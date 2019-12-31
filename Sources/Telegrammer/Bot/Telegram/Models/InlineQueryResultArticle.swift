@@ -57,7 +57,6 @@ public final class InlineQueryResultArticle: Codable {
     /// Optional. Thumbnail height
     public var thumbHeight: Int?
 
-
     public init (type: String, id: String, title: String, inputMessageContent: InputMessageContent, replyMarkup: InlineKeyboardMarkup? = nil, url: String? = nil, hideUrl: Bool? = nil, description: String? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id

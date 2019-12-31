@@ -21,7 +21,6 @@ public final class ResponseParameters: Codable {
     /// Optional. In case of exceeding flood control, the number of seconds left to wait before the request can be repeated
     public var retryAfter: Int?
 
-
     public init (migrateToChatId: Int64? = nil, retryAfter: Int? = nil) {
         self.migrateToChatId = migrateToChatId
         self.retryAfter = retryAfter

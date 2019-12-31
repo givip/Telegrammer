@@ -31,7 +31,6 @@ public final class MaskPosition: Codable, MultipartPartConvertible {
     /// Mask scaling coefficient. For example, 2.0 means double size.
     public var scale: Float
 
-
     public init (point: String, xShift: Float, yShift: Float, scale: Float) {
         self.point = point
         self.xShift = xShift

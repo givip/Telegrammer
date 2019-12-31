@@ -53,7 +53,6 @@ public final class InlineKeyboardButton: Codable {
     /// NOTE: This type of button must always be the first button in the first row.
     public var pay: Bool?
 
-
     public init (text: String, url: String? = nil, loginUrl: LoginUrl? = nil, callbackData: String? = nil, switchInlineQuery: String? = nil, switchInlineQueryCurrentChat: String? = nil, callbackGame: CallbackGame? = nil, pay: Bool? = nil) {
         self.text = text
         self.url = url

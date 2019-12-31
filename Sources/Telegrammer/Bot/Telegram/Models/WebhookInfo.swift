@@ -41,7 +41,6 @@ public final class WebhookInfo: Codable {
     /// Optional. A list of update types the bot is subscribed to. Defaults to all update types
     public var allowedUpdates: [String]?
 
-
     public init (url: String, hasCustomCertificate: Bool, pendingUpdateCount: Int, lastErrorDate: Int? = nil, lastErrorMessage: String? = nil, maxConnections: Int? = nil, allowedUpdates: [String]? = nil) {
         self.url = url
         self.hasCustomCertificate = hasCustomCertificate

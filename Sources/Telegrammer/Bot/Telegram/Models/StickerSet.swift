@@ -33,7 +33,6 @@ public final class StickerSet: Codable {
     /// List of all set stickers
     public var stickers: [Sticker]
 
-
     public init (name: String, title: String, isAnimated: Bool, containsMasks: Bool, stickers: [Sticker]) {
         self.name = name
         self.title = title

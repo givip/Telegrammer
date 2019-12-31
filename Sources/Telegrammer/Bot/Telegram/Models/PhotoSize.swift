@@ -12,13 +12,17 @@ public final class PhotoSize: Codable {
     /// Custom keys for coding/decoding `PhotoSize` struct
     enum CodingKeys: String, CodingKey {
         case fileId = "file_id"
+        case fileUniqueId = "file_unique_id"
         case width = "width"
         case height = "height"
         case fileSize = "file_size"
     }
 
-    /// Identifier for this file
+    /// Identifier for this file, which can be used to download or reuse the file
     public var fileId: String
+
+    /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    public var fileUniqueId: String
 
     /// Photo width
     public var width: Int
@@ -29,9 +33,9 @@ public final class PhotoSize: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
-    public init (fileId: String, width: Int, height: Int, fileSize: Int? = nil) {
+    public init (fileId: String, fileUniqueId: String, width: Int, height: Int, fileSize: Int? = nil) {
         self.fileId = fileId
+        self.fileUniqueId = fileUniqueId
         self.width = width
         self.height = height
         self.fileSize = fileSize

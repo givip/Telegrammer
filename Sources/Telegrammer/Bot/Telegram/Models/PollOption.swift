@@ -21,7 +21,6 @@ public final class PollOption: Codable {
     /// Number of users that voted for this option
     public var voterCount: Int
 
-
     public init (text: String, voterCount: Int) {
         self.text = text
         self.voterCount = voterCount

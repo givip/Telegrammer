@@ -22,6 +22,7 @@ public final class Chat: Codable {
         case inviteLink = "invite_link"
         case pinnedMessage = "pinned_message"
         case permissions = "permissions"
+        case slowModeDelay = "slow_mode_delay"
         case stickerSetName = "sticker_set_name"
         case canSetStickerSet = "can_set_sticker_set"
     }
@@ -59,14 +60,16 @@ public final class Chat: Codable {
     /// Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
     public var permissions: ChatPermissions?
 
+    /// Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+    public var slowModeDelay: Int?
+
     /// Optional. For supergroups, name of group sticker set. Returned only in getChat.
     public var stickerSetName: String?
 
     /// Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     public var canSetStickerSet: Bool?
 
-
-    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
+    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, slowModeDelay: Int? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
         self.id = id
         self.type = type
         self.title = title
@@ -78,6 +81,7 @@ public final class Chat: Codable {
         self.inviteLink = inviteLink
         self.pinnedMessage = pinnedMessage
         self.permissions = permissions
+        self.slowModeDelay = slowModeDelay
         self.stickerSetName = stickerSetName
         self.canSetStickerSet = canSetStickerSet
     }

@@ -25,7 +25,6 @@ public final class InputLocationMessageContent: Codable {
     /// Optional. Period in seconds for which the location can be updated, should be between 60 and 86400.
     public var livePeriod: Int?
 
-
     public init (latitude: Float, longitude: Float, livePeriod: Int? = nil) {
         self.latitude = latitude
         self.longitude = longitude

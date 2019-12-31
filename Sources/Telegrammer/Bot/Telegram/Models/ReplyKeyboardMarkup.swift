@@ -31,7 +31,6 @@ public final class ReplyKeyboardMarkup: Codable {
     /// Example: A user requests to change the bot‘s language, bot replies to the request with a keyboard to select the new language. Other users in the group don’t see the keyboard.
     public var selective: Bool?
 
-
     public init (keyboard: [[KeyboardButton]], resizeKeyboard: Bool? = nil, oneTimeKeyboard: Bool? = nil, selective: Bool? = nil) {
         self.keyboard = keyboard
         self.resizeKeyboard = resizeKeyboard

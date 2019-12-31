@@ -29,7 +29,6 @@ public final class InputMediaPhoto: Encodable {
     /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
     public var parseMode: String?
 
-
     public init (type: String, media: String, caption: String? = nil, parseMode: String? = nil) {
         self.type = type
         self.media = media

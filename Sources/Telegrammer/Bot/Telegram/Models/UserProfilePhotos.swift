@@ -21,7 +21,6 @@ public final class UserProfilePhotos: Codable {
     /// Requested profile pictures (in up to 4 sizes each)
     public var photos: [[PhotoSize]]
 
-
     public init (totalCount: Int, photos: [[PhotoSize]]) {
         self.totalCount = totalCount
         self.photos = photos

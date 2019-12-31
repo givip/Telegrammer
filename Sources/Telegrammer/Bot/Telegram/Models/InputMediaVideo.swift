@@ -49,7 +49,6 @@ public final class InputMediaVideo: Encodable {
     /// Optional. Pass True, if the uploaded video is suitable for streaming
     public var supportsStreaming: Bool?
 
-
     public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, width: Int? = nil, height: Int? = nil, duration: Int? = nil, supportsStreaming: Bool? = nil) {
         self.type = type
         self.media = media

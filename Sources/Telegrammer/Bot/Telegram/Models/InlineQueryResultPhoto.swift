@@ -61,7 +61,6 @@ public final class InlineQueryResultPhoto: Codable {
     /// Optional. Content of the message to be sent instead of the photo
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, photoUrl: String, thumbUrl: String, photoWidth: Int? = nil, photoHeight: Int? = nil, title: String? = nil, description: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

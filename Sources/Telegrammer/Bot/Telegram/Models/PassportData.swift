@@ -21,7 +21,6 @@ public final class PassportData: Codable {
     /// Encrypted credentials required to decrypt the data
     public var credentials: EncryptedCredentials
 
-
     public init (data: [EncryptedPassportElement], credentials: EncryptedCredentials) {
         self.data = data
         self.credentials = credentials

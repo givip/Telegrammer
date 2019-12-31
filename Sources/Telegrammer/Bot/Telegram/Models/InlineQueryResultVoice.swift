@@ -49,7 +49,6 @@ public final class InlineQueryResultVoice: Codable {
     /// Optional. Content of the message to be sent instead of the voice recording
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, voiceUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, voiceDuration: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

@@ -29,7 +29,6 @@ public final class PassportElementErrorReverseSide: Codable {
     /// Error message
     public var message: String
 
-
     public init (source: String, type: String, fileHash: String, message: String) {
         self.source = source
         self.type = type

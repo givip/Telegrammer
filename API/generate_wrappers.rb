@@ -334,7 +334,6 @@ def generate_model_file(f, node)
             "#{ONE}}\n"\
             "\n"\
             "#{vars_block}"\
-            "\n"\
             "#{ONE}public init (#{init_params_block.chomp(', ')}) {\n"\
             "#{init_block}"\
             "#{ONE}}\n"
@@ -352,9 +351,6 @@ def generate_method(f, node)
 	method_name = current_node.text
 	File.open("#{API_DIR}/#{models_dir}/Bot+#{method_name}.swift", "wb") { | out |
 		out.write METHOD_HEADER
-        out.write "\n"
-#        out.write "import AsyncHTTPClient\n"
-        out.write "\n"
 		out.write "public extension Bot {\n"
 		out.write "\n"
 
