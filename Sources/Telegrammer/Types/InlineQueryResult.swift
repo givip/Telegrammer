@@ -5,7 +5,6 @@
 //  Created by Givi Pataridze on 28.02.2018.
 //
 
-
 /// This enum represents one result of an inline query. Telegram clients currently support results of the following 20 types
 public enum InlineQueryResult: Codable {
     case cachedAudio(InlineQueryResultAudio)
@@ -29,8 +28,7 @@ public enum InlineQueryResult: Codable {
     case video(InlineQueryResultVideo)
     case voice(InlineQueryResultVoice)
     case undefined
-    
-    
+
     public init(from decoder: Decoder) throws {
         if let value = try? decoder.singleValueContainer().decode(InlineQueryResultAudio.self) {
             self = .cachedAudio(value)
@@ -114,7 +112,7 @@ public enum InlineQueryResult: Codable {
         }
         self = .undefined
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {

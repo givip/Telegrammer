@@ -67,7 +67,7 @@ try! webhooks
         switch result {
             case .failure(let error):
                 log.error(error.logMessage)
-            case .success(_):
+            case .success:
                 log.info("Updates server started successfully, waiting for requests.")
         }
 }

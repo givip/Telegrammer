@@ -22,7 +22,7 @@ public enum Day: Int {
         let weekDay = myCalendar.component(.weekday, from: todayDate)
         return Day(rawValue: weekDay)
     }
-    
+
 }
 
 extension Date {

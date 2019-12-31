@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Contact`
 public struct ContactFilter: Filter {
-    
+
     public var name: String = "contact"
-    
+
     public func filter(message: Message) -> Bool {
         return message.contact != nil
     }

@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Voice`
 public struct VoiceFilter: Filter {
-    
+
     public var name: String = "voice"
-    
+
     public func filter(message: Message) -> Bool {
         return message.voice != nil
     }

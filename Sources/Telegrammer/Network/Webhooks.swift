@@ -38,20 +38,20 @@ public class Webhooks: Connection {
     public var dispatcher: Dispatcher
     public var worker: Worker
     public var running: Bool
-    
+
     public var readLatency: TimeAmount = .seconds(2)
     public var clean: Bool = false
     public var maxConnections: Int = 40
-    
+
     private var server: UpdatesServer?
-    
+
     public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
         self.worker = worker
         self.running = false
     }
-    
+
     public func start() throws -> Future<Void> {
         guard let config = bot.settings.webhooksConfig else {
             throw CoreError(
@@ -60,7 +60,7 @@ public class Webhooks: Connection {
             )
         }
 
-        var cert: InputFile? = nil
+        var cert: InputFile?
 
         if let publicCert = config.publicCert {
             switch publicCert {
@@ -92,7 +92,7 @@ public class Webhooks: Connection {
         return try listenWebhooks(on: config.ip, port: config.port)
             .flatMapThrowing { _  -> Void in
                 return try self.bot.setWebhook(params: params)
-                    .whenComplete { (result) -> () in
+                    .whenComplete { (result) -> Void in
                         switch result {
                             case .success(let res):
                                 log.info("setWebhook request result: \(res)")
@@ -103,14 +103,14 @@ public class Webhooks: Connection {
                     }
         }
     }
-    
+
     private func listenWebhooks(on host: String, port: Int) throws -> Future<Void> {
         let promise = worker.next().makePromise(of: Void.self)
         let server = UpdatesServer(host: host, port: port, handler: dispatcher)
         try server.start()
             .whenComplete { (result) in
                 switch result {
-                    case .success(_):
+                    case .success:
                         self.server = server
                         self.running = true
                         log.info("HTTP server started on: \(host):\(port)")
@@ -123,7 +123,7 @@ public class Webhooks: Connection {
         }
         return promise.futureResult
     }
-    
+
     public func stop() throws -> Future<Void> {
         let promise = worker.next().makePromise(of: Void.self)
         try self.server?.stop()

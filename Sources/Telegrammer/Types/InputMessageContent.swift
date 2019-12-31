@@ -14,7 +14,7 @@ public enum InputMessageContent: Codable {
     case inputVenueMessageContent(InputVenueMessageContent)
     case inputContactMessageContent(InputContactMessageContent)
     case undefined
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {

@@ -21,7 +21,7 @@ public enum PassportElementError: Codable {
     case reverseSide(PassportElementErrorReverseSide)
     case selfie(PassportElementErrorSelfie)
     case unknown
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
@@ -41,7 +41,7 @@ public enum PassportElementError: Codable {
             try container.encodeNil()
         }
     }
-    
+
     public init(from decoder: Decoder) throws {
         if let value = try? decoder.singleValueContainer().decode(PassportElementErrorDataField.self) {
             self = .dataField(value)
@@ -69,5 +69,5 @@ public enum PassportElementError: Codable {
         }
         self = .unknown
     }
-    
+
 }

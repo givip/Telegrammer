@@ -152,7 +152,7 @@ public extension SynchronizedArray {
     ///   - initialResult: The value to use as the initial accumulating value.
     ///   - updateAccumulatingResult: A closure that updates the accumulating value with an element of the sequence.
     /// - Returns: The final accumulated value. If the sequence has no elements, the result is initialResult.
-    func reduce<ElementOfResult>(into initialResult: ElementOfResult, _ updateAccumulatingResult: @escaping (inout ElementOfResult, Element) -> ()) -> ElementOfResult {
+    func reduce<ElementOfResult>(into initialResult: ElementOfResult, _ updateAccumulatingResult: @escaping (inout ElementOfResult, Element) -> Void) -> ElementOfResult {
         var result: ElementOfResult?
         queue.sync { result = self.array.reduce(into: initialResult, updateAccumulatingResult) }
         return result ?? initialResult

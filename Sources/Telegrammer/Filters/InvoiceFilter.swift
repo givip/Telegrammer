@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Invoice`
 public struct InvoiceFilter: Filter {
-    
+
     public var name: String = "invoice"
-    
+
     public func filter(message: Message) -> Bool {
         return message.invoice != nil
     }

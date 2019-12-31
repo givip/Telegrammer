@@ -55,14 +55,14 @@ public struct InputFile: Encodable, MultipartPartConvertible {
     var filename: String
     var data: Data
     var mimeType: String?
-    
+
     public init(data: Data, name: String? = nil, filename: String, mimeType: String? = nil) {
         self.data = data
         self.name = name
         self.filename = filename
         self.mimeType = mimeType
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(data)

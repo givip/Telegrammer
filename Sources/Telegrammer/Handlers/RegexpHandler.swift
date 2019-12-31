@@ -9,11 +9,11 @@ import Foundation
 
 public class RegexpHandler: Handler {
     public var name: String
-    
+
     let regexp: NSRegularExpression
     let callback: HandlerCallback
     let filters: Filters
-    
+
     public init(
         name: String = String(describing: RegexpHandler.self),
         regexp: NSRegularExpression,
@@ -25,7 +25,7 @@ public class RegexpHandler: Handler {
         self.filters = filters
         self.callback = callback
     }
-    
+
     public convenience init(
         name: String = String(describing: RegexpHandler.self),
         pattern: String,
@@ -37,13 +37,13 @@ public class RegexpHandler: Handler {
                   filters: filters,
                   callback: callback)
     }
-    
+
     public func check(update: Update) -> Bool {
         guard let text = update.message?.text else { return false }
         let range = NSRange(location: 0, length: text.count)
         return regexp.numberOfMatches(in: text, options: [], range: range) > 0
     }
-    
+
     public func handle(update: Update, dispatcher: Dispatcher) {
         do {
             try callback(update, nil)

@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 ///Base protocol for atomic filter
 public protocol Filter {
     var name: String { get }
@@ -39,29 +38,29 @@ public protocol Filter {
  If you want to create your own filters create a struct conforming `Filter` protocol and implement a `filter` method that returns a boolean: `true`, if the message should be handled, `false` otherwise.
  */
 public class Filters {
-    
+
     private enum Operation {
         case and
         case or
         case not
     }
-    
+
     private var atomicFilter: Filter?
     private var simpleFilters: Filters?
     private var compoundFilter: (lhs: Filters, rhs: Filters, op: Operation)?
-    
+
     public init(filter: Filter) {
         self.atomicFilter = filter
     }
-    
+
     public init(filters: Filters) {
         self.simpleFilters = filters
     }
-    
+
     private init(lhs: Filters, rhs: Filters, op: Operation) {
         self.compoundFilter = (lhs, rhs, op)
     }
-    
+
     public func check(_ message: Message) -> Bool {
         if let filter = atomicFilter {
             return filter.filter(message: message)
@@ -87,11 +86,11 @@ public extension Filters {
     static func &&(lhs: Filters, rhs: Filters) -> Filters {
         return Filters(lhs: lhs, rhs: rhs, op: .and)
     }
-    
+
     static func ||(lhs: Filters, rhs: Filters) -> Filters {
         return Filters(lhs: lhs, rhs: rhs, op: .or)
     }
-    
+
     static prefix func !(filter: Filters) -> Filters {
         return Filters(lhs: filter, rhs: filter, op: .not)
     }

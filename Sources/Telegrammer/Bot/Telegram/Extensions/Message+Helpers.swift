@@ -6,7 +6,7 @@
 //
 
 public extension Message {
-    
+
     /**
      Helper method to easy reply to message
      - Parameters:
@@ -26,7 +26,7 @@ public extension Message {
         )
         try bot.sendMessage(params: params)
     }
-    
+
     /**
      Helper method to easy edit message
      
@@ -47,7 +47,7 @@ public extension Message {
         )
         try bot.editMessageText(params: params)
     }
-    
+
     /**
      Helper method to easy edit message
      

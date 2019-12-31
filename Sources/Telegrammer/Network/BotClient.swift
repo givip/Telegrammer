@@ -11,7 +11,7 @@ import NIOHTTP1
 import AsyncHTTPClient
 
 public class BotClient {
-    
+
     let host: String
     let port: Int
     let token: String
@@ -34,7 +34,7 @@ public class BotClient {
         )
         self.client = HTTPClient(eventLoopGroupProvider: worker, configuration: config)
     }
-    
+
     /// Sends request to api.telegram.org, and receive TelegramContainer object
     ///
     /// - Parameters:
@@ -72,7 +72,6 @@ public class BotClient {
         return try JSONDecoder().decode(TelegramContainer<T>.self, from: Data(bytes))
     }
 
-    
     func apiUrl(endpoint: String) -> String {
         return "https://\(host):\(port)/bot\(token)/\(endpoint)"
     }
@@ -83,4 +82,3 @@ extension HTTPClient.Body {
         return .string("")
     }
 }
-

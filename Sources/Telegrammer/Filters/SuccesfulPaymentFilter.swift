@@ -9,9 +9,9 @@ import Foundation
 
 /// Filters messages that contains a `SuccessfulPayment`.
 public struct SuccesfulPaymentFilter: Filter {
-    
+
     public var name: String = "successful_payment"
-    
+
     public func filter(message: Message) -> Bool {
         return message.successfulPayment != nil
     }

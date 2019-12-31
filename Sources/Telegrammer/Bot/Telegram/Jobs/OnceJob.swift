@@ -13,7 +13,7 @@ public class OnceJob<C>: Job {
 
     public var id: String
 
-    public var callback: (_ context: C?) throws -> ()
+    public var callback: (_ context: C?) throws -> Void
 
     public var name: String?
 
@@ -29,7 +29,7 @@ public class OnceJob<C>: Job {
 
     public var scheduler: Scheduled<OnceJob>?
 
-    public init(name: String? = nil, when: Date, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> ()) {
+    public init(name: String? = nil, when: Date, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> Void) {
         let id = UUID().uuidString
         self.id = id
         self.name = name ?? "OnceJob_\(id)"

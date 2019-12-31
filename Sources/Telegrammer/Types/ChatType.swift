@@ -14,7 +14,7 @@ public enum ChatType: String, Codable {
     case supergroup = "supergroup"
     case channel    = "channel"
     case undefined
-    
+
     public init(from decoder: Decoder) throws {
         let value = try decoder.singleValueContainer().decode(String.self)
         guard let type = ChatType(rawValue: value) else {

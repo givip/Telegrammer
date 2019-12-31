@@ -43,7 +43,7 @@ public class BasicJobQueue<C>: JobQueue {
         let typeErasedJob = AnyJob(job)
 
         jobs.append(typeErasedJob)
-        
+
         return worker.next().scheduleTask(in: .seconds(Int64(round(startTime)))) { () -> J in
             try typeErasedJob.run(self.bot)
             return job
@@ -71,7 +71,7 @@ public class BasicJobQueue<C>: JobQueue {
 
 public extension BasicJobQueue {
     @discardableResult
-    static func runOnce(on bot: BotProtocol, interval: TimeAmount, _ task: @escaping () throws -> ()) throws -> Future<Void> {
+    static func runOnce(on bot: BotProtocol, interval: TimeAmount, _ task: @escaping () throws -> Void) throws -> Future<Void> {
         let queue = BasicJobQueue<Void>(bot: bot)
 
         let currentDate = Date()
@@ -84,7 +84,7 @@ public extension BasicJobQueue {
         return try queue
             .scheduleOnce(onceJob)
             .futureResult
-            .map { (job) -> Void in
+            .map { (_) -> Void in
                 queue.shutdownQueue()
             }
     }

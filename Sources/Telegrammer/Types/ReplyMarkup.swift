@@ -18,7 +18,7 @@ public enum ReplyMarkup: Codable, MultipartPartConvertible {
     case replyKeyboardRemove(ReplyKeyboardRemove)
     case forceReply(ForceReply)
     case undefined
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
@@ -34,7 +34,7 @@ public enum ReplyMarkup: Codable, MultipartPartConvertible {
             try container.encodeNil()
         }
     }
-    
+
     public init(from decoder: Decoder) throws {
         if let value = try? decoder.singleValueContainer().decode(InlineKeyboardMarkup.self) {
             self = .inlineKeyboardMarkup(value)

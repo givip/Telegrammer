@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Game`
 public struct GameFilter: Filter {
-    
+
     public var name: String = "forwarded"
-    
+
     public func filter(message: Message) -> Bool {
         return message.game != nil
     }
