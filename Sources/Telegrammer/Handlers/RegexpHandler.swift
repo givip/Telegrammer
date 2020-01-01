@@ -26,16 +26,21 @@ public class RegexpHandler: Handler {
         self.callback = callback
     }
 
-    public convenience init(
+    public convenience init?(
         name: String = String(describing: RegexpHandler.self),
         pattern: String,
         filters: Filters = .all,
         callback: @escaping HandlerCallback
         ) {
-        self.init(name: name,
-                  regexp: try! NSRegularExpression(pattern: pattern, options: []),
-                  filters: filters,
-                  callback: callback)
+        guard let regexp = try? NSRegularExpression(pattern: pattern, options: []) else {
+            return nil
+        }
+        self.init(
+            name: name,
+            regexp: regexp,
+            filters: filters,
+            callback: callback
+        )
     }
 
     public func check(update: Update) -> Bool {

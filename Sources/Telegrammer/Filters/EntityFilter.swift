@@ -20,8 +20,8 @@ public struct EntityFilter: Filter {
 
     public func filter(message: Message) -> Bool {
         guard let entities = message.entities else { return false }
-        let incomingTypes = entities.map({ $0.type })
-        return !entityTypes.intersection(incomingTypes).isEmpty
+        let incomingTypes = entities.map { $0.type }
+        return !entityTypes.isDisjoint(with: incomingTypes)
     }
 }
 

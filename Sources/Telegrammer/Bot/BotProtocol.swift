@@ -6,3 +6,5 @@
 //
 
 public protocol BotProtocol: class {}
+
+public protocol AutoMockable {}

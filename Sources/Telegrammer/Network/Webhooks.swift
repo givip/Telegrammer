@@ -13,6 +13,7 @@ import NIO
 public class Webhooks: Connection {
 
     public struct Config {
+        // swiftlint:disable:next nesting
         public enum Certificate {
             case file(url: String)
             case text(content: String)
@@ -76,7 +77,10 @@ public class Webhooks: Connection {
                 cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: url)
             case .text(content: let textCert):
                 guard let strData = textCert.data(using: .utf8) else {
-                    let errorDescription = "Public key body '\(textCert)' was specified for HTTPS server, but it cannot be converted into Data type"
+                    let errorDescription = """
+                    Public key body '\(textCert)' was specified for HTTPS server,\n
+                    but it cannot be converted into Data type
+                    """
                     log.error(errorDescription.logMessage)
                     throw CoreError(
                         type: .internal,
@@ -87,20 +91,24 @@ public class Webhooks: Connection {
             }
         }
 
-        let params = Bot.SetWebhookParams(url: config.url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
+        let params = Bot.SetWebhookParams(
+            url: config.url,
+            certificate: cert,
+            maxConnections: maxConnections,
+            allowedUpdates: nil
+        )
 
         return try listenWebhooks(on: config.ip, port: config.port)
             .flatMapThrowing { _  -> Void in
-                return try self.bot.setWebhook(params: params)
-                    .whenComplete { (result) -> Void in
-                        switch result {
-                            case .success(let res):
-                                log.info("setWebhook request result: \(res)")
-                                log.info("Started UpdatesServer, listening for incoming messages...")
-                            case .failure(let error):
-                                log.error(error.logMessage)
-                        }
+                return try self.bot.setWebhook(params: params).whenComplete { (result) -> Void in
+                    switch result {
+                    case .success(let res):
+                        log.info("setWebhook request result: \(res)")
+                        log.info("Started UpdatesServer, listening for incoming messages...")
+                    case .failure(let error):
+                        log.error(error.logMessage)
                     }
+                }
         }
     }
 
@@ -110,15 +118,15 @@ public class Webhooks: Connection {
         try server.start()
             .whenComplete { (result) in
                 switch result {
-                    case .success:
-                        self.server = server
-                        self.running = true
-                        log.info("HTTP server started on: \(host):\(port)")
-                        promise.succeed(())
-                    case .failure(let error):
-                        log.info("HTTP server failed on: \(host):\(port)")
-                        log.error(error.logMessage)
-                        promise.fail(error)
+                case .success:
+                    self.server = server
+                    self.running = true
+                    log.info("HTTP server started on: \(host):\(port)")
+                    promise.succeed(())
+                case .failure(let error):
+                    log.info("HTTP server failed on: \(host):\(port)")
+                    log.error(error.logMessage)
+                    promise.fail(error)
                 }
         }
         return promise.futureResult

@@ -24,7 +24,13 @@ public class BotClient {
     ///   - token: Bot auth token
     ///   - proxy: Proxy parrameters
     ///   - worker: Worker on which will be performed request
-    public init(host: String, port: Int, token: String, proxy: HTTPClient.Configuration.Proxy? = nil, worker: HTTPClient.EventLoopGroupProvider) throws {
+    public init(
+        host: String,
+        port: Int,
+        token: String,
+        proxy: HTTPClient.Configuration.Proxy? = nil,
+        worker: HTTPClient.EventLoopGroupProvider
+    ) throws {
         self.host = host
         self.port = port
         self.token = token
@@ -44,7 +50,11 @@ public class BotClient {
     ///   - client: custom client, if not metioned, uses default
     /// - Returns: Container with response
     /// - Throws: Errors
-    func request<T: Codable>(endpoint: String, body: HTTPClient.Body? = nil, headers: HTTPHeaders = .empty) throws -> Future<TelegramContainer<T>> {
+    func request<T: Codable>(
+        endpoint: String,
+        body: HTTPClient.Body? = nil,
+        headers: HTTPHeaders = .empty
+    ) throws -> Future<TelegramContainer<T>> {
         let url = apiUrl(endpoint: endpoint)
         let request = try HTTPClient.Request(
             url: url,

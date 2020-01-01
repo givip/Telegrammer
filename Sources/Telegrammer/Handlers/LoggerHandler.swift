@@ -26,6 +26,7 @@ public class LoggerHandler: Handler {
 
 extension Update {
     var description: String {
+
         //TODO: Improve description algorithm, serialization/deserialization too heavy
         var resultString = "[]"
 

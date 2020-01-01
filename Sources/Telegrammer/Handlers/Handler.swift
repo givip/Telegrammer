@@ -16,7 +16,7 @@ public typealias HandlerCallback = (_ update: Update, _ context: BotContext?) th
  
  Every handler must implement `check` and `handle` methods
  */
-public protocol Handler {
+public protocol Handler: AutoMockable {
     var name: String { get }
 
     func check(update: Update) -> Bool

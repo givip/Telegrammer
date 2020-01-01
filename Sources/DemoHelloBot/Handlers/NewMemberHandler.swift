@@ -16,7 +16,7 @@ class NewMemberHandler: Handler {
     let filters = StatusUpdateFilters.newChatMembers
     var callback: NewMemberCallback
 
-    init(callback: @escaping NewMemberCallback, name: String = String(describing: CallbackQueryHandler.self)) {
+    init(callback: @escaping NewMemberCallback, name: String = String(describing: NewMemberHandler.self)) {
         self.callback = callback
         self.name = name
     }

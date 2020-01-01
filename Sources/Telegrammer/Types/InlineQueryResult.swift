@@ -5,6 +5,8 @@
 //  Created by Givi Pataridze on 28.02.2018.
 //
 
+// swiftlint:disable all
+
 /// This enum represents one result of an inline query. Telegram clients currently support results of the following 20 types
 public enum InlineQueryResult: Codable {
     case cachedAudio(InlineQueryResultAudio)

@@ -5,10 +5,14 @@
 //  Created by Givi on 27.11.2019.
 //
 
+// swiftlint:disable all
+
 import Foundation
 import Telegrammer
 import Logging
 import NIO
+
+// swiftlint:disable all
 
 /**
  Launch this target and try to send requests with updates to you server, they should appear in console.
@@ -65,10 +69,10 @@ try! webhooks
     .start()
     .whenComplete { (result) in
         switch result {
-            case .failure(let error):
-                log.error(error.logMessage)
-            case .success:
-                log.info("Updates server started successfully, waiting for requests.")
+        case .failure(let error):
+            log.error(error.logMessage)
+        case .success:
+            log.info("Updates server started successfully, waiting for requests.")
         }
 }
 

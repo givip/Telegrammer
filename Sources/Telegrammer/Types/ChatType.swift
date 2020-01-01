@@ -9,10 +9,10 @@ import Foundation
 
 /// Type of chat, can be either “private”, “group”, “supergroup” or “channel”
 public enum ChatType: String, Codable {
-    case `private`  = "private"
-    case group      = "group"
-    case supergroup = "supergroup"
-    case channel    = "channel"
+    case `private`
+    case group
+    case supergroup
+    case channel
     case undefined
 
     public init(from decoder: Decoder) throws {

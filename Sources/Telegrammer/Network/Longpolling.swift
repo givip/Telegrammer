@@ -75,21 +75,21 @@ public class Longpolling: Connection {
                 .getUpdates(params: requestBody)
                 .whenComplete({ (result) in
                     switch result {
-                        case .success(let updates):
-                            log.debug(Logger.Message(stringLiteral: updates.description))
-                            if !updates.isEmpty {
-                                if !self.cleanStart || !(self.cleanStart && self.isFirstRequest) {
-                                    self.dispatcher.enqueue(updates: updates)
-                                }
-                                if let last = updates.last {
-                                    requestBody.offset = last.updateId + 1
-                                }
+                    case .success(let updates):
+                        log.debug(Logger.Message(stringLiteral: updates.description))
+                        if !updates.isEmpty {
+                            if !self.cleanStart || !(self.cleanStart && self.isFirstRequest) {
+                                self.dispatcher.enqueue(updates: updates)
                             }
-                            self.isFirstRequest = false
-                            self.scheduleLongpolling(with: requestBody)
-                        case .failure(let error):
-                            log.error(error.logMessage)
-                            self.retryRequest(with: params, after: error)
+                            if let last = updates.last {
+                                requestBody.offset = last.updateId + 1
+                            }
+                        }
+                        self.isFirstRequest = false
+                        self.scheduleLongpolling(with: requestBody)
+                    case .failure(let error):
+                        log.error(error.logMessage)
+                        self.retryRequest(with: params, after: error)
                     }
                 })
         } catch {

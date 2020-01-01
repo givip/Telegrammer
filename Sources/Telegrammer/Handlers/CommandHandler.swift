@@ -5,8 +5,6 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import AsyncHTTPClient
-
 /**
  Handler class to handle Telegram commands.
  
@@ -42,7 +40,7 @@ public class CommandHandler: Handler {
         filters: Filters = .all,
         options: Options = [],
         callback: @escaping HandlerCallback
-        ) {
+    ) {
         self.name = name
         self.commands = Set(commands)
         self.filters = filters
@@ -50,24 +48,23 @@ public class CommandHandler: Handler {
         self.callback = callback
     }
 
+    private func check(message: Message?) -> Bool {
+        guard let message = message, filters.check(message) else {
+            return false
+        }
+        return commands.contains(where: {
+            message.contains(command: $0)
+        })
+    }
+
     public func check(update: Update) -> Bool {
-        if options.contains(.editedUpdates),
-            update.editedMessage != nil ||
-                update.editedChannelPost != nil {
-            return true
+        if options.contains(.editedUpdates) {
+            if check(message: update.editedMessage) {
+                return true
+            }
         }
 
-        guard let message = update.message,
-            filters.check(message),
-            let text = message.text,
-            let entities = message.entities else { return false }
-
-        let types = entities.compactMap { (entity) -> String? in
-            let start = text.index(text.startIndex, offsetBy: entity.offset)
-            let end = text.index(start, offsetBy: entity.length-1)
-            return String(text[start...end])
-        }
-        return !commands.intersection(types).isEmpty
+        return check(message: update.message)
     }
 
     public func handle(update: Update, dispatcher: Dispatcher) {

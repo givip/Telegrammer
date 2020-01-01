@@ -8,7 +8,7 @@
 import Foundation
 
 ///Base protocol for atomic filter
-public protocol Filter {
+public protocol Filter: AutoMockable {
     var name: String { get }
     func filter(message: Message) -> Bool
 }
@@ -19,22 +19,22 @@ public protocol Filter {
  Filters may be combined using bitwise operators:
  
  - And:
- ````
+ ```
  (Filters.text && Filters.entity([.mention]))
- ````
+ ```
  - Or:
- ````
+ ```
  (Filters.audio || Filters.video)
- ````
+ ```
  - Not:
- ````
+ ```
  !Filters.command
- ````
+ ```
  Also works with more than two filters:
- ````
+ ```
  (Filters.text && (Filters.entity([.url, .mention]) || Filters.entity([.command])))
  (Filters.text && !Filters.forwarded)
- ````
+ ```
  If you want to create your own filters create a struct conforming `Filter` protocol and implement a `filter` method that returns a boolean: `true`, if the message should be handled, `false` otherwise.
  */
 public class Filters {
@@ -45,9 +45,11 @@ public class Filters {
         case not
     }
 
+    private typealias Compound = (lhs: Filters, rhs: Filters, op: Operation)
+
     private var atomicFilter: Filter?
     private var simpleFilters: Filters?
-    private var compoundFilter: (lhs: Filters, rhs: Filters, op: Operation)?
+    private var compoundFilter: Compound?
 
     public init(filter: Filter) {
         self.atomicFilter = filter
@@ -83,15 +85,15 @@ public class Filters {
 }
 
 public extension Filters {
-    static func &&(lhs: Filters, rhs: Filters) -> Filters {
+    static func && (lhs: Filters, rhs: Filters) -> Filters {
         return Filters(lhs: lhs, rhs: rhs, op: .and)
     }
 
-    static func ||(lhs: Filters, rhs: Filters) -> Filters {
+    static func || (lhs: Filters, rhs: Filters) -> Filters {
         return Filters(lhs: lhs, rhs: rhs, op: .or)
     }
 
-    static prefix func !(filter: Filters) -> Filters {
+    static prefix func ! (filter: Filters) -> Filters {
         return Filters(lhs: filter, rhs: filter, op: .not)
     }
 }

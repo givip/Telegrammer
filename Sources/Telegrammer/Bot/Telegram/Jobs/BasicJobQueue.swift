@@ -71,7 +71,11 @@ public class BasicJobQueue<C>: JobQueue {
 
 public extension BasicJobQueue {
     @discardableResult
-    static func runOnce(on bot: BotProtocol, interval: TimeAmount, _ task: @escaping () throws -> Void) throws -> Future<Void> {
+    static func runOnce(
+        on bot: BotProtocol,
+        interval: TimeAmount,
+        _ task: @escaping () throws -> Void
+    ) throws -> Future<Void> {
         let queue = BasicJobQueue<Void>(bot: bot)
 
         let currentDate = Date()

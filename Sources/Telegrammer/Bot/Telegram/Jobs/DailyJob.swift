@@ -32,7 +32,13 @@ public class DailyJob<C>: Job {
 
     public var scheduler: RepeatedTask?
 
-    public init(name: String? = nil, days: Set<Day>, fireDayTime: TimeAmount, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> Void) throws {
+    public init(
+        name: String? = nil,
+        days: Set<Day>,
+        fireDayTime: TimeAmount,
+        context: C? = nil,
+        _ callback: @escaping (_ context: C?) throws -> Void
+    ) throws {
         let id = UUID().uuidString
         self.id = id
         self.name = name ?? "DailyJob_\(id)"

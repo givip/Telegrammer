@@ -33,7 +33,11 @@ public extension String {
         )
     }
 
-    static func random(withCharactersInString string: String, minimumLength min: Int, maximumLength max: Int) -> String {
+    static func random(
+        withCharactersInString string: String,
+        minimumLength min: Int,
+        maximumLength max: Int
+    ) -> String {
         guard min > 0 && max >= min else {
             return ""
         }
