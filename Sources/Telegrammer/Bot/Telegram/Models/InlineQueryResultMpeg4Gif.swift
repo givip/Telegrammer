@@ -61,7 +61,6 @@ public final class InlineQueryResultMpeg4Gif: Codable {
     /// Optional. Content of the message to be sent instead of the video animation
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, mpeg4Url: String, mpeg4Width: Int? = nil, mpeg4Height: Int? = nil, mpeg4Duration: Int? = nil, thumbUrl: String, title: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

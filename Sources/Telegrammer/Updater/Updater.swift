@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 09.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 import NIO
 
 /**
@@ -15,26 +15,26 @@ import NIO
  This is achieved using the Webhooks and Longpolling classes.
  */
 public final class Updater {
-    
+
     /// Bot instance which perform requests and establish http server
     public let bot: Bot
-    
+
     /// Dispatcher instance, which handle all updates from Telegram
     public let dispatcher: Dispatcher
-    
+
     /// EventLoopGroup for networking stuff
     public let worker: Worker
-    
+
     private var longpollingConnection: Longpolling!
     private var webhooksListener: Webhooks!
-    
+
     @discardableResult
     public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
         self.worker = worker
     }
-    
+
     /**
      Call this method to start receiving Webhooks from Telegram servers.
      
@@ -47,7 +47,7 @@ public final class Updater {
         webhooksListener = Webhooks(bot: bot, dispatcher: dispatcher, worker: worker)
         return try webhooksListener.start()
     }
-    
+
     /**
      Call this method to start receiving updates from Telegram by longpolling.
      
@@ -60,7 +60,7 @@ public final class Updater {
         longpollingConnection = Longpolling(bot: bot, dispatcher: dispatcher, worker: worker)
         return try longpollingConnection.start()
     }
-    
+
     /**
      Call this method to stop receiving updates from Telegram.
      */
@@ -69,7 +69,7 @@ public final class Updater {
             longpollingConnection.stop()
         }
         if let webhooksListener = webhooksListener {
-            webhooksListener.stop()
+            _ = try? webhooksListener.stop()
         }
     }
 }

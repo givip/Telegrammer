@@ -11,7 +11,7 @@ import XCTest
 
 class DailyJobTests: XCTestCase {
     func testDailyJob_initWithEmptyDays() {
-        XCTAssertThrowsError(try DailyJob(days: [], fireDayTime: .seconds(0), {}), "Exception wasn't received") { error in
+        XCTAssertThrowsError(try DailyJob<Any>(days: [], fireDayTime: .seconds(0), { _ in }), "Exception wasn't received") { error in
             debugPrint("Error \(error.localizedDescription) was successfully thrown")
         }
     }
@@ -27,10 +27,10 @@ class DailyJobTests: XCTestCase {
 
         let expectation = XCTestExpectation(description: "DailyJob expectation")
 
-        let job = try! DailyJob(
+        let job = try! DailyJob<Any>(
             days: [Day.todayWeekDay!],
-            fireDayTime: .seconds(Int(round(inCoupleSeconds.timeIntervalSince1970)))
-        ) {
+            fireDayTime: .seconds(Int64(round(inCoupleSeconds.timeIntervalSince1970)))
+        ) { _ in
             let fireDate = Date()
             let result = fireDate.isCloseTo(plannedTickTime, accuracy: 0.1)
             XCTAssert(result, "Should be fireded within couple seconds")

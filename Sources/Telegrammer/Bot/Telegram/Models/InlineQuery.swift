@@ -33,7 +33,6 @@ public final class InlineQuery: Codable {
     /// Offset of the results to be returned, can be controlled by the bot
     public var offset: String
 
-
     public init (id: String, from: User, location: Location? = nil, query: String, offset: String) {
         self.id = id
         self.from = from

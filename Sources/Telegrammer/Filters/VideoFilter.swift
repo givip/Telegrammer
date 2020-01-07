@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Video`
 public struct VideoFilter: Filter {
-    
+
     public var name: String = "video"
-    
+
     public func filter(message: Message) -> Bool {
         return message.video != nil
     }

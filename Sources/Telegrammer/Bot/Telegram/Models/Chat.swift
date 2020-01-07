@@ -17,11 +17,12 @@ public final class Chat: Codable {
         case username = "username"
         case firstName = "first_name"
         case lastName = "last_name"
-        case allMembersAreAdministrators = "all_members_are_administrators"
         case photo = "photo"
         case description = "description"
         case inviteLink = "invite_link"
         case pinnedMessage = "pinned_message"
+        case permissions = "permissions"
+        case slowModeDelay = "slow_mode_delay"
         case stickerSetName = "sticker_set_name"
         case canSetStickerSet = "can_set_sticker_set"
     }
@@ -44,20 +45,23 @@ public final class Chat: Codable {
     /// Optional. Last name of the other party in a private chat
     public var lastName: String?
 
-    /// Optional. True if a group has ‘All Members Are Admins’ enabled.
-    public var allMembersAreAdministrators: Bool?
-
     /// Optional. Chat photo. Returned only in getChat.
     public var photo: ChatPhoto?
 
-    /// Optional. Description, for supergroups and channel chats. Returned only in getChat.
+    /// Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     public var description: String?
 
-    /// Optional. Chat invite link, for supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
+    /// Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
     public var inviteLink: String?
 
     /// Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
     public var pinnedMessage: Message?
+
+    /// Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
+    public var permissions: ChatPermissions?
+
+    /// Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
+    public var slowModeDelay: Int?
 
     /// Optional. For supergroups, name of group sticker set. Returned only in getChat.
     public var stickerSetName: String?
@@ -65,19 +69,19 @@ public final class Chat: Codable {
     /// Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     public var canSetStickerSet: Bool?
 
-
-    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, allMembersAreAdministrators: Bool? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
+    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, slowModeDelay: Int? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
         self.id = id
         self.type = type
         self.title = title
         self.username = username
         self.firstName = firstName
         self.lastName = lastName
-        self.allMembersAreAdministrators = allMembersAreAdministrators
         self.photo = photo
         self.description = description
         self.inviteLink = inviteLink
         self.pinnedMessage = pinnedMessage
+        self.permissions = permissions
+        self.slowModeDelay = slowModeDelay
         self.stickerSetName = stickerSetName
         self.canSetStickerSet = canSetStickerSet
     }

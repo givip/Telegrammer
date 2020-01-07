@@ -1,7 +1,5 @@
-
 import Foundation
 import Telegrammer
-
 
 ///Getting token from enviroment variable (most safe, recommended)
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
@@ -12,13 +10,13 @@ guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
 /// Initializind Bot settings (token, debugmode)
 var settings = Bot.Settings(token: token)
 
-///Webhooks settings
-settings.webhooksConfig = Webhooks.Config(
-    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
-    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
-    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
-    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
-)
+///Webhooks settings, uncomment if you are testing Webhooks
+//settings.webhooksConfig = Webhooks.Config(
+//    ip: Enviroment.get("TELEGRAM_BOT_IP")!,
+//    url: Enviroment.get("TELEGRAM_BOT_WEBHOOK_URL")!,
+//    port: Int(Enviroment.get("TELEGRAM_BOT_PORT")!)!,
+//    publicCert: .text(content: Enviroment.get("TELEGRAM_BOT_PUBLIC_KEY")!)
+//)
 
 let bot = try! Bot(settings: settings)
 
@@ -29,7 +27,7 @@ var userEchoModes: [Int64: Bool] = [:]
 func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
-    
+
     var onText = ""
     if let on = userEchoModes[user.id] {
         onText = on ? "OFF" : "ON"
@@ -38,8 +36,11 @@ func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
         onText = "ON"
         userEchoModes[user.id] = true
     }
-    
-    let params = Bot.SendMessageParams(chatId: .chat(message.chat.id), text: "Echo mode turned \(onText)")
+
+    let params = Bot.SendMessageParams(
+        chatId: .chat(message.chat.id),
+        text: "Echo mode turned \(onText)"
+    )
     try bot.sendMessage(params: params)
 }
 
@@ -56,18 +57,18 @@ func echoResponse(_ update: Update, _ context: BotContext?) throws {
 do {
     ///Dispatcher - handle all incoming messages
     let dispatcher = Dispatcher(bot: bot)
-    
+
     ///Creating and adding handler for command /echo
     let commandHandler = CommandHandler(commands: ["/echo"], callback: echoModeSwitch)
     dispatcher.add(handler: commandHandler)
-    
+
     ///Creating and adding handler for ordinary text messages
     let echoHandler = MessageHandler(filters: Filters.text, callback: echoResponse)
     dispatcher.add(handler: echoHandler)
-    
+
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
-    
+
 } catch {
     print(error.localizedDescription)
 }

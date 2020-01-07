@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import HTTP
+import AsyncHTTPClient
 import NIO
 
 public class DailyJob<C>: Job {
@@ -14,7 +14,7 @@ public class DailyJob<C>: Job {
 
     public var id: String
 
-    public var callback: (_ context: C?) throws -> ()
+    public var callback: (_ context: C?) throws -> Void
 
     public var name: String?
 
@@ -32,7 +32,13 @@ public class DailyJob<C>: Job {
 
     public var scheduler: RepeatedTask?
 
-    public init(name: String? = nil, days: Set<Day>, fireDayTime: TimeAmount, context: C? = nil, _ callback: @escaping (_ context: C?) throws -> ()) throws {
+    public init(
+        name: String? = nil,
+        days: Set<Day>,
+        fireDayTime: TimeAmount,
+        context: C? = nil,
+        _ callback: @escaping (_ context: C?) throws -> Void
+    ) throws {
         let id = UUID().uuidString
         self.id = id
         self.name = name ?? "DailyJob_\(id)"
@@ -41,7 +47,10 @@ public class DailyJob<C>: Job {
         self.days = days
 
         if days.isEmpty {
-            throw CoreError(identifier: "DailyJob", reason: "DailyJob cannot be initialized with empty `days` param")
+            throw CoreError(
+                type: .internal,
+                reason: "DailyJob cannot be initialized with empty `days` param"
+            )
         }
 
         let currentDate = Date()
@@ -60,7 +69,7 @@ public class DailyJob<C>: Job {
 
     public func run(_ bot: BotProtocol) throws {
         guard let today = Day.todayWeekDay, days.contains(today) else { return }
-        
+
         if scheduledRemoval {
             scheduler?.cancel()
         } else {

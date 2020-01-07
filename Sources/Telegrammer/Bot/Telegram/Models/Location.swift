@@ -21,7 +21,6 @@ public final class Location: Codable {
     /// Latitude as defined by sender
     public var latitude: Float
 
-
     public init (longitude: Float, latitude: Float) {
         self.longitude = longitude
         self.latitude = latitude

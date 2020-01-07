@@ -29,7 +29,6 @@ public final class PassportElementErrorUnspecified: Codable {
     /// Error message
     public var message: String
 
-
     public init (source: String, type: String, elementHash: String, message: String) {
         self.source = source
         self.type = type

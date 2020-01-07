@@ -29,7 +29,6 @@ public final class Poll: Codable {
     /// True, if the poll is closed
     public var isClosed: Bool
 
-
     public init (id: String, question: String, options: [PollOption], isClosed: Bool) {
         self.id = id
         self.question = question

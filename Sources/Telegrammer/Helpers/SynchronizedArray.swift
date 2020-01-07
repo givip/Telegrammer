@@ -5,6 +5,8 @@
 //  Created by Givi on 14/03/2019.
 //
 
+//swiftlint:disable file_length
+
 import Foundation
 
 /// A thread-safe array.
@@ -21,7 +23,6 @@ public class SynchronizedArray<Element> {
 }
 
 // MARK: - Properties
-
 public extension SynchronizedArray {
 
     /// The first element of the collection.
@@ -61,7 +62,6 @@ public extension SynchronizedArray {
 }
 
 // MARK: - Immutable
-
 public extension SynchronizedArray {
 
     /// Returns the first element of the sequence that satisfies the given predicate.
@@ -140,7 +140,10 @@ public extension SynchronizedArray {
     ///   - initialResult: The value to use as the initial accumulating value. initialResult is passed to nextPartialResult the first time the closure is executed.
     ///   - nextPartialResult: A closure that combines an accumulating value and an element of the sequence into a new accumulating value, to be used in the next call of the nextPartialResult closure or returned to the caller.
     /// - Returns: The final accumulated value. If the sequence has no elements, the result is initialResult.
-    func reduce<ElementOfResult>(_ initialResult: ElementOfResult, _ nextPartialResult: @escaping (ElementOfResult, Element) -> ElementOfResult) -> ElementOfResult {
+    func reduce<ElementOfResult>(
+        _ initialResult: ElementOfResult,
+        _ nextPartialResult: @escaping (ElementOfResult, Element) -> ElementOfResult
+    ) -> ElementOfResult {
         var result: ElementOfResult?
         queue.sync { result = self.array.reduce(initialResult, nextPartialResult) }
         return result ?? initialResult
@@ -152,7 +155,10 @@ public extension SynchronizedArray {
     ///   - initialResult: The value to use as the initial accumulating value.
     ///   - updateAccumulatingResult: A closure that updates the accumulating value with an element of the sequence.
     /// - Returns: The final accumulated value. If the sequence has no elements, the result is initialResult.
-    func reduce<ElementOfResult>(into initialResult: ElementOfResult, _ updateAccumulatingResult: @escaping (inout ElementOfResult, Element) -> ()) -> ElementOfResult {
+    func reduce<ElementOfResult>(
+        into initialResult: ElementOfResult,
+        _ updateAccumulatingResult: @escaping (inout ElementOfResult, Element) -> Void
+    ) -> ElementOfResult {
         var result: ElementOfResult?
         queue.sync { result = self.array.reduce(into: initialResult, updateAccumulatingResult) }
         return result ?? initialResult
@@ -187,7 +193,6 @@ public extension SynchronizedArray {
 }
 
 // MARK: - Mutable
-
 public extension SynchronizedArray {
 
     /// Adds a new element at the end of the array.
@@ -363,7 +368,6 @@ public extension SynchronizedArray {
 }
 
 // MARK: - Equatable
-
 public extension SynchronizedArray where Element: Equatable {
 
     /// Returns a Boolean value indicating whether the sequence contains the given element.
@@ -396,13 +400,12 @@ public extension SynchronizedArray where Element: Equatable {
     /// - Parameters:
     ///   - left: The collection to remove from.
     ///   - right: An element to search for in the collection.
-    static func -=(left: inout SynchronizedArray, right: Element) {
+    static func -= (left: inout SynchronizedArray, right: Element) {
         left.remove(right)
     }
 }
 
 // MARK: - Infix operators
-
 public extension SynchronizedArray {
 
     /// Adds a new element at the end of the array.
@@ -412,7 +415,7 @@ public extension SynchronizedArray {
     /// - Parameters:
     ///   - left: The collection to append to.
     ///   - right: The element to append to the array.
-    static func +=(left: inout SynchronizedArray, right: Element) {
+    static func += (left: inout SynchronizedArray, right: Element) {
         left.append(right)
     }
 
@@ -423,7 +426,7 @@ public extension SynchronizedArray {
     /// - Parameters:
     ///   - left: The collection to append to.
     ///   - right: The elements to append to the array.
-    static func +=(left: inout SynchronizedArray, right: [Element]) {
+    static func += (left: inout SynchronizedArray, right: [Element]) {
         left.append(right)
     }
 }

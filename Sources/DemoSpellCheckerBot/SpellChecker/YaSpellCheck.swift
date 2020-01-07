@@ -15,7 +15,7 @@ class YaSpellCheck: Codable {
     let length: Int
     let word: String
     let spell: [String]
-    
+
     enum CodingKeys: String, CodingKey {
         case code = "code"
         case position = "pos"
@@ -25,7 +25,7 @@ class YaSpellCheck: Codable {
         case word = "word"
         case spell = "s"
     }
-    
+
     init(code: Int, position: Int, row: Int, column: Int, length: Int, word: String, spell: [String]) {
         self.code = code
         self.position = position

@@ -18,7 +18,7 @@ public final class MessageEntity: Codable {
         case user = "user"
     }
 
-    /// Type of the entity. Can be mention (@username), hashtag, cashtag, bot_command, url, email, phone_number, bold (bold text), italic (italic text), code (monowidth string), pre (monowidth block), text_link (for clickable text URLs), text_mention (for users without usernames)
+    /// Type of the entity. Can be “mention” (@username), “hashtag” (#hashtag), “cashtag” ($USD), “bot_command” (/start@jobs_bot), “url” (https://telegram.org), “email” (do-not-reply@telegram.org), “phone_number” (+1-212-555-0123), “bold” (bold text), “italic” (italic text), “underline” (underlined text), “strikethrough” (strikethrough text), “code” (monowidth string), “pre” (monowidth block), “text_link” (for clickable text URLs), “text_mention” (for users without usernames)
     public var type: MessageEntityType
 
     /// Offset in UTF-16 code units to the start of the entity
@@ -32,7 +32,6 @@ public final class MessageEntity: Codable {
 
     /// Optional. For “text_mention” only, the mentioned user
     public var user: User?
-
 
     public init (type: MessageEntityType, offset: Int, length: Int, url: String? = nil, user: User? = nil) {
         self.type = type

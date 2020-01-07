@@ -23,7 +23,6 @@ public final class ReplyKeyboardRemove: Codable {
     /// Example: A user votes in a poll, bot returns confirmation message in reply to the vote and removes the keyboard for that user, while still showing the keyboard with poll options to users who haven't voted yet.
     public var selective: Bool?
 
-
     public init (removeKeyboard: Bool = true, selective: Bool? = nil) {
         self.removeKeyboard = removeKeyboard
         self.selective = selective

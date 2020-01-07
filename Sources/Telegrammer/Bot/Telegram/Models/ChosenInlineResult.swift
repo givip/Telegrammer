@@ -33,7 +33,6 @@ public final class ChosenInlineResult: Codable {
     /// The query that was used to obtain the result
     public var query: String
 
-
     public init (resultId: String, from: User, location: Location? = nil, inlineMessageId: String? = nil, query: String) {
         self.resultId = resultId
         self.from = from

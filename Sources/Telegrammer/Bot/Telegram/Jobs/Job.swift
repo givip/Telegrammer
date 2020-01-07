@@ -14,7 +14,7 @@ public protocol Job: Equatable {
     var id: String { get }
 
     /// Do not call this callback explicitly, use method `run`
-    var callback: (_ context: Context?) throws -> () { get }
+    var callback: (_ context: Context?) throws -> Void { get }
 
     var name: String? { get }
     var enabled: Bool { get }
@@ -39,7 +39,7 @@ public class AnyJob<C>: Job {
     public typealias Context = C
 
     public var id: String { return _id() }
-    public var callback: (_ context: C?) throws -> () { return _callback() }
+    public var callback: (_ context: C?) throws -> Void { return _callback() }
     public var name: String? { return _name() }
     public var enabled: Bool { return _enabled() }
     public var scheduledRemoval: Bool { return _scheduledRemoval() }
@@ -48,7 +48,7 @@ public class AnyJob<C>: Job {
     public var context: C? { return _context() }
 
     private var _id: () -> (String)
-    private var _callback: () -> ((_ context: C?) throws -> ())
+    private var _callback: () -> ((_ context: C?) throws -> Void)
     private var _name: () -> (String?)
     private var _enabled: () -> (Bool)
     private var _scheduledRemoval: () -> (Bool)
@@ -56,8 +56,8 @@ public class AnyJob<C>: Job {
     private var _interval: () -> (TimeAmount)
     private var _context: () -> (C?)
 
-    private var _run: (BotProtocol) throws -> ()
-    private var _scheduleRemoval: () -> ()
+    private var _run: (BotProtocol) throws -> Void
+    private var _scheduleRemoval: () -> Void
 
     public required init<J: Job>(_ job: J) where J.Context == C {
         self._id = { job.id }

@@ -61,7 +61,6 @@ public final class InlineQueryResultGif: Codable {
     /// Optional. Content of the message to be sent instead of the GIF animation
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, gifUrl: String, gifWidth: Int? = nil, gifHeight: Int? = nil, gifDuration: Int? = nil, thumbUrl: String, title: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Sticker`
 public struct StickerFilter: Filter {
-    
+
     public var name: String = "sticker"
-    
+
     public func filter(message: Message) -> Bool {
         return message.sticker != nil
     }

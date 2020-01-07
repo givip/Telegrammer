@@ -8,21 +8,21 @@
 import Foundation
 
 class YaSpellFlow: SpellFlow {
-    
+
     enum Action {
         case fix(String)
         case skip
         case keep
     }
-    
+
     typealias C = YaSpellCheck
-    
+
     var chunkSideSize: Int = 40
-    
+
     private var checks: [C] = []
     private var fixes: [Action] = []
     private var text: String = ""
-    
+
     private var _step: Int = 0
     private var step: Int {
         get {
@@ -32,13 +32,13 @@ class YaSpellFlow: SpellFlow {
             _step = newValue >= checks.count ? 0 : newValue
         }
     }
-    
+
     func start(_ text: String, checks: [C]) {
         self.text = text
         self.checks = checks
         self.fixes = Array(repeating: Action.skip, count: checks.count)
     }
-    
+
     func next() -> (textChunk: String, spellFixes: [String])? {
         for count in 0..<fixes.count {
             if case Action.skip = fixes[step] {
@@ -53,22 +53,22 @@ class YaSpellFlow: SpellFlow {
         guard let chunk = textChunk(for: step) else { return nil }
         return (chunk, checks[step].spell)
     }
-    
+
     func fix(_ text: String) {
         fixes[step] = .fix(text)
         step += 1
     }
-    
+
     func skip() {
         fixes[step] = .skip
         step += 1
     }
-    
+
     func keep() {
         fixes[step] = .keep
         step += 1
     }
-    
+
     func finish() -> String {
         return correctedText
     }
@@ -87,7 +87,7 @@ private extension YaSpellFlow {
         let mdText = String(text[range]).replacingOccurrences(of: check.word, with: "`\(check.word)`")
         return "...\(mdText)..."
     }
-    
+
     var correctedText: String {
         var addition = 0
         var newText = text

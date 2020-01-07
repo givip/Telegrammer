@@ -1,3 +1,4 @@
+// swiftlint:disable all
 
 import Foundation
 import NIO
@@ -37,7 +38,10 @@ func onceTimerStart(_ update: Update, _ context: BotContext?) throws {
 
     let oneTimerJob = OnceJob(when: Date().addingTimeInterval(interval), context: message.chat) { chat in
         guard let chat = chat else { return }
-        let params = Bot.SendMessageParams(chatId: .chat(chat.id), text: "Once, after \(interval) seconds: \(Date())")
+        let params = Bot.SendMessageParams(
+            chatId: .chat(chat.id),
+            text: "Once, after \(interval) seconds: \(Date())"
+        )
         try bot.sendMessage(params: params)
     }
 
@@ -50,7 +54,7 @@ func repeatedTimerStart(_ update: Update, _ context: BotContext?) throws {
 
     var interval = TimeAmount.seconds(5)
 
-    if let value = message.text?.split(separator: " ").last, let amount = Int(value) {
+    if let value = message.text?.split(separator: " ").last, let amount = Int64(value) {
         interval = TimeAmount.seconds(amount)
     }
 

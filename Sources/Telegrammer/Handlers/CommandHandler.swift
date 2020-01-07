@@ -5,8 +5,6 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import HTTP
-
 /**
  Handler class to handle Telegram commands.
  
@@ -19,58 +17,61 @@ import HTTP
  */
 public class CommandHandler: Handler {
     public var name: String
-    
+
     public struct Options: OptionSet {
         public let rawValue: Int
-        
+
         public init(rawValue: Int) {
             self.rawValue = rawValue
         }
-        
+
         /// Determines Whether the handler should also accept edited messages. Not used by default.
         public static let editedUpdates = Options(rawValue: 1)
     }
-    
+
     let commands: Set<String>
-    let callback: HandlerCallback 
+    let callback: HandlerCallback
     let filters: Filters
     let options: Options
-    
+
     public init(
         name: String = String(describing: CommandHandler.self),
         commands: [String],
         filters: Filters = .all,
         options: Options = [],
         callback: @escaping HandlerCallback
-        ) {
+    ) {
         self.name = name
         self.commands = Set(commands)
         self.filters = filters
         self.options = options
         self.callback = callback
     }
-    
-    public func check(update: Update) -> Bool {
-        if options.contains(.editedUpdates),
-            update.editedMessage != nil ||
-                update.editedChannelPost != nil {
-            return true
+
+    private func check(message: Message?) -> Bool {
+        guard let message = message, filters.check(message) else {
+            return false
         }
-        
-        guard let message = update.message,
-            filters.check(message),
-            let text = message.text,
-            let entities = message.entities else { return false }
-        
-        let types = entities.compactMap { (entity) -> String? in
-            let nsRange = NSRange(location: entity.offset, length: entity.length)
-            guard let range = Range(nsRange, in: text) else { return nil }
-            return String(text[range])
-        }
-        return !commands.intersection(types).isEmpty
+        return commands.contains(where: {
+            message.contains(command: $0)
+        })
     }
-    
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, nil)
+
+    public func check(update: Update) -> Bool {
+        if options.contains(.editedUpdates) {
+            if check(message: update.editedMessage) {
+                return true
+            }
+        }
+
+        return check(message: update.message)
+    }
+
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

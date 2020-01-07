@@ -37,7 +37,6 @@ public final class Game: Codable {
     /// Optional. Animation that will be displayed in the game message in chats. Upload via BotFather
     public var animation: Animation?
 
-
     public init (title: String, description: String, photo: [PhotoSize], text: String? = nil, textEntities: [MessageEntity]? = nil, animation: Animation? = nil) {
         self.title = title
         self.description = description

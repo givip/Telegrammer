@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Vanue`
 public struct VenueFilter: Filter {
-    
+
     public var name: String = "venue"
-    
+
     public func filter(message: Message) -> Bool {
         return message.venue != nil
     }

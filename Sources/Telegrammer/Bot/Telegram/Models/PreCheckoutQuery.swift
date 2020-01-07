@@ -41,7 +41,6 @@ public final class PreCheckoutQuery: Codable {
     /// Optional. Order info provided by the user
     public var orderInfo: OrderInfo?
 
-
     public init (id: String, from: User, currency: String, totalAmount: Int, invoicePayload: String, shippingOptionId: String? = nil, orderInfo: OrderInfo? = nil) {
         self.id = id
         self.from = from

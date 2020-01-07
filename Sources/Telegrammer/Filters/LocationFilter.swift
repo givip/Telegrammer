@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Location`
 public struct LocationFilter: Filter {
-    
+
     public var name: String = "location"
-    
+
     public func filter(message: Message) -> Bool {
         return message.location != nil
     }

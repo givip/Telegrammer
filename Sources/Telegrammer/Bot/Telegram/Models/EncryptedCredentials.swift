@@ -25,7 +25,6 @@ public final class EncryptedCredentials: Codable {
     /// Base64-encoded secret, encrypted with the bot's public RSA key, required for data decryption
     public var secret: String
 
-
     public init (data: String, hash: String, secret: String) {
         self.data = data
         self.hash = hash

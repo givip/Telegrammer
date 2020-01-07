@@ -29,7 +29,6 @@ public final class OrderInfo: Codable {
     /// Optional. User shipping address
     public var shippingAddress: ShippingAddress?
 
-
     public init (name: String? = nil, phoneNumber: String? = nil, email: String? = nil, shippingAddress: ShippingAddress? = nil) {
         self.name = name
         self.phoneNumber = phoneNumber

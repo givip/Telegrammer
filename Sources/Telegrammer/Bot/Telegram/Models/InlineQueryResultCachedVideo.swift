@@ -49,7 +49,6 @@ public final class InlineQueryResultCachedVideo: Codable {
     /// Optional. Content of the message to be sent instead of the video
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, videoFileId: String, title: String, description: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

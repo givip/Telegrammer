@@ -9,7 +9,7 @@ import Foundation
 import NIO
 
 extension TimeAmount {
-    var seconds: TimeAmount.Value {
-        return Int(round(Double(self.nanoseconds) / 1_000_000_000.0))
+    var seconds: Int64 {
+        return Int64(round(Double(self.nanoseconds) / 1_000_000_000.0))
     }
 }

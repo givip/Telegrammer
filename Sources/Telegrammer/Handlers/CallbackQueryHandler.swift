@@ -9,12 +9,12 @@ import Foundation
 
 /// Handler for CallbackQuery updates
 public class CallbackQueryHandler: Handler {
-    
+
     public var name: String
-    
+
     let pattern: String
     let callback: HandlerCallback
-    
+
     public init(
         pattern: String,
         callback: @escaping HandlerCallback,
@@ -24,7 +24,7 @@ public class CallbackQueryHandler: Handler {
         self.callback = callback
         self.name = name
     }
-    
+
     public func check(update: Update) -> Bool {
         guard let callbackQuery = update.callbackQuery else { return false }
         if let data = callbackQuery.data,
@@ -33,8 +33,12 @@ public class CallbackQueryHandler: Handler {
         }
         return true
     }
-    
-    public func handle(update: Update, dispatcher: Dispatcher) throws {
-        try callback(update, nil)
+
+    public func handle(update: Update, dispatcher: Dispatcher) {
+        do {
+            try callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
     }
 }

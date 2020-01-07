@@ -29,7 +29,6 @@ public final class ShippingQuery: Codable {
     /// User specified shipping address
     public var shippingAddress: ShippingAddress
 
-
     public init (id: String, from: User, invoicePayload: String, shippingAddress: ShippingAddress) {
         self.id = id
         self.from = from

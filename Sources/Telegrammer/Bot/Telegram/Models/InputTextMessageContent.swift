@@ -25,7 +25,6 @@ public final class InputTextMessageContent: Codable {
     /// Optional. Disables link previews for links in the sent message
     public var disableWebPagePreview: Bool?
 
-
     public init (messageText: String, parseMode: String? = nil, disableWebPagePreview: Bool? = nil) {
         self.messageText = messageText
         self.parseMode = parseMode

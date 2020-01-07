@@ -53,7 +53,6 @@ public final class EncryptedPassportElement: Codable {
     /// Base64-encoded element hash for using in PassportElementErrorUnspecified
     public var hash: String
 
-
     public init (type: String, data: String? = nil, phoneNumber: String? = nil, email: String? = nil, files: [PassportFile]? = nil, frontSide: PassportFile? = nil, reverseSide: PassportFile? = nil, selfie: PassportFile? = nil, translation: [PassportFile]? = nil, hash: String) {
         self.type = type
         self.data = data

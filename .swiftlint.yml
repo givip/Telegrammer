@@ -1,0 +1,10 @@
+disabled_rules:
+  - identifier_name
+line_length:
+   ignores_comments: true
+excluded:
+  - .build
+  - Tests
+  - Sources/Demo*
+  - Sources/Telegrammer/Bot/Telegram/Methods/*
+  - Sources/Telegrammer/Bot/Telegram/Models/*

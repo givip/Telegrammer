@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that are a reply to another message
 public struct ReplyFilter: Filter {
-    
+
     public var name: String = "reply"
-    
+
     public func filter(message: Message) -> Bool {
         return message.replyToMessage != nil
     }

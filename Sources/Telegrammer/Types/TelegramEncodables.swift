@@ -6,12 +6,13 @@
 //
 
 import Foundation
-import Multipart
+import MultipartKit
+import struct NIO.ByteBufferAllocator
 
 /// Represent Telegram type, which will be encoded as Json on sending to server
 protocol JSONEncodable: Encodable {}
 
-extension JSONEncodable {    
+extension JSONEncodable {
     func encodeBody() throws -> Data {
         return try JSONEncoder().encode(self)
     }
@@ -21,7 +22,10 @@ extension JSONEncodable {
 protocol MultipartEncodable: Encodable {}
 
 extension MultipartEncodable {
-    func encodeBody(boundary: [UInt8]) throws -> Data {
-        return try FormDataEncoder().encode(self, boundary: boundary)
+    func encodeBody(boundary: String) throws -> ByteBuffer {
+        let encoder = FormDataEncoder()
+        var buffer = ByteBufferAllocator().buffer(capacity: 0)
+        try encoder.encode(self, boundary: boundary, into: &buffer)
+        return buffer
     }
 }

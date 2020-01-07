@@ -13,6 +13,7 @@ public final class StickerSet: Codable {
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case title = "title"
+        case isAnimated = "is_animated"
         case containsMasks = "contains_masks"
         case stickers = "stickers"
     }
@@ -23,16 +24,19 @@ public final class StickerSet: Codable {
     /// Sticker set title
     public var title: String
 
+    /// True, if the sticker set contains animated stickers
+    public var isAnimated: Bool
+
     /// True, if the sticker set contains masks
     public var containsMasks: Bool
 
     /// List of all set stickers
     public var stickers: [Sticker]
 
-
-    public init (name: String, title: String, containsMasks: Bool, stickers: [Sticker]) {
+    public init (name: String, title: String, isAnimated: Bool, containsMasks: Bool, stickers: [Sticker]) {
         self.name = name
         self.title = title
+        self.isAnimated = isAnimated
         self.containsMasks = containsMasks
         self.stickers = stickers
     }

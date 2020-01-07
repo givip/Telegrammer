@@ -45,7 +45,6 @@ public final class InputMediaAudio: Encodable {
     /// Optional. Title of the audio
     public var title: String?
 
-
     public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil) {
         self.type = type
         self.media = media

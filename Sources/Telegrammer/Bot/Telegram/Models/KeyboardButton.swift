@@ -25,7 +25,6 @@ public final class KeyboardButton: Codable {
     /// Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     public var requestLocation: Bool?
 
-
     public init (text: String, requestContact: Bool? = nil, requestLocation: Bool? = nil) {
         self.text = text
         self.requestContact = requestContact

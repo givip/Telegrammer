@@ -33,7 +33,6 @@ public final class InlineQueryResultCachedSticker: Codable {
     /// Optional. Content of the message to be sent instead of the sticker
     public var inputMessageContent: InputMessageContent?
 
-
     public init (type: String, id: String, stickerFileId: String, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id

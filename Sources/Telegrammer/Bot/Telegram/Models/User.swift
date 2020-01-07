@@ -37,7 +37,6 @@ public final class User: Codable {
     /// Optional. IETF language tag of the user's language
     public var languageCode: String?
 
-
     public init (id: Int64, isBot: Bool, firstName: String, lastName: String? = nil, username: String? = nil, languageCode: String? = nil) {
         self.id = id
         self.isBot = isBot

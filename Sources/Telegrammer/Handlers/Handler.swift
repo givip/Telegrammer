@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 21.04.2018.
 //
 
-import HTTP
+import AsyncHTTPClient
 
 public protocol BotContext { }
 
@@ -16,17 +16,15 @@ public typealias HandlerCallback = (_ update: Update, _ context: BotContext?) th
  
  Every handler must implement `check` and `handle` methods
  */
-public protocol Handler {
+public protocol Handler: AutoMockable {
     var name: String { get }
-    
+
     func check(update: Update) -> Bool
-    func handle(update: Update, dispatcher: Dispatcher) throws
+    func handle(update: Update, dispatcher: Dispatcher)
 }
 
 extension Handler {
-    var name: String {
+    public var name: String {
         return String(describing: Self.self)
     }
 }
-
-public protocol ErrorHandler: Handler { }

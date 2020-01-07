@@ -35,7 +35,7 @@ public enum InputMedia: Encodable {
 public enum InputMediaPhotoAndVideo: Encodable {
     case inputMediaPhoto(InputMediaPhoto)
     case inputMediaVideo(InputMediaVideo)
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {

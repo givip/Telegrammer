@@ -6,23 +6,29 @@
 //
 
 import Foundation
-import Multipart
+import MultipartKit
 
-public protocol MultipartPartNestedConvertible: MultipartPartConvertible {}
+public extension MultipartPartConvertible where Self: Codable {
+    init?(multipart: MultipartPart) {
+        guard let data = Data(multipart: multipart) else {
+            return nil
+        }
 
-public extension MultipartPartNestedConvertible where Self: Codable {
-    func convertToMultipartPart() throws -> MultipartPart {
-        return try MultipartPart(data: JSONEncoder().encode(self))
+        do {
+            self = try JSONDecoder().decode(Self.self, from: data)
+        } catch {
+            log.error(error.logMessage)
+            return nil
+        }
     }
 
-    static func convertFromMultipartPart(_ part: MultipartPart) throws -> Self {
+    var multipart: MultipartPart? {
         do {
-            return try JSONDecoder().decode(self.self, from: part.data)
+            let data = try JSONEncoder().encode(self)
+            return MultipartPart(body: data)
         } catch {
-            throw MultipartError(
-                identifier: "\(self.self)",
-                reason: "Failed to setup instance from json decoder - \(error)"
-            )
+            log.error(error.logMessage)
+            return nil
         }
     }
 }
