@@ -22,14 +22,14 @@ public class BotClient {
     ///   - host: Host for requests (without scheme)
     ///   - port: Port for requests
     ///   - token: Bot auth token
-    ///   - proxy: Proxy parrameters
     ///   - worker: Worker on which will be performed request
+    ///   - proxy: Proxy parameters
     public init(
         host: String,
         port: Int,
         token: String,
-        proxy: HTTPClient.Configuration.Proxy? = nil,
-        worker: HTTPClient.EventLoopGroupProvider
+        worker: HTTPClient.EventLoopGroupProvider,
+        proxy: HTTPClient.Configuration.Proxy? = nil
     ) throws {
         self.host = host
         self.port = port
