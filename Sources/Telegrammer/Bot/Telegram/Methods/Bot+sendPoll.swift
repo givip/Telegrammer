@@ -33,6 +33,15 @@ public extension Bot {
         /// If the poll allows multiple answers, ignored for polls in quiz mode, defaults to false.
         var allowsMultipleAnswers: Bool?
         
+        /// Poll type, quiz or regular, defaults to “regular”
+        var type: PollType?
+        
+        /// 0-based identifier of the correct answer option, required for polls in quiz mode
+        var correctOptionID: Int?
+        
+        /// If the poll needs to be immediately closed. This can be useful for poll preview.
+        var isClosed: Bool?
+        
         /// Custom keys for coding/decoding `SendPollParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
@@ -43,9 +52,12 @@ public extension Bot {
             case replyMarkup = "reply_markup"
             case isAnonymous = "is_anonymous"
             case allowsMultipleAnswers = "allows_multiple_answers"
+            case type = "type"
+            case correctOptionID = "correct_option_id"
+            case isClosed = "is_closed"
         }
 
-        public init(chatId: ChatId, question: String, options: [String], disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil, isAnonymous: Bool? = nil, allowsMultipleAnswers: Bool? = nil) {
+        public init(chatId: ChatId, question: String, options: [String], disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil, isAnonymous: Bool? = nil, allowsMultipleAnswers: Bool? = nil, type: PollType? = nil, correctOptionID: Int? = nil, isClosed: Bool? = nil) {
             self.chatId = chatId
             self.question = question
             self.options = options
@@ -54,6 +66,9 @@ public extension Bot {
             self.replyMarkup = replyMarkup
             self.isAnonymous = isAnonymous
             self.allowsMultipleAnswers = allowsMultipleAnswers
+            self.type = type
+            self.correctOptionID = correctOptionID
+            self.isClosed = isClosed
         }
     }
 
