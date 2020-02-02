@@ -26,7 +26,13 @@ public extension Bot {
 
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
-
+        
+        /// If the poll needs to be anonymous, defaults to true.
+        var isAnonymous: Bool?
+        
+        /// If the poll allows multiple answers, ignored for polls in quiz mode, defaults to false.
+        var allowsMultipleAnswers: Bool?
+        
         /// Custom keys for coding/decoding `SendPollParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
@@ -35,15 +41,19 @@ public extension Bot {
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case replyMarkup = "reply_markup"
+            case isAnonymous = "is_anonymous"
+            case allowsMultipleAnswers = "allows_multiple_answers"
         }
 
-        public init(chatId: ChatId, question: String, options: [String], disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, question: String, options: [String], disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil, isAnonymous: Bool? = nil, allowsMultipleAnswers: Bool? = nil) {
             self.chatId = chatId
             self.question = question
             self.options = options
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.replyMarkup = replyMarkup
+            self.isAnonymous = isAnonymous
+            self.allowsMultipleAnswers = allowsMultipleAnswers
         }
     }
 
