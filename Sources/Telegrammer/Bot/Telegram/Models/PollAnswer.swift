@@ -23,10 +23,10 @@ public final class PollAnswer: Codable {
     public var user: User
 
     /// 0-based identifiers of answer options, chosen by the user. May be empty if the user retracted their vote.
-    public var optionIds: [Integer]
+    public var optionIds: [Int]
 
 
-    public init (pollId: String, user: User, optionIds: [Integer]) {
+    public init (pollId: String, user: User, optionIds: [Int]) {
         self.pollId = pollId
         self.user = user
         self.optionIds = optionIds
