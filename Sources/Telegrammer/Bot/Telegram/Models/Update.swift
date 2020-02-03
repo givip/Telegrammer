@@ -58,9 +58,10 @@ public final class Update: Codable {
 
     /// Optional. New poll state. Bots receive only updates about stopped polls and polls, which are sent by the bot
     public var poll: Poll?
-    
+
     /// Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     public var pollAnswer: PollAnswer?
+
 
     public init (updateId: Int, message: Message? = nil, editedMessage: Message? = nil, channelPost: Message? = nil, editedChannelPost: Message? = nil, inlineQuery: InlineQuery? = nil, chosenInlineResult: ChosenInlineResult? = nil, callbackQuery: CallbackQuery? = nil, shippingQuery: ShippingQuery? = nil, preCheckoutQuery: PreCheckoutQuery? = nil, poll: Poll? = nil, pollAnswer: PollAnswer? = nil) {
         self.updateId = updateId

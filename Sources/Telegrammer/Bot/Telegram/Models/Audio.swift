@@ -12,6 +12,7 @@ public final class Audio: Codable {
     /// Custom keys for coding/decoding `Audio` struct
     enum CodingKeys: String, CodingKey {
         case fileId = "file_id"
+        case fileUniqueId = "file_unique_id"
         case duration = "duration"
         case performer = "performer"
         case title = "title"
@@ -20,8 +21,11 @@ public final class Audio: Codable {
         case thumb = "thumb"
     }
 
-    /// Unique identifier for this file
+    /// Identifier for this file, which can be used to download or reuse the file
     public var fileId: String
+
+    /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    public var fileUniqueId: String
 
     /// Duration of the audio in seconds as defined by sender
     public var duration: Int
@@ -42,8 +46,9 @@ public final class Audio: Codable {
     public var thumb: PhotoSize?
 
 
-    public init (fileId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
+    public init (fileId: String, fileUniqueId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
         self.fileId = fileId
+        self.fileUniqueId = fileUniqueId
         self.duration = duration
         self.performer = performer
         self.title = title

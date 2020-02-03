@@ -17,9 +17,9 @@ public final class Poll: Codable {
         case totalVoterCount = "total_voter_count"
         case isClosed = "is_closed"
         case isAnonymous = "is_anonymous"
-        case allowsMultipleAnswers = "allows_multiple_answers"
         case type = "type"
-        case correctOptionID = "correct_option_id"
+        case allowsMultipleAnswers = "allows_multiple_answers"
+        case correctOptionId = "correct_option_id"
     }
 
     /// Unique poll identifier
@@ -31,35 +31,34 @@ public final class Poll: Codable {
     /// List of poll options
     public var options: [PollOption]
 
+    /// Total number of users that voted in the poll
+    public var totalVoterCount: Int
+
     /// True, if the poll is closed
     public var isClosed: Bool
 
-    /// Total number of users that voted in the poll
-    public var totalVoterCount: Int
-    
-    /// If the poll is anonymous
+    /// True, if the poll is anonymous
     public var isAnonymous: Bool
-    
-    /// If the poll allows multiple answers
-    public var allowsMultipleAnswers: Bool
-    
-    /// Poll type, currently can be “regular” or “quiz”
-    public var type: PollType
-    
-    /// 0-based identifier of the correct answer option.
-    /// Available only for polls in the quiz mode, which are closed,
-    /// or was sent (not forwarded) by the bot or to the private chat with the bot
-    public var correctOptionID: Int?
 
-    public init (id: String, question: String, options: [PollOption], isClosed: Bool, totalVoterCount: Int, isAnonymous: Bool, allowsMultipleAnswers: Bool, type: PollType, correctOptionID: Int? = nil) {
+    /// Poll type, currently can be “regular” or “quiz”
+    public var type: String
+
+    /// True, if the poll allows multiple answers
+    public var allowsMultipleAnswers: Bool
+
+    /// Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
+    public var correctOptionId: Int?
+
+
+    public init (id: String, question: String, options: [PollOption], totalVoterCount: Int, isClosed: Bool, isAnonymous: Bool, type: String, allowsMultipleAnswers: Bool, correctOptionId: Int? = nil) {
         self.id = id
         self.question = question
         self.options = options
-        self.isClosed = isClosed
         self.totalVoterCount = totalVoterCount
+        self.isClosed = isClosed
         self.isAnonymous = isAnonymous
-        self.allowsMultipleAnswers = allowsMultipleAnswers
         self.type = type
-        self.correctOptionID = correctOptionID
+        self.allowsMultipleAnswers = allowsMultipleAnswers
+        self.correctOptionId = correctOptionId
     }
 }

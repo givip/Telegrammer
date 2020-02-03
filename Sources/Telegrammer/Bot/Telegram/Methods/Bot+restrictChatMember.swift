@@ -15,45 +15,30 @@ public extension Bot {
         /// Unique identifier of the target user
         var userId: Int64
 
+        /// New user permissions
+        var permissions: ChatPermissions
+
         /// Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever
         var untilDate: Int?
-
-        /// Pass True, if the user can send text messages, contacts, locations and venues
-        var canSendMessages: Bool?
-
-        /// Pass True, if the user can send audios, documents, photos, videos, video notes and voice notes, implies can_send_messages
-        var canSendMediaMessages: Bool?
-
-        /// Pass True, if the user can send animations, games, stickers and use inline bots, implies can_send_media_messages
-        var canSendOtherMessages: Bool?
-
-        /// Pass True, if the user may add web page previews to their messages, implies can_send_media_messages
-        var canAddWebPagePreviews: Bool?
 
         /// Custom keys for coding/decoding `RestrictChatMemberParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case userId = "user_id"
+            case permissions = "permissions"
             case untilDate = "until_date"
-            case canSendMessages = "can_send_messages"
-            case canSendMediaMessages = "can_send_media_messages"
-            case canSendOtherMessages = "can_send_other_messages"
-            case canAddWebPagePreviews = "can_add_web_page_previews"
         }
 
-        public init(chatId: ChatId, userId: Int64, untilDate: Int? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
+        public init(chatId: ChatId, userId: Int64, permissions: ChatPermissions, untilDate: Int? = nil) {
             self.chatId = chatId
             self.userId = userId
+            self.permissions = permissions
             self.untilDate = untilDate
-            self.canSendMessages = canSendMessages
-            self.canSendMediaMessages = canSendMediaMessages
-            self.canSendOtherMessages = canSendOtherMessages
-            self.canAddWebPagePreviews = canAddWebPagePreviews
         }
     }
 
     /**
-     Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all boolean parameters to lift restrictions from a user. Returns True on success.
+     Use this method to restrict a user in a supergroup. The bot must be an administrator in the supergroup for this to work and must have the appropriate admin rights. Pass True for all permissions to lift restrictions from a user. Returns True on success.
 
      SeeAlso Telegram Bot API Reference:
      [RestrictChatMemberParams](https://core.telegram.org/bots/api#restrictchatmember)

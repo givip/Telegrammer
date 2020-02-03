@@ -30,7 +30,7 @@ public extension Bot {
         /// Three-letter ISO 4217 currency code, see more on currencies
         var currency: String
 
-        /// Price breakdown, a list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
+        /// Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         var prices: [LabeledPrice]
 
         /// JSON-encoded data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
