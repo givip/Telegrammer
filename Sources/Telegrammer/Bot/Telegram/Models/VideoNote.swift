@@ -12,14 +12,18 @@ public final class VideoNote: Codable {
     /// Custom keys for coding/decoding `VideoNote` struct
     enum CodingKeys: String, CodingKey {
         case fileId = "file_id"
+        case fileUniqueId = "file_unique_id"
         case length = "length"
         case duration = "duration"
         case thumb = "thumb"
         case fileSize = "file_size"
     }
 
-    /// Identifier for this file
+    /// Identifier for this file, which can be used to download or reuse the file
     public var fileId: String
+
+    /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    public var fileUniqueId: String
 
     /// Video width and height (diameter of the video message) as defined by sender
     public var length: Int
@@ -34,8 +38,9 @@ public final class VideoNote: Codable {
     public var fileSize: Int?
 
 
-    public init (fileId: String, length: Int, duration: Int, thumb: PhotoSize? = nil, fileSize: Int? = nil) {
+    public init (fileId: String, fileUniqueId: String, length: Int, duration: Int, thumb: PhotoSize? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
+        self.fileUniqueId = fileUniqueId
         self.length = length
         self.duration = duration
         self.thumb = thumb
