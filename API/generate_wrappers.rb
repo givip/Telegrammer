@@ -213,8 +213,10 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}?"
 	when ['Integer', false]
-		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
-							(type_name == 'User' && var_name == 'id')
+		is64bit = var_name.include?("user_id") ||
+                  var_name.include?("chat_id") ||
+                  var_desc.include?("64 bit integer") ||
+                  (type_name == 'User' && var_name == 'id')
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}"
 	when ['Float number', true], ['Float', true]
@@ -242,6 +244,9 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
 			end
 		elsif var_type.start_with?(array_prefix) then
 			var_type.slice! array_prefix
+            if var_type == 'Integer' then
+                var_type = 'Int'
+            end
 			# Present optional arrays as empty arrays
 			if var_optional then
 				return "[#{var_type}]?"

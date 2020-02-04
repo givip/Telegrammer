@@ -13,12 +13,16 @@ public final class File: Codable {
     /// Custom keys for coding/decoding `File` struct
     enum CodingKeys: String, CodingKey {
         case fileId = "file_id"
+        case fileUniqueId = "file_unique_id"
         case fileSize = "file_size"
         case filePath = "file_path"
     }
 
-    /// Identifier for this file
+    /// Identifier for this file, which can be used to download or reuse the file
     public var fileId: String
+
+    /// Unique identifier for this file, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
+    public var fileUniqueId: String
 
     /// Optional. File size, if known
     public var fileSize: Int?
@@ -27,8 +31,9 @@ public final class File: Codable {
     public var filePath: String?
 
 
-    public init (fileId: String, fileSize: Int? = nil, filePath: String? = nil) {
+    public init (fileId: String, fileUniqueId: String, fileSize: Int? = nil, filePath: String? = nil) {
         self.fileId = fileId
+        self.fileUniqueId = fileUniqueId
         self.fileSize = fileSize
         self.filePath = filePath
     }

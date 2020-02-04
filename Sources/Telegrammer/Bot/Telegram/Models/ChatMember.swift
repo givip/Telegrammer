@@ -13,6 +13,7 @@ public final class ChatMember: Codable {
     enum CodingKeys: String, CodingKey {
         case user = "user"
         case status = "status"
+        case customTitle = "custom_title"
         case untilDate = "until_date"
         case canBeEdited = "can_be_edited"
         case canPostMessages = "can_post_messages"
@@ -36,6 +37,9 @@ public final class ChatMember: Codable {
 
     /// The member's status in the chat. Can be “creator”, “administrator”, “member”, “restricted”, “left” or “kicked”
     public var status: String
+
+    /// Optional. Owner and administrators only. Custom title for this user
+    public var customTitle: String?
 
     /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
     public var untilDate: Int?
@@ -86,9 +90,10 @@ public final class ChatMember: Codable {
     public var canAddWebPagePreviews: Bool?
 
 
-    public init (user: User, status: String, untilDate: Int? = nil, canBeEdited: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canRestrictMembers: Bool? = nil, canPromoteMembers: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
+    public init (user: User, status: String, customTitle: String? = nil, untilDate: Int? = nil, canBeEdited: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canRestrictMembers: Bool? = nil, canPromoteMembers: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
         self.user = user
         self.status = status
+        self.customTitle = customTitle
         self.untilDate = untilDate
         self.canBeEdited = canBeEdited
         self.canPostMessages = canPostMessages
