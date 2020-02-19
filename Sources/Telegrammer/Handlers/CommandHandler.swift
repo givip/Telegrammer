@@ -35,18 +35,21 @@ public class CommandHandler: Handler {
     let callback: HandlerCallback 
     let filters: Filters
     let options: Options
+    let botUsername: String?
     
     public init(
         name: String = String(describing: CommandHandler.self),
         commands: [String],
         filters: Filters = .all,
         options: Options = [],
+        botUsername: String? = nil,
         callback: @escaping HandlerCallback
         ) {
         self.name = name
         self.commands = Set(commands)
         self.filters = filters
         self.options = options
+        self.botUsername = botUsername
         self.callback = callback
     }
     
@@ -65,7 +68,20 @@ public class CommandHandler: Handler {
         let types = entities.compactMap { (entity) -> String? in
             let start = text.index(text.startIndex, offsetBy: entity.offset)
             let end = text.index(start, offsetBy: entity.length-1)
-            return String(text[start...end])
+            let command = text[start...end]
+            // If the user specifies the bot using "@"
+            // and `botUsername` is not nil,
+            // check the bot name and then ignore it for further match.
+            let split = command.split(separator: "@")
+            if command.contains("@"),
+                let commandWithoutMention = split.first,
+                let specifiedBot = split.last,
+                let username = botUsername {
+                return specifiedBot == username
+                    ? String(commandWithoutMention) : nil
+            } else {
+                return String(command)
+            }
         }
         return !commands.intersection(types).isEmpty
     }
