@@ -11,7 +11,6 @@ If you find a bug or you have a suggestion create an issue.
 
 ## Coding style
 
-Please follow https://github.com/raywenderlich/swift-style-guide#correctness codestyle.
 Comment every public methods, properties, classes.
 Make commits as atomic as possible with undestandable comment.
 If you are developing feature of fixing bug, please mention issue number (e.g. #222) in commit text.
