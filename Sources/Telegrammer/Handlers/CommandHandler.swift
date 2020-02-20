@@ -73,10 +73,10 @@ public class CommandHandler: Handler {
             // and `botUsername` is not nil,
             // check the bot name and then ignore it for further match.
             let split = command.split(separator: "@")
-            if command.contains("@"),
-                let commandWithoutMention = split.first,
-                let specifiedBot = split.last,
+            if split.count == 2,
                 let username = botUsername {
+                let commandWithoutMention = split[0]
+                let specifiedBot = split[1]
                 return specifiedBot == username
                     ? String(commandWithoutMention) : nil
             } else {
