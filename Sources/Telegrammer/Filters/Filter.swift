@@ -72,11 +72,11 @@ public class Filters {
         if let filter = compoundFilter {
             switch filter.op {
             case .and:
-                return (filter.lhs && filter.rhs).check(message)
+                return (filter.lhs).check(message) && (filter.rhs).check(message)
             case .or:
-                return (filter.lhs || filter.rhs).check(message)
+                return (filter.lhs).check(message) || (filter.rhs).check(message)
             case .not:
-                return (!filter.lhs).check(message)
+                return !(filter.lhs).check(message)
             }
         }
         return true
