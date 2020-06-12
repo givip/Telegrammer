@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MultipartKit
+import TelegrammerMultipart
 import NIO
 
 /**

@@ -308,7 +308,7 @@ def generate_model_file(f, node)
 			init_block        << "#{TWO}self.#{var_name_camel} = #{var_name_camel}\n"
 		}
         if type_name == "MaskPosition" then
-            out.write "import MultipartKit\n\n"
+            out.write "import TelegrammerMultipart\n\n"
         end
 
         out.write "/**\n"

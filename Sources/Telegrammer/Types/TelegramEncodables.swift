@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MultipartKit
+import TelegrammerMultipart
 import struct NIO.ByteBufferAllocator
 
 /// Represent Telegram type, which will be encoded as Json on sending to server
