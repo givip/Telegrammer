@@ -33,7 +33,6 @@ public final class Contact: Codable {
     /// Optional. Additional data about the contact in the form of a vCard
     public var vcard: String?
 
-
     public init (phoneNumber: String, firstName: String, lastName: String? = nil, userId: Int64? = nil, vcard: String? = nil) {
         self.phoneNumber = phoneNumber
         self.firstName = firstName

@@ -17,7 +17,6 @@ public final class InlineKeyboardMarkup: Codable {
     /// Array of button rows, each represented by an Array of InlineKeyboardButton objects
     public var inlineKeyboard: [[InlineKeyboardButton]]
 
-
     public init (inlineKeyboard: [[InlineKeyboardButton]]) {
         self.inlineKeyboard = inlineKeyboard
     }

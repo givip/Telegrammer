@@ -7,7 +7,7 @@
 
 /// This object represents a Telegram server response container.
 public struct TelegramContainer<T: Codable>: Codable {
-    
+
     enum CodingKeys: String, CodingKey {
         case ok = "ok"
         case result = "result"
@@ -15,13 +15,13 @@ public struct TelegramContainer<T: Codable>: Codable {
         case errorCode = "error_code"
         case parameters = "parameters"
     }
-    
+
     public var ok: Bool
     public var result: T?
     public var description: String?
     public var errorCode: Int?
     public var parameters: ResponseParameters?
-    
+
     public init (ok: Bool, result: T?, description: String?, errorCode: Int?, parameters: ResponseParameters?) {
         self.ok = ok
         self.result = result
@@ -30,5 +30,3 @@ public struct TelegramContainer<T: Codable>: Codable {
         self.parameters = parameters
     }
 }
-
-

@@ -21,7 +21,7 @@ class JobQueueTests: XCTestCase {
         let delay: TimeInterval = 1
         let desiredFinishDate: TimeInterval = startDate + delay
 
-        var finishDate: Date? = nil
+        var finishDate: Date?
         var count = 0
 
         let expectation = XCTestExpectation(description: "JobQueue.runOnce has finished")
@@ -68,7 +68,7 @@ class JobQueueTests: XCTestCase {
         let delay: TimeInterval = 0.1
         let desiredFinishDate: TimeInterval = startDate + Double(repeats) * delay
 
-        var finishDate: Date? = nil
+        var finishDate: Date?
         var count = 0
 
         var expectations: [XCTestExpectation] = []
@@ -106,7 +106,7 @@ class JobQueueTests: XCTestCase {
             .submit { () -> Void in
                 performed = true
             }
-            .whenSuccess { result in
+            .whenSuccess { _ in
                 XCTAssertTrue(performed, "At this point job shouldn't be performed")
         }
 

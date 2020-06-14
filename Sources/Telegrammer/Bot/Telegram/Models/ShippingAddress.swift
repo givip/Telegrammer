@@ -37,7 +37,6 @@ public final class ShippingAddress: Codable {
     /// Address post code
     public var postCode: String
 
-
     public init (countryCode: String, state: String, city: String, streetLine1: String, streetLine2: String, postCode: String) {
         self.countryCode = countryCode
         self.state = state

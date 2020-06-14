@@ -37,7 +37,6 @@ public final class MessageEntity: Codable {
     /// Optional. For “pre” only, the programming language of the entity text
     public var language: String?
 
-
     public init (type: MessageEntityType, offset: Int, length: Int, url: String? = nil, user: User? = nil, language: String? = nil) {
         self.type = type
         self.offset = offset

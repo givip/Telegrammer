@@ -16,6 +16,7 @@ public final class StickerSet: Codable {
         case isAnimated = "is_animated"
         case containsMasks = "contains_masks"
         case stickers = "stickers"
+        case thumb = "thumb"
     }
 
     /// Sticker set name
@@ -33,12 +34,15 @@ public final class StickerSet: Codable {
     /// List of all set stickers
     public var stickers: [Sticker]
 
+    /// Optional. Sticker set thumbnail in the .WEBP or .TGS format
+    public var thumb: PhotoSize?
 
-    public init (name: String, title: String, isAnimated: Bool, containsMasks: Bool, stickers: [Sticker]) {
+    public init (name: String, title: String, isAnimated: Bool, containsMasks: Bool, stickers: [Sticker], thumb: PhotoSize? = nil) {
         self.name = name
         self.title = title
         self.isAnimated = isAnimated
         self.containsMasks = containsMasks
         self.stickers = stickers
+        self.thumb = thumb
     }
 }

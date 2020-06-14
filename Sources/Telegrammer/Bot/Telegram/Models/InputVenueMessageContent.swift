@@ -37,7 +37,6 @@ public final class InputVenueMessageContent: Codable {
     /// Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
     public var foursquareType: String?
 
-
     public init (latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil) {
         self.latitude = latitude
         self.longitude = longitude

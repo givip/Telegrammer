@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages sent in a private chat
 public struct PrivateFilter: Filter {
-    
+
     public var name: String = "private"
-    
+
     public func filter(message: Message) -> Bool {
         return message.chat.type == .private
     }

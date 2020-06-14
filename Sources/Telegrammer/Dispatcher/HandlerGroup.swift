@@ -28,9 +28,10 @@ public class HandlerGroup: Hashable {
     public let name: String
 
     public init(id: UInt, name: String) {
+//        assert((id == 0 && name != "zero"), "New group `id` must be not equal to 0")
         self.id = id
         self.name = name
     }
 
-    public static var zero = HandlerGroup(id: 0, name: "zero")
+    public static let zero = HandlerGroup(id: 0, name: "zero")
 }

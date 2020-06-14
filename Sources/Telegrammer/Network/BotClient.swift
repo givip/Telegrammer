@@ -11,20 +11,36 @@ import NIOHTTP1
 import AsyncHTTPClient
 
 public class BotClient {
-    
+
     let host: String
     let port: Int
     let token: String
-
     var client: HTTPClient
-    
-    public init(host: String, port: Int, token: String, worker: HTTPClient.EventLoopGroupProvider) throws {
+
+    /// Default init for BotClient (HTTP client), all parameters except `proxy` are oblibatory
+    /// - Parameters:
+    ///   - host: Host for requests (without scheme)
+    ///   - port: Port for requests
+    ///   - token: Bot auth token
+    ///   - worker: Worker on which will be performed request
+    ///   - proxy: Proxy parameters
+    public init(
+        host: String,
+        port: Int,
+        token: String,
+        worker: HTTPClient.EventLoopGroupProvider,
+        proxy: HTTPClient.Configuration.Proxy? = nil
+    ) throws {
         self.host = host
         self.port = port
         self.token = token
-        self.client = HTTPClient(eventLoopGroupProvider: worker)
+        let config = HTTPClient.Configuration(
+            certificateVerification: .fullVerification,
+            proxy: proxy
+        )
+        self.client = HTTPClient(eventLoopGroupProvider: worker, configuration: config)
     }
-    
+
     /// Sends request to api.telegram.org, and receive TelegramContainer object
     ///
     /// - Parameters:
@@ -34,7 +50,11 @@ public class BotClient {
     ///   - client: custom client, if not metioned, uses default
     /// - Returns: Container with response
     /// - Throws: Errors
-    func request<T: Codable>(endpoint: String, body: HTTPClient.Body? = nil, headers: HTTPHeaders = .empty) throws -> Future<TelegramContainer<T>> {
+    func request<T: Codable>(
+        endpoint: String,
+        body: HTTPClient.Body? = nil,
+        headers: HTTPHeaders = .empty
+    ) throws -> Future<TelegramContainer<T>> {
         let url = apiUrl(endpoint: endpoint)
         let request = try HTTPClient.Request(
             url: url,
@@ -62,7 +82,6 @@ public class BotClient {
         return try JSONDecoder().decode(TelegramContainer<T>.self, from: Data(bytes))
     }
 
-    
     func apiUrl(endpoint: String) -> String {
         return "https://\(host):\(port)/bot\(token)/\(endpoint)"
     }
@@ -73,4 +92,3 @@ extension HTTPClient.Body {
         return .string("")
     }
 }
-

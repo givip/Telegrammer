@@ -33,7 +33,6 @@ public final class Venue: Codable {
     /// Optional. Foursquare type of the venue. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
     public var foursquareType: String?
 
-
     public init (location: Location, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil) {
         self.location = location
         self.title = title

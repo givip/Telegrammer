@@ -69,7 +69,6 @@ public final class Chat: Codable {
     /// Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     public var canSetStickerSet: Bool?
 
-
     public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, slowModeDelay: Int? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
         self.id = id
         self.type = type

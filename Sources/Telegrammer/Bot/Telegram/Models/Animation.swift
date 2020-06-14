@@ -49,7 +49,6 @@ public final class Animation: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
     public init (fileId: String, fileUniqueId: String, width: Int, height: Int, duration: Int, thumb: PhotoSize? = nil, fileName: String? = nil, mimeType: String? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

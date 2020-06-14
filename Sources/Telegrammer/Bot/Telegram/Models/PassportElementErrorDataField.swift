@@ -33,7 +33,6 @@ public final class PassportElementErrorDataField: Codable {
     /// Error message
     public var message: String
 
-
     public init (source: String, type: String, fieldName: String, dataHash: String, message: String) {
         self.source = source
         self.type = type

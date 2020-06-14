@@ -34,7 +34,6 @@ public final class LoginUrl: Codable {
     /// Optional. Pass True to request the permission for your bot to send messages to the user.
     public var requestWriteAccess: Bool?
 
-
     public init (url: String, forwardText: String? = nil, botUsername: String? = nil, requestWriteAccess: Bool? = nil) {
         self.url = url
         self.forwardText = forwardText

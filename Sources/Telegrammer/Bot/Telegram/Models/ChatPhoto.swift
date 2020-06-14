@@ -29,7 +29,6 @@ public final class ChatPhoto: Codable {
     /// Unique file identifier of big (640x640) chat photo, which is supposed to be the same over time and for different bots. Can't be used to download or reuse the file.
     public var bigFileUniqueId: String
 
-
     public init (smallFileId: String, smallFileUniqueId: String, bigFileId: String, bigFileUniqueId: String) {
         self.smallFileId = smallFileId
         self.smallFileUniqueId = smallFileUniqueId

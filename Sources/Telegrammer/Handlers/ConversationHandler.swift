@@ -9,16 +9,16 @@ import Foundation
 import NIO
 
 public class ConversationHandler: Handler {
-    
+
     public var name: String
-    
+
     public struct Options: OptionSet {
         public let rawValue: Int
-        
+
         public init(rawValue: Int) {
             self.rawValue = rawValue
         }
-        
+
         ///Determines if a user can restart a conversation with an entry point.
         public static let allowReentry = Options(rawValue: 1)
         ///If the conversationkey should contain the Chat’s ID.
@@ -28,16 +28,16 @@ public class ConversationHandler: Handler {
         ///If the conversationkey should contain the Message’s ID.
         public static let perMessage = Options(rawValue: 8)
     }
-    
+
     public var entryPoints: [Handler] = []
     public var states: [String: [Handler]] = [:]
     public var fallbacks: [Handler] = []
     public var timeoutBehavior: [Handler] = []
-    
+
     let options: Options
     let conversationTimeout: TimeAmount?
     let callback: HandlerCallback
-    
+
     public init(
         name: String = String(describing: ConversationHandler.self),
         options: Options = [],
@@ -49,11 +49,11 @@ public class ConversationHandler: Handler {
         self.conversationTimeout = conversationTimeout
         self.callback = callback
     }
-    
+
     public func check(update: Update) -> Bool {
         return true
     }
-    
+
     public func handle(update: Update, dispatcher: Dispatcher) {
         do {
             try callback(update, nil)

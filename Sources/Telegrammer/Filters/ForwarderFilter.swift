@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that are forwarded.
 public struct ForwarderFilter: Filter {
-    
+
     public var name: String = "forwarded"
-    
+
     public func filter(message: Message) -> Bool {
         return message.forwardDate != nil ||
         message.forwardFrom != nil ||

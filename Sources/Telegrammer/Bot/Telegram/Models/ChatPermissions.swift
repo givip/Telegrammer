@@ -45,7 +45,6 @@ public final class ChatPermissions: Codable {
     /// Optional. True, if the user is allowed to pin messages. Ignored in public supergroups
     public var canPinMessages: Bool?
 
-
     public init (canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil) {
         self.canSendMessages = canSendMessages
         self.canSendMediaMessages = canSendMediaMessages

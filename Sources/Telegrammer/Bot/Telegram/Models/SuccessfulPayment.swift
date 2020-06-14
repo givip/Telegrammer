@@ -41,7 +41,6 @@ public final class SuccessfulPayment: Codable {
     /// Provider payment identifier
     public var providerPaymentChargeId: String
 
-
     public init (currency: String, totalAmount: Int, invoicePayload: String, shippingOptionId: String? = nil, orderInfo: OrderInfo? = nil, telegramPaymentChargeId: String, providerPaymentChargeId: String) {
         self.currency = currency
         self.totalAmount = totalAmount

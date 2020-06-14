@@ -30,7 +30,6 @@ public final class File: Codable {
     /// Optional. File path. Use https://api.telegram.org/file/bot<token>/<file_path> to get the file.
     public var filePath: String?
 
-
     public init (fileId: String, fileUniqueId: String, fileSize: Int? = nil, filePath: String? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

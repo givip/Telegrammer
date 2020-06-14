@@ -29,7 +29,6 @@ public final class InlineQueryResultGame: Codable {
     /// Optional. Inline keyboard attached to the message
     public var replyMarkup: InlineKeyboardMarkup?
 
-
     public init (type: String, id: String, gameShortName: String, replyMarkup: InlineKeyboardMarkup? = nil) {
         self.type = type
         self.id = id

@@ -19,12 +19,11 @@ public final class InputTextMessageContent: Codable {
     /// Text of the message to be sent, 1-4096 characters
     public var messageText: String
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message.
+    /// Optional. Mode for parsing entities in the message text. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Disables link previews for links in the sent message
     public var disableWebPagePreview: Bool?
-
 
     public init (messageText: String, parseMode: String? = nil, disableWebPagePreview: Bool? = nil) {
         self.messageText = messageText

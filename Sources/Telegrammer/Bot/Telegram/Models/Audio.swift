@@ -45,7 +45,6 @@ public final class Audio: Codable {
     /// Optional. Thumbnail of the album cover to which the music file belongs
     public var thumb: PhotoSize?
 
-
     public init (fileId: String, fileUniqueId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

@@ -33,7 +33,6 @@ public final class Voice: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
     public init (fileId: String, fileUniqueId: String, duration: Int, mimeType: String? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

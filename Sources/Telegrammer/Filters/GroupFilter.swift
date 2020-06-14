@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages sent in a group chat
 public struct GroupFilter: Filter {
-    
+
     public var name: String = "group"
-    
+
     public func filter(message: Message) -> Bool {
         return message.chat.type != .private
     }

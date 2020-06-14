@@ -33,7 +33,6 @@ public final class PhotoSize: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
     public init (fileId: String, fileUniqueId: String, width: Int, height: Int, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

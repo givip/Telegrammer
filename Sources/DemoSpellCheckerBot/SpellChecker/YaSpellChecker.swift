@@ -10,9 +10,9 @@ import AsyncHTTPClient
 import Telegrammer
 
 final class YaSpellChecker: SpellChecker {
-    
+
     typealias T = YaSpellCheck
-    
+
     var url = "https://speller.yandex.net/services/spellservice.json/checkText"
 
     let client = HTTPClient(eventLoopGroupProvider: .createNew)

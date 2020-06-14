@@ -37,10 +37,10 @@ public final class InlineQueryResultCachedDocument: Codable {
     /// Optional. Short description of the result
     public var description: String?
 
-    /// Optional. Caption of the document to be sent, 0-1024 characters
+    /// Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Inline keyboard attached to the message
@@ -48,7 +48,6 @@ public final class InlineQueryResultCachedDocument: Codable {
 
     /// Optional. Content of the message to be sent instead of the file
     public var inputMessageContent: InputMessageContent?
-
 
     public init (type: String, id: String, title: String, documentFileId: String, description: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type

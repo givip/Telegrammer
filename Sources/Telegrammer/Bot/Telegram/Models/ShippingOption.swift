@@ -25,7 +25,6 @@ public final class ShippingOption: Codable {
     /// List of price portions
     public var prices: [LabeledPrice]
 
-
     public init (id: String, title: String, prices: [LabeledPrice]) {
         self.id = id
         self.title = title

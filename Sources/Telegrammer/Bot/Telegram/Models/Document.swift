@@ -37,7 +37,6 @@ public final class Document: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
     public init (fileId: String, fileUniqueId: String, thumb: PhotoSize? = nil, fileName: String? = nil, mimeType: String? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

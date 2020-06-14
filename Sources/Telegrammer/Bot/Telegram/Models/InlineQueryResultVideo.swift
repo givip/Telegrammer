@@ -46,10 +46,10 @@ public final class InlineQueryResultVideo: Codable {
     /// Title for the result
     public var title: String
 
-    /// Optional. Caption of the video to be sent, 0-1024 characters
+    /// Optional. Caption of the video to be sent, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Video width
@@ -69,7 +69,6 @@ public final class InlineQueryResultVideo: Codable {
 
     /// Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
     public var inputMessageContent: InputMessageContent?
-
 
     public init (type: String, id: String, videoUrl: String, mimeType: String, thumbUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, videoWidth: Int? = nil, videoHeight: Int? = nil, videoDuration: Int? = nil, description: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type

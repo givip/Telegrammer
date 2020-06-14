@@ -29,7 +29,6 @@ public final class InputContactMessageContent: Codable {
     /// Optional. Additional data about the contact in the form of a vCard, 0-2048 bytes
     public var vcard: String?
 
-
     public init (phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil) {
         self.phoneNumber = phoneNumber
         self.firstName = firstName

@@ -38,7 +38,7 @@ public final class Sticker: Codable {
     /// True, if the sticker is animated
     public var isAnimated: Bool
 
-    /// Optional. Sticker thumbnail in the .webp or .jpg format
+    /// Optional. Sticker thumbnail in the .WEBP or .JPG format
     public var thumb: PhotoSize?
 
     /// Optional. Emoji associated with the sticker
@@ -52,7 +52,6 @@ public final class Sticker: Codable {
 
     /// Optional. File size
     public var fileSize: Int?
-
 
     public init (fileId: String, fileUniqueId: String, width: Int, height: Int, isAnimated: Bool, thumb: PhotoSize? = nil, emoji: String? = nil, setName: String? = nil, maskPosition: MaskPosition? = nil, fileSize: Int? = nil) {
         self.fileId = fileId

@@ -29,7 +29,6 @@ public final class PassportFile: Codable {
     /// Unix time when the file was uploaded
     public var fileDate: Int
 
-
     public init (fileId: String, fileUniqueId: String, fileSize: Int, fileDate: Int) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId

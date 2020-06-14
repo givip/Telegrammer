@@ -20,11 +20,11 @@ import Foundation
  [Sending Files](https://core.telegram.org/bots/api#sending-files)
  */
 public enum FileInfo: Encodable {
-    
+
     case fileId(String)
     case url(String)
     case file(InputFile)
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         switch self {
@@ -37,4 +37,3 @@ public enum FileInfo: Encodable {
         }
     }
 }
-

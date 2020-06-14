@@ -35,10 +35,10 @@ public final class InlineQueryResultAudio: Codable {
     /// Title
     public var title: String
 
-    /// Optional. Caption, 0-1024 characters
+    /// Optional. Caption, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Performer
@@ -52,7 +52,6 @@ public final class InlineQueryResultAudio: Codable {
 
     /// Optional. Content of the message to be sent instead of the audio
     public var inputMessageContent: InputMessageContent?
-
 
     public init (type: String, id: String, audioUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, performer: String? = nil, audioDuration: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type

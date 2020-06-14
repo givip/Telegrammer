@@ -1,7 +1,5 @@
-
 import Foundation
 import Telegrammer
-
 
 ///Getting token from enviroment variable (most safe, recommended)
 guard let token = Enviroment.get("TELEGRAM_BOT_TOKEN") else {
@@ -29,7 +27,7 @@ var userEchoModes: [Int64: Bool] = [:]
 func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
     guard let message = update.message,
         let user = message.from else { return }
-    
+
     var onText = ""
     if let on = userEchoModes[user.id] {
         onText = on ? "OFF" : "ON"
@@ -38,7 +36,7 @@ func echoModeSwitch(_ update: Update, _ context: BotContext?) throws {
         onText = "ON"
         userEchoModes[user.id] = true
     }
-    
+
     let params = Bot.SendMessageParams(
         chatId: .chat(message.chat.id),
         text: "Echo mode turned \(onText)"
@@ -59,7 +57,7 @@ func echoResponse(_ update: Update, _ context: BotContext?) throws {
 do {
     ///Dispatcher - handle all incoming messages
     let dispatcher = Dispatcher(bot: bot)
-    
+
     ///Creating and adding handler for command /echo
     let commandHandler = CommandHandler(commands: ["/echo"], callback: echoModeSwitch)
     dispatcher.add(handler: commandHandler)
@@ -70,7 +68,7 @@ do {
 
     ///Longpolling updates
     _ = try Updater(bot: bot, dispatcher: dispatcher).startLongpolling().wait()
-    
+
 } catch {
     print(error.localizedDescription)
 }

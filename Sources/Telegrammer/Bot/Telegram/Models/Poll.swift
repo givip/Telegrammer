@@ -20,6 +20,10 @@ public final class Poll: Codable {
         case type = "type"
         case allowsMultipleAnswers = "allows_multiple_answers"
         case correctOptionId = "correct_option_id"
+        case explanation = "explanation"
+        case explanationEntities = "explanation_entities"
+        case openPeriod = "open_period"
+        case closeDate = "close_date"
     }
 
     /// Unique poll identifier
@@ -49,8 +53,19 @@ public final class Poll: Codable {
     /// Optional. 0-based identifier of the correct answer option. Available only for polls in the quiz mode, which are closed, or was sent (not forwarded) by the bot or to the private chat with the bot.
     public var correctOptionId: Int?
 
+    /// Optional. Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters
+    public var explanation: String?
 
-    public init (id: String, question: String, options: [PollOption], totalVoterCount: Int, isClosed: Bool, isAnonymous: Bool, type: String, allowsMultipleAnswers: Bool, correctOptionId: Int? = nil) {
+    /// Optional. Special entities like usernames, URLs, bot commands, etc. that appear in the explanation
+    public var explanationEntities: [MessageEntity]?
+
+    /// Optional. Amount of time in seconds the poll will be active after creation
+    public var openPeriod: Int?
+
+    /// Optional. Point in time (Unix timestamp) when the poll will be automatically closed
+    public var closeDate: Int?
+
+    public init (id: String, question: String, options: [PollOption], totalVoterCount: Int, isClosed: Bool, isAnonymous: Bool, type: String, allowsMultipleAnswers: Bool, correctOptionId: Int? = nil, explanation: String? = nil, explanationEntities: [MessageEntity]? = nil, openPeriod: Int? = nil, closeDate: Int? = nil) {
         self.id = id
         self.question = question
         self.options = options
@@ -60,5 +75,9 @@ public final class Poll: Codable {
         self.type = type
         self.allowsMultipleAnswers = allowsMultipleAnswers
         self.correctOptionId = correctOptionId
+        self.explanation = explanation
+        self.explanationEntities = explanationEntities
+        self.openPeriod = openPeriod
+        self.closeDate = closeDate
     }
 }

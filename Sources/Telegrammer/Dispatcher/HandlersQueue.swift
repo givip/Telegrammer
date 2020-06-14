@@ -14,7 +14,7 @@ import Foundation
  will perform after all pending read operations finished
  */
 public final class HandlersQueue {
-    
+
     public var handlers: [HandlerGroup: [Handler]] {
         var handlers: [HandlerGroup: [Handler]] = [:]
         concurrentQueue.sync {
@@ -22,10 +22,10 @@ public final class HandlersQueue {
         }
         return handlers
     }
-    
+
     private var _handlers: [HandlerGroup: [Handler]] = [:]
     private var _handlersGroup: [[Handler]] = []
-    
+
     private let concurrentQueue = DispatchQueue(
         label: "TLGRM-HANDLERS-QUEUE",
         attributes: .concurrent
@@ -48,8 +48,8 @@ public extension HandlersQueue {
     func remove(_ handler: Handler, from group: HandlerGroup) {
         concurrentQueue.async(flags: .barrier) {
             guard var groupHandlers = self._handlers[group] else { return }
-            groupHandlers = groupHandlers.filter( { $0.name != handler.name } )
-            
+            groupHandlers = groupHandlers.filter({ $0.name != handler.name })
+
             if groupHandlers.isEmpty {
                 self._handlers.removeValue(forKey: group)
                 self.sortGroups()

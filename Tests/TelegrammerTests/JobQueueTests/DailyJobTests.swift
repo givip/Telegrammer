@@ -30,7 +30,7 @@ class DailyJobTests: XCTestCase {
         let job = try! DailyJob<Any>(
             days: [Day.todayWeekDay!],
             fireDayTime: .seconds(Int64(round(inCoupleSeconds.timeIntervalSince1970)))
-        ) { _ in 
+        ) { _ in
             let fireDate = Date()
             let result = fireDate.isCloseTo(plannedTickTime, accuracy: 0.1)
             XCTAssert(result, "Should be fireded within couple seconds")

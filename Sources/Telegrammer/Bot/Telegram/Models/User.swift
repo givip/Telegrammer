@@ -28,13 +28,13 @@ public final class User: Codable {
     /// True, if this user is a bot
     public var isBot: Bool
 
-    /// User‘s or bot’s first name
+    /// User's or bot's first name
     public var firstName: String
 
-    /// Optional. User‘s or bot’s last name
+    /// Optional. User's or bot's last name
     public var lastName: String?
 
-    /// Optional. User‘s or bot’s username
+    /// Optional. User's or bot's username
     public var username: String?
 
     /// Optional. IETF language tag of the user's language
@@ -48,7 +48,6 @@ public final class User: Codable {
 
     /// Optional. True, if the bot supports inline queries. Returned only in getMe.
     public var supportsInlineQueries: Bool?
-
 
     public init (id: Int64, isBot: Bool, firstName: String, lastName: String? = nil, username: String? = nil, languageCode: String? = nil, canJoinGroups: Bool? = nil, canReadAllGroupMessages: Bool? = nil, supportsInlineQueries: Bool? = nil) {
         self.id = id

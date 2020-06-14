@@ -13,6 +13,7 @@ import NIO
 public class Webhooks: Connection {
 
     public struct Config {
+        // swiftlint:disable:next nesting
         public enum Certificate {
             case file(url: String)
             case text(content: String)
@@ -38,20 +39,20 @@ public class Webhooks: Connection {
     public var dispatcher: Dispatcher
     public var worker: Worker
     public var running: Bool
-    
+
     public var readLatency: TimeAmount = .seconds(2)
     public var clean: Bool = false
     public var maxConnections: Int = 40
-    
+
     private var server: UpdatesServer?
-    
+
     public init(bot: Bot, dispatcher: Dispatcher, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: 1)) {
         self.bot = bot
         self.dispatcher = dispatcher
         self.worker = worker
         self.running = false
     }
-    
+
     public func start() throws -> Future<Void> {
         guard let config = bot.settings.webhooksConfig else {
             throw CoreError(
@@ -60,7 +61,7 @@ public class Webhooks: Connection {
             )
         }
 
-        var cert: InputFile? = nil
+        var cert: InputFile?
 
         if let publicCert = config.publicCert {
             switch publicCert {
@@ -76,7 +77,10 @@ public class Webhooks: Connection {
                 cert = InputFile(data: fileHandle.readDataToEndOfFile(), filename: url)
             case .text(content: let textCert):
                 guard let strData = textCert.data(using: .utf8) else {
-                    let errorDescription = "Public key body '\(textCert)' was specified for HTTPS server, but it cannot be converted into Data type"
+                    let errorDescription = """
+                    Public key body '\(textCert)' was specified for HTTPS server,\n
+                    but it cannot be converted into Data type
+                    """
                     log.error(errorDescription.logMessage)
                     throw CoreError(
                         type: .internal,
@@ -87,43 +91,47 @@ public class Webhooks: Connection {
             }
         }
 
-        let params = Bot.SetWebhookParams(url: config.url, certificate: cert, maxConnections: maxConnections, allowedUpdates: nil)
+        let params = Bot.SetWebhookParams(
+            url: config.url,
+            certificate: cert,
+            maxConnections: maxConnections,
+            allowedUpdates: nil
+        )
 
         return try listenWebhooks(on: config.ip, port: config.port)
             .flatMapThrowing { _  -> Void in
-                return try self.bot.setWebhook(params: params)
-                    .whenComplete { (result) -> () in
-                        switch result {
-                            case .success(let res):
-                                log.info("setWebhook request result: \(res)")
-                                log.info("Started UpdatesServer, listening for incoming messages...")
-                            case .failure(let error):
-                                log.error(error.logMessage)
-                        }
+                return try self.bot.setWebhook(params: params).whenComplete { (result) -> Void in
+                    switch result {
+                    case .success(let res):
+                        log.info("setWebhook request result: \(res)")
+                        log.info("Started UpdatesServer, listening for incoming messages...")
+                    case .failure(let error):
+                        log.error(error.logMessage)
                     }
+                }
         }
     }
-    
+
     private func listenWebhooks(on host: String, port: Int) throws -> Future<Void> {
         let promise = worker.next().makePromise(of: Void.self)
         let server = UpdatesServer(host: host, port: port, handler: dispatcher)
         try server.start()
             .whenComplete { (result) in
                 switch result {
-                    case .success(_):
-                        self.server = server
-                        self.running = true
-                        log.info("HTTP server started on: \(host):\(port)")
-                        promise.succeed(())
-                    case .failure(let error):
-                        log.info("HTTP server failed on: \(host):\(port)")
-                        log.error(error.logMessage)
-                        promise.fail(error)
+                case .success:
+                    self.server = server
+                    self.running = true
+                    log.info("HTTP server started on: \(host):\(port)")
+                    promise.succeed(())
+                case .failure(let error):
+                    log.info("HTTP server failed on: \(host):\(port)")
+                    log.error(error.logMessage)
+                    promise.fail(error)
                 }
         }
         return promise.futureResult
     }
-    
+
     public func stop() throws -> Future<Void> {
         let promise = worker.next().makePromise(of: Void.self)
         try self.server?.stop()

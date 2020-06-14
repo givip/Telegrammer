@@ -9,17 +9,17 @@ import Foundation
 
 /// Filters messages to allow only those which are from specified chat ID.
 public struct ChatFilter: Filter {
-    
+
     var chatId: Int64
     var username: String?
-    
+
     public init(chatId: Int64, username: String? = nil) {
         self.chatId = chatId
         self.username = username
     }
-    
+
     public var name: String = "chat"
-    
+
     public func filter(message: Message) -> Bool {
         guard message.chat.id == chatId else { return false }
         guard let desiredUsername = username else { return true }

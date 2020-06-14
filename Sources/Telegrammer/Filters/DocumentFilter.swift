@@ -9,9 +9,9 @@ import Foundation
 
 /// Messages that contain `Document`
 public struct DocumentFilter: Filter {
-    
+
     public var name: String = "document"
-    
+
     public func filter(message: Message) -> Bool {
         return message.document != nil
     }

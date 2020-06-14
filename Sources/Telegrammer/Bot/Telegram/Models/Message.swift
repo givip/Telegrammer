@@ -22,26 +22,28 @@ public final class Message: Codable {
         case forwardSenderName = "forward_sender_name"
         case forwardDate = "forward_date"
         case replyToMessage = "reply_to_message"
+        case viaBot = "via_bot"
         case editDate = "edit_date"
         case mediaGroupId = "media_group_id"
         case authorSignature = "author_signature"
         case text = "text"
         case entities = "entities"
-        case captionEntities = "caption_entities"
+        case animation = "animation"
         case audio = "audio"
         case document = "document"
-        case animation = "animation"
-        case game = "game"
         case photo = "photo"
         case sticker = "sticker"
         case video = "video"
-        case voice = "voice"
         case videoNote = "video_note"
+        case voice = "voice"
         case caption = "caption"
+        case captionEntities = "caption_entities"
         case contact = "contact"
-        case location = "location"
-        case venue = "venue"
+        case dice = "dice"
+        case game = "game"
         case poll = "poll"
+        case venue = "venue"
+        case location = "location"
         case newChatMembers = "new_chat_members"
         case leftChatMember = "left_chat_member"
         case newChatTitle = "new_chat_title"
@@ -93,6 +95,9 @@ public final class Message: Codable {
     /// Optional. For replies, the original message. Note that the Message object in this field will not contain further reply_to_message fields even if it itself is a reply.
     public var replyToMessage: Message?
 
+    /// Optional. Bot through which the message was sent
+    public var viaBot: User?
+
     /// Optional. Date the message was last edited in Unix time
     public var editDate: Int?
 
@@ -102,26 +107,20 @@ public final class Message: Codable {
     /// Optional. Signature of the post author for messages in channels
     public var authorSignature: String?
 
-    /// Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters.
+    /// Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
     public var text: String?
 
     /// Optional. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text
     public var entities: [MessageEntity]?
 
-    /// Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
-    public var captionEntities: [MessageEntity]?
+    /// Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
+    public var animation: Animation?
 
     /// Optional. Message is an audio file, information about the file
     public var audio: Audio?
 
     /// Optional. Message is a general file, information about the file
     public var document: Document?
-
-    /// Optional. Message is an animation, information about the animation. For backward compatibility, when this field is set, the document field will also be set
-    public var animation: Animation?
-
-    /// Optional. Message is a game, information about the game. More about games »
-    public var game: Game?
 
     /// Optional. Message is a photo, available sizes of the photo
     public var photo: [PhotoSize]?
@@ -132,26 +131,35 @@ public final class Message: Codable {
     /// Optional. Message is a video, information about the video
     public var video: Video?
 
-    /// Optional. Message is a voice message, information about the file
-    public var voice: Voice?
-
     /// Optional. Message is a video note, information about the video message
     public var videoNote: VideoNote?
+
+    /// Optional. Message is a voice message, information about the file
+    public var voice: Voice?
 
     /// Optional. Caption for the animation, audio, document, photo, video or voice, 0-1024 characters
     public var caption: String?
 
+    /// Optional. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Message is a shared contact, information about the contact
     public var contact: Contact?
 
-    /// Optional. Message is a shared location, information about the location
-    public var location: Location?
+    /// Optional. Message is a dice with random value from 1 to 6
+    public var dice: Dice?
 
-    /// Optional. Message is a venue, information about the venue
-    public var venue: Venue?
+    /// Optional. Message is a game, information about the game. More about games »
+    public var game: Game?
 
     /// Optional. Message is a native poll, information about the poll
     public var poll: Poll?
+
+    /// Optional. Message is a venue, information about the venue. For backward compatibility, when this field is set, the location field will also be set
+    public var venue: Venue?
+
+    /// Optional. Message is a shared location, information about the location
+    public var location: Location?
 
     /// Optional. New members that were added to the group or supergroup and information about them (the bot itself may be one of these members)
     public var newChatMembers: [User]?
@@ -171,10 +179,10 @@ public final class Message: Codable {
     /// Optional. Service message: the group has been created
     public var groupChatCreated: Bool?
 
-    /// Optional. Service message: the supergroup has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
+    /// Optional. Service message: the supergroup has been created. This field can't be received in a message coming through updates, because bot can't be a member of a supergroup when it is created. It can only be found in reply_to_message if someone replies to a very first message in a directly created supergroup.
     public var supergroupChatCreated: Bool?
 
-    /// Optional. Service message: the channel has been created. This field can‘t be received in a message coming through updates, because bot can’t be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
+    /// Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     public var channelChatCreated: Bool?
 
     /// Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
@@ -201,8 +209,7 @@ public final class Message: Codable {
     /// Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     public var replyMarkup: InlineKeyboardMarkup?
 
-
-    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, captionEntities: [MessageEntity]? = nil, audio: Audio? = nil, document: Document? = nil, animation: Animation? = nil, game: Game? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, voice: Voice? = nil, videoNote: VideoNote? = nil, caption: String? = nil, contact: Contact? = nil, location: Location? = nil, venue: Venue? = nil, poll: Poll? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
+    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, viaBot: User? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, animation: Animation? = nil, audio: Audio? = nil, document: Document? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, videoNote: VideoNote? = nil, voice: Voice? = nil, caption: String? = nil, captionEntities: [MessageEntity]? = nil, contact: Contact? = nil, dice: Dice? = nil, game: Game? = nil, poll: Poll? = nil, venue: Venue? = nil, location: Location? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
         self.messageId = messageId
         self.from = from
         self.date = date
@@ -214,26 +221,28 @@ public final class Message: Codable {
         self.forwardSenderName = forwardSenderName
         self.forwardDate = forwardDate
         self.replyToMessage = replyToMessage
+        self.viaBot = viaBot
         self.editDate = editDate
         self.mediaGroupId = mediaGroupId
         self.authorSignature = authorSignature
         self.text = text
         self.entities = entities
-        self.captionEntities = captionEntities
+        self.animation = animation
         self.audio = audio
         self.document = document
-        self.animation = animation
-        self.game = game
         self.photo = photo
         self.sticker = sticker
         self.video = video
-        self.voice = voice
         self.videoNote = videoNote
+        self.voice = voice
         self.caption = caption
+        self.captionEntities = captionEntities
         self.contact = contact
-        self.location = location
-        self.venue = venue
+        self.dice = dice
+        self.game = game
         self.poll = poll
+        self.venue = venue
+        self.location = location
         self.newChatMembers = newChatMembers
         self.leftChatMember = leftChatMember
         self.newChatTitle = newChatTitle

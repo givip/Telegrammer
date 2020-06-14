@@ -33,10 +33,10 @@ public final class InlineQueryResultCachedVoice: Codable {
     /// Voice message title
     public var title: String
 
-    /// Optional. Caption, 0-1024 characters
+    /// Optional. Caption, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Inline keyboard attached to the message
@@ -44,7 +44,6 @@ public final class InlineQueryResultCachedVoice: Codable {
 
     /// Optional. Content of the message to be sent instead of the voice message
     public var inputMessageContent: InputMessageContent?
-
 
     public init (type: String, id: String, voiceFileId: String, title: String, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type

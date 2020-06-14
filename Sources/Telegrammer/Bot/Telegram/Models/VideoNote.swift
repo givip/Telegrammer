@@ -37,7 +37,6 @@ public final class VideoNote: Codable {
     /// Optional. File size
     public var fileSize: Int?
 
-
     public init (fileId: String, fileUniqueId: String, length: Int, duration: Int, thumb: PhotoSize? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId
