@@ -1,5 +1,5 @@
 import struct NIO.ByteBufferAllocator
-import CMultipartParser
+import TelegrammerCMultipartParser
 
 /// Parses multipart-encoded `Data` into `MultipartPart`s. Multipart encoding is a widely-used format for encoding/// web-form data that includes rich content like files. It allows for arbitrary data to be encoded
 /// in each part thanks to a unique delimiter "boundary" that is defined separately. This
