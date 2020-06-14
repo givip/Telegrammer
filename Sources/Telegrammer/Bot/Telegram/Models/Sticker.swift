@@ -38,7 +38,7 @@ public final class Sticker: Codable {
     /// True, if the sticker is animated
     public var isAnimated: Bool
 
-    /// Optional. Sticker thumbnail in the .webp or .jpg format
+    /// Optional. Sticker thumbnail in the .WEBP or .JPG format
     public var thumb: PhotoSize?
 
     /// Optional. Emoji associated with the sticker

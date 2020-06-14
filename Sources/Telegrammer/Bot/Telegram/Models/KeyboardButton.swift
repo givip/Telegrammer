@@ -26,10 +26,8 @@ public final class KeyboardButton: Codable {
     /// Optional. If True, the user's current location will be sent when the button is pressed. Available in private chats only
     public var requestLocation: Bool?
 
-
     /// Optional. If specified, the user will be asked to create a poll and send it to the bot when the button is pressed. Available in private chats only
     public var requestPoll: KeyboardButtonPollType?
-
 
     public init (text: String, requestContact: Bool? = nil, requestLocation: Bool? = nil, requestPoll: KeyboardButtonPollType? = nil) {
         self.text = text

@@ -18,6 +18,7 @@ public final class InlineQueryResultGif: Codable {
         case gifHeight = "gif_height"
         case gifDuration = "gif_duration"
         case thumbUrl = "thumb_url"
+        case thumbMimeType = "thumb_mime_type"
         case title = "title"
         case caption = "caption"
         case parseMode = "parse_mode"
@@ -43,16 +44,19 @@ public final class InlineQueryResultGif: Codable {
     /// Optional. Duration of the GIF
     public var gifDuration: Int?
 
-    /// URL of the static thumbnail for the result (jpeg or gif)
+    /// URL of the static (JPEG or GIF) or animated (MPEG4) thumbnail for the result
     public var thumbUrl: String
+
+    /// Optional. MIME type of the thumbnail, must be one of “image/jpeg”, “image/gif”, or “video/mp4”. Defaults to “image/jpeg”
+    public var thumbMimeType: String?
 
     /// Optional. Title for the result
     public var title: String?
 
-    /// Optional. Caption of the GIF file to be sent, 0-1024 characters
+    /// Optional. Caption of the GIF file to be sent, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the caption. See formatting options for more details.
     public var parseMode: String?
 
     /// Optional. Inline keyboard attached to the message
@@ -61,7 +65,7 @@ public final class InlineQueryResultGif: Codable {
     /// Optional. Content of the message to be sent instead of the GIF animation
     public var inputMessageContent: InputMessageContent?
 
-    public init (type: String, id: String, gifUrl: String, gifWidth: Int? = nil, gifHeight: Int? = nil, gifDuration: Int? = nil, thumbUrl: String, title: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
+    public init (type: String, id: String, gifUrl: String, gifWidth: Int? = nil, gifHeight: Int? = nil, gifDuration: Int? = nil, thumbUrl: String, thumbMimeType: String? = nil, title: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id
         self.gifUrl = gifUrl
@@ -69,6 +73,7 @@ public final class InlineQueryResultGif: Codable {
         self.gifHeight = gifHeight
         self.gifDuration = gifDuration
         self.thumbUrl = thumbUrl
+        self.thumbMimeType = thumbMimeType
         self.title = title
         self.caption = caption
         self.parseMode = parseMode

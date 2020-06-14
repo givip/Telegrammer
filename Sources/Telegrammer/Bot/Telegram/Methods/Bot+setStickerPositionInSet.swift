@@ -25,7 +25,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to move a sticker in a set created by the bot to a specific position . Returns True on success.
+     Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
 
      SeeAlso Telegram Bot API Reference:
      [SetStickerPositionInSetParams](https://core.telegram.org/bots/api#setstickerpositioninset)

@@ -18,7 +18,7 @@ public extension Bot {
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
 
-        /// A JSON-serialized object for an inline keyboard. If empty, one ‘Play game_title’ button will be shown. If not empty, the first button must launch the game.
+        /// A JSON-serialized object for an inline keyboard. If empty, one 'Play game_title' button will be shown. If not empty, the first button must launch the game.
         var replyMarkup: InlineKeyboardMarkup?
 
         /// Custom keys for coding/decoding `SendGameParams` struct

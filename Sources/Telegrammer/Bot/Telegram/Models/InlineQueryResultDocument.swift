@@ -35,10 +35,10 @@ public final class InlineQueryResultDocument: Codable {
     /// Title for the result
     public var title: String
 
-    /// Optional. Caption of the document to be sent, 0-1024 characters
+    /// Optional. Caption of the document to be sent, 0-1024 characters after entities parsing
     public var caption: String?
 
-    /// Optional. Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+    /// Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     public var parseMode: String?
 
     /// A valid URL for the file

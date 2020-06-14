@@ -21,13 +21,13 @@ public extension Bot {
         /// Animation height
         var height: Int?
 
-        /// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail‘s width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can’t be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
+        /// Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass “attach://<file_attach_name>” if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. More info on Sending Files »
         var thumb: FileInfo?
 
-        /// Animation caption (may also be used when resending animation by file_id), 0-1024 characters
+        /// Animation caption (may also be used when resending animation by file_id), 0-1024 characters after entities parsing
         var caption: String?
 
-        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        /// Mode for parsing entities in the animation caption. See formatting options for more details.
         var parseMode: ParseMode?
 
         /// Sends the message silently. Users will receive a notification with no sound.

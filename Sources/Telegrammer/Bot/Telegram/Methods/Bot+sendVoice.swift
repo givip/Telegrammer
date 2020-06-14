@@ -12,10 +12,10 @@ public extension Bot {
         /// Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
         var voice: FileInfo
 
-        /// Voice message caption, 0-1024 characters
+        /// Voice message caption, 0-1024 characters after entities parsing
         var caption: String?
 
-        /// Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in the media caption.
+        /// Mode for parsing entities in the voice message caption. See formatting options for more details.
         var parseMode: ParseMode?
 
         /// Duration of the voice message in seconds
@@ -55,7 +55,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .ogg file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
 
      SeeAlso Telegram Bot API Reference:
      [SendVoiceParams](https://core.telegram.org/bots/api#sendvoice)
