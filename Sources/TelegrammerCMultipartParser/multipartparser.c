@@ -110,7 +110,7 @@ static const char header_field_chars[256] = {
     'x',    'y',    'z',    0,      '|',     0,     '~',    0
 };
 
-void multipartparser_init(multipartparser* parser, const char* boundary)
+void t_multipartparser_init(multipartparser* parser, const char* boundary)
 {
     memset(parser, 0, sizeof(*parser));
 
@@ -120,12 +120,12 @@ void multipartparser_init(multipartparser* parser, const char* boundary)
     parser->state = s_preamble;
 }
 
-void multipartparser_callbacks_init(multipartparser_callbacks* callbacks)
+void t_multipartparser_callbacks_init(multipartparser_callbacks* callbacks)
 {
     memset(callbacks, 0, sizeof(*callbacks));
 }
 
-size_t multipartparser_execute(multipartparser* parser,
+size_t t_multipartparser_execute(multipartparser* parser,
                                multipartparser_callbacks* callbacks,
                                const char* data,
                                size_t size)

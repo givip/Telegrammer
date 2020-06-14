@@ -57,11 +57,11 @@ struct multipartparser_callbacks {
     multipart_cb      on_body_end;
 };
 
-void multipartparser_init(multipartparser* parser, const char* boundary);
+void t_multipartparser_init(multipartparser* parser, const char* boundary);
 
-void multipartparser_callbacks_init(multipartparser_callbacks* callbacks);
+void t_multipartparser_callbacks_init(multipartparser_callbacks* callbacks);
 
-size_t multipartparser_execute(multipartparser* parser,
+size_t t_multipartparser_execute(multipartparser* parser,
                                multipartparser_callbacks* callbacks,
                                const char* data,
                                size_t size);
