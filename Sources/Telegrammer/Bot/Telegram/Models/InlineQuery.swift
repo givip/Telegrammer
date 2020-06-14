@@ -27,7 +27,7 @@ public final class InlineQuery: Codable {
     /// Optional. Sender location, only for bots that request user location
     public var location: Location?
 
-    /// Text of the query (up to 512 characters)
+    /// Text of the query (up to 256 characters)
     public var query: String
 
     /// Offset of the results to be returned, can be controlled by the bot

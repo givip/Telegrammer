@@ -17,6 +17,9 @@ public final class User: Codable {
         case lastName = "last_name"
         case username = "username"
         case languageCode = "language_code"
+        case canJoinGroups = "can_join_groups"
+        case canReadAllGroupMessages = "can_read_all_group_messages"
+        case supportsInlineQueries = "supports_inline_queries"
     }
 
     /// Unique identifier for this user or bot
@@ -37,12 +40,25 @@ public final class User: Codable {
     /// Optional. IETF language tag of the user's language
     public var languageCode: String?
 
-    public init (id: Int64, isBot: Bool, firstName: String, lastName: String? = nil, username: String? = nil, languageCode: String? = nil) {
+    /// Optional. True, if the bot can be invited to groups. Returned only in getMe.
+    public var canJoinGroups: Bool?
+
+    /// Optional. True, if privacy mode is disabled for the bot. Returned only in getMe.
+    public var canReadAllGroupMessages: Bool?
+
+    /// Optional. True, if the bot supports inline queries. Returned only in getMe.
+    public var supportsInlineQueries: Bool?
+
+
+    public init (id: Int64, isBot: Bool, firstName: String, lastName: String? = nil, username: String? = nil, languageCode: String? = nil, canJoinGroups: Bool? = nil, canReadAllGroupMessages: Bool? = nil, supportsInlineQueries: Bool? = nil) {
         self.id = id
         self.isBot = isBot
         self.firstName = firstName
         self.lastName = lastName
         self.username = username
         self.languageCode = languageCode
+        self.canJoinGroups = canJoinGroups
+        self.canReadAllGroupMessages = canReadAllGroupMessages
+        self.supportsInlineQueries = supportsInlineQueries
     }
 }

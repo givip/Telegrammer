@@ -5,7 +5,7 @@
 //  Created by Givi Pataridze on 01.03.2018.
 //
 
-import MultipartKit
+import TelegrammerMultipart
 
 /** Enum for InlineKeyboardMarkup or ReplyKeyboardMarkup or ReplyKeyboardRemove or ForceReply
  

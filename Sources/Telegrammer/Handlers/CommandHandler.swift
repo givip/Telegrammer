@@ -48,23 +48,27 @@ public class CommandHandler: Handler {
         self.callback = callback
     }
 
-    private func check(message: Message?) -> Bool {
-        guard let message = message, filters.check(message) else {
-            return false
-        }
-        return commands.contains(where: {
-            message.contains(command: $0)
-        })
-    }
-
     public func check(update: Update) -> Bool {
+        var message = update.message
+
         if options.contains(.editedUpdates) {
-            if check(message: update.editedMessage) {
-                return true
-            }
+            message = update.editedMessage
         }
 
-        return check(message: update.message)
+        guard let message = message,
+            filters.check(message),
+            let text = message.text,
+            let entities = message.entities else {
+                return false
+        }
+
+        let types = entities.compactMap { (entity) -> String? in
+            let start = text.index(text.startIndex, offsetBy: entity.offset)
+            let end = text.index(start, offsetBy: entity.length-1)
+            return String(text[start...end])
+        }
+
+        return !commands.isDisjoint(with: types)
     }
 
     public func handle(update: Update, dispatcher: Dispatcher) {
