@@ -11,7 +11,7 @@ let package = Package(
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
         .library(name: "TelegrammerMultipart", targets: ["TelegrammerMultipart"]),
-        .library(name: "CMultipartParser", targets: ["CMultipartParser"]),
+        .library(name: "TelegrammerCMultipartParser", targets: ["TelegrammerCMultipartParser"]),
         .executable(name: "EchoBot", targets: ["DemoEchoBot"]),
         .executable(name: "HelloBot", targets: ["DemoHelloBot"]),
         .executable(name: "SchedulerBot", targets: ["DemoSchedulerBot"]),
@@ -32,13 +32,13 @@ let package = Package(
                 .target(name: "TelegrammerMultipart")
             ]
         ),
-        .target(name: "CMultipartParser"),
+        .target(name: "TelegrammerCMultipartParser"),
         .target(
             name: "TelegrammerMultipart",
             dependencies: [
                 .product(name: "NIO", package: "swift-nio"),
                 .product(name: "NIOHTTP1", package: "swift-nio"),
-                .target(name: "CMultipartParser")
+                .target(name: "TelegrammerCMultipartParser")
             ]
         ),
         .target(name: "DemoEchoBot", dependencies: ["Telegrammer"]),
@@ -47,6 +47,6 @@ let package = Package(
         .target(name: "DemoSpellCheckerBot", dependencies: ["Telegrammer"]),
         .target(name: "DemoWebhooksLocally", dependencies: ["Telegrammer"]),
         .testTarget(name: "TelegrammerTests", dependencies: ["Telegrammer"]),
-        .testTarget(name: "TelegrammerMultipartTests", dependencies: ["CMultipartParser"])
+        .testTarget(name: "TelegrammerMultipartTests", dependencies: ["TelegrammerCMultipartParser"])
     ]
 )

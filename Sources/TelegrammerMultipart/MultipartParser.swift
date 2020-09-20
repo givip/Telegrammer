@@ -1,5 +1,5 @@
 import struct NIO.ByteBufferAllocator
-import CMultipartParser
+import TelegrammerCMultipartParser
 
 /// Parses multipart-encoded `Data` into `MultipartPart`s. Multipart encoding is a widely-used format for encoding/// web-form data that includes rich content like files. It allows for arbitrary data to be encoded
 /// in each part thanks to a unique delimiter "boundary" that is defined separately. This
@@ -35,9 +35,9 @@ public final class MultipartParser {
         self.onPartComplete = { }
 
         var parser = multipartparser()
-        multipartparser_init(&parser, boundary)
+        t_multipartparser_init(&parser, boundary)
         var callbacks = multipartparser_callbacks()
-        multipartparser_callbacks_init(&callbacks)
+        t_multipartparser_callbacks_init(&callbacks)
         self.callbacks = callbacks
         self.parser = parser
         self.headerState = .ready
@@ -145,7 +145,7 @@ public final class MultipartParser {
             var context = Context(parser: self, unsafeBuffer: unsafeBuffer, buffer: buffer)
             return withUnsafeMutablePointer(to: &context) { (contextPointer: UnsafeMutablePointer<Context>) -> Int in
                 self.parser.data = .init(contextPointer)
-                return multipartparser_execute(&self.parser, &self.callbacks, unsafeBuffer.baseAddress?.assumingMemoryBound(to: Int8.self), unsafeBuffer.count)
+                return t_multipartparser_execute(&self.parser, &self.callbacks, unsafeBuffer.baseAddress?.assumingMemoryBound(to: Int8.self), unsafeBuffer.count)
             }
         }
         guard result == buffer.readableBytes else {
