@@ -46,6 +46,7 @@ public extension Message {
     ) throws {
         let params = Bot.EditMessageTextParams(
             chatId: .chat(chat.id),
+            messageId: messageId,
             text: text,
             parseMode: parseMode,
             replyMarkup: replyMarkup
