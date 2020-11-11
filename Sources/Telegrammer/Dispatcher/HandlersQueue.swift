@@ -36,6 +36,7 @@ public extension HandlersQueue {
     func add(_ handler: Handler, to group: HandlerGroup) {
         concurrentQueue.async(flags: .barrier) {
             if var groupHandlers = self._handlers[group] {
+                groupHandlers = groupHandlers.filter( { $0.name != handler.name } )
                 groupHandlers.append(handler)
                 self._handlers[group] = groupHandlers
             } else {
@@ -52,10 +53,10 @@ public extension HandlersQueue {
 
             if groupHandlers.isEmpty {
                 self._handlers.removeValue(forKey: group)
-                self.sortGroups()
             } else {
                 self._handlers[group] = groupHandlers
             }
+            self.sortGroups()
         }
     }
 
