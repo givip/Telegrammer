@@ -9,14 +9,17 @@ public extension Bot {
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
-        /// A JSON-serialized array describing photos and videos to be sent, must include 2-10 items
-        var media: [InputMediaPhotoAndVideo]
+        /// A JSON-serialized array describing messages to be sent, must include 2-10 items
+        var media: InputMedia
 
-        /// Sends the messages silently. Users will receive a notification with no sound.
+        /// Sends messages silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
         /// If the messages are a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
 
         /// Custom keys for coding/decoding `SendMediaGroupParams` struct
         enum CodingKeys: String, CodingKey {
@@ -24,18 +27,20 @@ public extension Bot {
             case media = "media"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
         }
 
-        public init(chatId: ChatId, media: [InputMediaPhotoAndVideo], disableNotification: Bool? = nil, replyToMessageId: Int? = nil) {
+        public init(chatId: ChatId, media: InputMedia, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil) {
             self.chatId = chatId
             self.media = media
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
         }
     }
 
     /**
-     Use this method to send a group of photos or videos as an album. On success, an array of the sent Messages is returned.
+     Use this method to send a group of photos, videos, documents or audios as an album. Documents and audio files can be only grouped in an album with messages of the same type. On success, an array of Messages that were sent is returned.
 
      SeeAlso Telegram Bot API Reference:
      [SendMediaGroupParams](https://core.telegram.org/bots/api#sendmediagroup)

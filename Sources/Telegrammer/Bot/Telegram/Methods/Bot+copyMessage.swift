@@ -3,26 +3,26 @@
 
 public extension Bot {
 
-    /// Parameters container struct for `sendVoice` method
-    struct SendVoiceParams: MultipartEncodable {
+    /// Parameters container struct for `copyMessage` method
+    struct CopyMessageParams: JSONEncodable {
 
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
-        /// Audio file to send. Pass a file_id as String to send a file that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a file from the Internet, or upload a new one using multipart/form-data. More info on Sending Files »
-        var voice: FileInfo
+        /// Unique identifier for the chat where the original message was sent (or channel username in the format @channelusername)
+        var fromChatId: ChatId
 
-        /// Voice message caption, 0-1024 characters after entities parsing
+        /// Message identifier in the chat specified in from_chat_id
+        var messageId: Int
+
+        /// New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept
         var caption: String?
 
-        /// Mode for parsing entities in the voice message caption. See formatting options for more details.
+        /// Mode for parsing entities in the new caption. See formatting options for more details.
         var parseMode: ParseMode?
 
-        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        /// List of special entities that appear in the new caption, which can be specified instead of parse_mode
         var captionEntities: [MessageEntity]?
-
-        /// Duration of the voice message in seconds
-        var duration: Int?
 
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
@@ -36,27 +36,27 @@ public extension Bot {
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
-        /// Custom keys for coding/decoding `SendVoiceParams` struct
+        /// Custom keys for coding/decoding `CopyMessageParams` struct
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
-            case voice = "voice"
+            case fromChatId = "from_chat_id"
+            case messageId = "message_id"
             case caption = "caption"
             case parseMode = "parse_mode"
             case captionEntities = "caption_entities"
-            case duration = "duration"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
             case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, voice: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, captionEntities: [MessageEntity]? = nil, duration: Int? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, fromChatId: ChatId, messageId: Int, caption: String? = nil, parseMode: ParseMode? = nil, captionEntities: [MessageEntity]? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
-            self.voice = voice
+            self.fromChatId = fromChatId
+            self.messageId = messageId
             self.caption = caption
             self.parseMode = parseMode
             self.captionEntities = captionEntities
-            self.duration = duration
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
             self.allowSendingWithoutReply = allowSendingWithoutReply
@@ -65,23 +65,23 @@ public extension Bot {
     }
 
     /**
-     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+     Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
      SeeAlso Telegram Bot API Reference:
-     [SendVoiceParams](https://core.telegram.org/bots/api#sendvoice)
+     [CopyMessageParams](https://core.telegram.org/bots/api#copymessage)
      
      - Parameters:
-         - params: Parameters container, see `SendVoiceParams` struct
+         - params: Parameters container, see `CopyMessageParams` struct
      - Throws: Throws on errors
-     - Returns: Future of `Message` type
+     - Returns: Future of `MessageId` type
      */
     @discardableResult
-    func sendVoice(params: SendVoiceParams) throws -> Future<Message> {
+    func copyMessage(params: CopyMessageParams) throws -> Future<MessageId> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         return try client
-            .request(endpoint: "sendVoice", body: body, headers: headers)
-            .flatMapThrowing { (container) -> Message in
+            .request(endpoint: "copyMessage", body: body, headers: headers)
+            .flatMapThrowing { (container) -> MessageId in
                 return try self.processContainer(container)
         }
     }

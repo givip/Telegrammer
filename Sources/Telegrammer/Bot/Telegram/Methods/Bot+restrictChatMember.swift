@@ -12,7 +12,7 @@ public extension Bot {
         /// Unique identifier of the target user
         var userId: Int64
 
-        /// New user permissions
+        /// A JSON-serialized object for new user permissions
         var permissions: ChatPermissions
 
         /// Date when restrictions will be lifted for the user, unix time. If user is restricted for more than 366 days or less than 30 seconds from the current time, they are considered to be restricted forever

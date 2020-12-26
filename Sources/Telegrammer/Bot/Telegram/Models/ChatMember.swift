@@ -14,7 +14,7 @@ public final class ChatMember: Codable {
         case user = "user"
         case status = "status"
         case customTitle = "custom_title"
-        case untilDate = "until_date"
+        case isAnonymous = "is_anonymous"
         case canBeEdited = "can_be_edited"
         case canPostMessages = "can_post_messages"
         case canEditMessages = "can_edit_messages"
@@ -30,6 +30,7 @@ public final class ChatMember: Codable {
         case canSendPolls = "can_send_polls"
         case canSendOtherMessages = "can_send_other_messages"
         case canAddWebPagePreviews = "can_add_web_page_previews"
+        case untilDate = "until_date"
     }
 
     /// Information about the user
@@ -41,8 +42,8 @@ public final class ChatMember: Codable {
     /// Optional. Owner and administrators only. Custom title for this user
     public var customTitle: String?
 
-    /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
-    public var untilDate: Int?
+    /// Optional. Owner and administrators only. True, if the user's presence in the chat is hidden
+    public var isAnonymous: Bool?
 
     /// Optional. Administrators only. True, if the bot is allowed to edit administrator privileges of that user
     public var canBeEdited: Bool?
@@ -89,11 +90,14 @@ public final class ChatMember: Codable {
     /// Optional. Restricted only. True, if the user is allowed to add web page previews to their messages
     public var canAddWebPagePreviews: Bool?
 
-    public init (user: User, status: String, customTitle: String? = nil, untilDate: Int? = nil, canBeEdited: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canRestrictMembers: Bool? = nil, canPromoteMembers: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil) {
+    /// Optional. Restricted and kicked only. Date when restrictions will be lifted for this user; unix time
+    public var untilDate: Int?
+
+    public init (user: User, status: String, customTitle: String? = nil, isAnonymous: Bool? = nil, canBeEdited: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canRestrictMembers: Bool? = nil, canPromoteMembers: Bool? = nil, canChangeInfo: Bool? = nil, canInviteUsers: Bool? = nil, canPinMessages: Bool? = nil, isMember: Bool? = nil, canSendMessages: Bool? = nil, canSendMediaMessages: Bool? = nil, canSendPolls: Bool? = nil, canSendOtherMessages: Bool? = nil, canAddWebPagePreviews: Bool? = nil, untilDate: Int? = nil) {
         self.user = user
         self.status = status
         self.customTitle = customTitle
-        self.untilDate = untilDate
+        self.isAnonymous = isAnonymous
         self.canBeEdited = canBeEdited
         self.canPostMessages = canPostMessages
         self.canEditMessages = canEditMessages
@@ -109,5 +113,6 @@ public final class ChatMember: Codable {
         self.canSendPolls = canSendPolls
         self.canSendOtherMessages = canSendOtherMessages
         self.canAddWebPagePreviews = canAddWebPagePreviews
+        self.untilDate = untilDate
     }
 }

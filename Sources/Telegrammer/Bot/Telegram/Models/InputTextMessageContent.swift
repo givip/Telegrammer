@@ -13,6 +13,7 @@ public final class InputTextMessageContent: Codable {
     enum CodingKeys: String, CodingKey {
         case messageText = "message_text"
         case parseMode = "parse_mode"
+        case entities = "entities"
         case disableWebPagePreview = "disable_web_page_preview"
     }
 
@@ -22,12 +23,16 @@ public final class InputTextMessageContent: Codable {
     /// Optional. Mode for parsing entities in the message text. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in message text, which can be specified instead of parse_mode
+    public var entities: [MessageEntity]?
+
     /// Optional. Disables link previews for links in the sent message
     public var disableWebPagePreview: Bool?
 
-    public init (messageText: String, parseMode: String? = nil, disableWebPagePreview: Bool? = nil) {
+    public init (messageText: String, parseMode: String? = nil, entities: [MessageEntity]? = nil, disableWebPagePreview: Bool? = nil) {
         self.messageText = messageText
         self.parseMode = parseMode
+        self.entities = entities
         self.disableWebPagePreview = disableWebPagePreview
     }
 }

@@ -13,6 +13,7 @@ public final class Message: Codable {
     enum CodingKeys: String, CodingKey {
         case messageId = "message_id"
         case from = "from"
+        case senderChat = "sender_chat"
         case date = "date"
         case chat = "chat"
         case forwardFrom = "forward_from"
@@ -59,6 +60,7 @@ public final class Message: Codable {
         case successfulPayment = "successful_payment"
         case connectedWebsite = "connected_website"
         case passportData = "passport_data"
+        case proximityAlertTriggered = "proximity_alert_triggered"
         case replyMarkup = "reply_markup"
     }
 
@@ -67,6 +69,9 @@ public final class Message: Codable {
 
     /// Optional. Sender, empty for messages sent to channels
     public var from: User?
+
+    /// Optional. Sender of the message, sent on behalf of a chat. The channel itself for channel messages. The supergroup itself for messages from anonymous group administrators. The linked channel for messages automatically forwarded to the discussion group
+    public var senderChat: Chat?
 
     /// Date the message was sent in Unix time
     public var date: Int
@@ -77,7 +82,7 @@ public final class Message: Codable {
     /// Optional. For forwarded messages, sender of the original message
     public var forwardFrom: User?
 
-    /// Optional. For messages forwarded from channels, information about the original channel
+    /// Optional. For messages forwarded from channels or from anonymous administrators, information about the original sender chat
     public var forwardFromChat: Chat?
 
     /// Optional. For messages forwarded from channels, identifier of the original message in the channel
@@ -104,7 +109,7 @@ public final class Message: Codable {
     /// Optional. The unique identifier of a media message group this message belongs to
     public var mediaGroupId: String?
 
-    /// Optional. Signature of the post author for messages in channels
+    /// Optional. Signature of the post author for messages in channels, or the custom title of an anonymous group administrator
     public var authorSignature: String?
 
     /// Optional. For text messages, the actual UTF-8 text of the message, 0-4096 characters
@@ -206,12 +211,16 @@ public final class Message: Codable {
     /// Optional. Telegram Passport data
     public var passportData: PassportData?
 
+    /// Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
+    public var proximityAlertTriggered: ProximityAlertTriggered?
+
     /// Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     public var replyMarkup: InlineKeyboardMarkup?
 
-    public init (messageId: Int, from: User? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, viaBot: User? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, animation: Animation? = nil, audio: Audio? = nil, document: Document? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, videoNote: VideoNote? = nil, voice: Voice? = nil, caption: String? = nil, captionEntities: [MessageEntity]? = nil, contact: Contact? = nil, dice: Dice? = nil, game: Game? = nil, poll: Poll? = nil, venue: Venue? = nil, location: Location? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
+    public init (messageId: Int, from: User? = nil, senderChat: Chat? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, viaBot: User? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, animation: Animation? = nil, audio: Audio? = nil, document: Document? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, videoNote: VideoNote? = nil, voice: Voice? = nil, caption: String? = nil, captionEntities: [MessageEntity]? = nil, contact: Contact? = nil, dice: Dice? = nil, game: Game? = nil, poll: Poll? = nil, venue: Venue? = nil, location: Location? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, proximityAlertTriggered: ProximityAlertTriggered? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
         self.messageId = messageId
         self.from = from
+        self.senderChat = senderChat
         self.date = date
         self.chat = chat
         self.forwardFrom = forwardFrom
@@ -258,6 +267,7 @@ public final class Message: Codable {
         self.successfulPayment = successfulPayment
         self.connectedWebsite = connectedWebsite
         self.passportData = passportData
+        self.proximityAlertTriggered = proximityAlertTriggered
         self.replyMarkup = replyMarkup
     }
 }

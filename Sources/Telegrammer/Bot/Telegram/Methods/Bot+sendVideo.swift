@@ -30,6 +30,9 @@ public extension Bot {
         /// Mode for parsing entities in the video caption. See formatting options for more details.
         var parseMode: ParseMode?
 
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        var captionEntities: [MessageEntity]?
+
         /// Pass True, if the uploaded video is suitable for streaming
         var supportsStreaming: Bool?
 
@@ -38,6 +41,9 @@ public extension Bot {
 
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
 
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
@@ -52,13 +58,15 @@ public extension Bot {
             case thumb = "thumb"
             case caption = "caption"
             case parseMode = "parse_mode"
+            case captionEntities = "caption_entities"
             case supportsStreaming = "supports_streaming"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, video: FileInfo, duration: Int? = nil, width: Int? = nil, height: Int? = nil, thumb: FileInfo? = nil, caption: String? = nil, parseMode: ParseMode? = nil, supportsStreaming: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, video: FileInfo, duration: Int? = nil, width: Int? = nil, height: Int? = nil, thumb: FileInfo? = nil, caption: String? = nil, parseMode: ParseMode? = nil, captionEntities: [MessageEntity]? = nil, supportsStreaming: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.video = video
             self.duration = duration
@@ -67,9 +75,11 @@ public extension Bot {
             self.thumb = thumb
             self.caption = caption
             self.parseMode = parseMode
+            self.captionEntities = captionEntities
             self.supportsStreaming = supportsStreaming
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }

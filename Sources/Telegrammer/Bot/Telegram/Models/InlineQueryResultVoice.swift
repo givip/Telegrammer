@@ -17,6 +17,7 @@ public final class InlineQueryResultVoice: Codable {
         case title = "title"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case voiceDuration = "voice_duration"
         case replyMarkup = "reply_markup"
         case inputMessageContent = "input_message_content"
@@ -40,6 +41,9 @@ public final class InlineQueryResultVoice: Codable {
     /// Optional. Mode for parsing entities in the voice message caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Recording duration in seconds
     public var voiceDuration: Int?
 
@@ -49,13 +53,14 @@ public final class InlineQueryResultVoice: Codable {
     /// Optional. Content of the message to be sent instead of the voice recording
     public var inputMessageContent: InputMessageContent?
 
-    public init (type: String, id: String, voiceUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, voiceDuration: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
+    public init (type: String, id: String, voiceUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, voiceDuration: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id
         self.voiceUrl = voiceUrl
         self.title = title
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.voiceDuration = voiceDuration
         self.replyMarkup = replyMarkup
         self.inputMessageContent = inputMessageContent

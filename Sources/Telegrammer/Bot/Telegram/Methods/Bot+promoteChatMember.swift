@@ -12,6 +12,9 @@ public extension Bot {
         /// Unique identifier of the target user
         var userId: Int64
 
+        /// Pass True, if the administrator's presence in the chat is hidden
+        var isAnonymous: Bool?
+
         /// Pass True, if the administrator can change chat title, photo and other settings
         var canChangeInfo: Bool?
 
@@ -40,6 +43,7 @@ public extension Bot {
         enum CodingKeys: String, CodingKey {
             case chatId = "chat_id"
             case userId = "user_id"
+            case isAnonymous = "is_anonymous"
             case canChangeInfo = "can_change_info"
             case canPostMessages = "can_post_messages"
             case canEditMessages = "can_edit_messages"
@@ -50,9 +54,10 @@ public extension Bot {
             case canPromoteMembers = "can_promote_members"
         }
 
-        public init(chatId: ChatId, userId: Int64, canChangeInfo: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canInviteUsers: Bool? = nil, canRestrictMembers: Bool? = nil, canPinMessages: Bool? = nil, canPromoteMembers: Bool? = nil) {
+        public init(chatId: ChatId, userId: Int64, isAnonymous: Bool? = nil, canChangeInfo: Bool? = nil, canPostMessages: Bool? = nil, canEditMessages: Bool? = nil, canDeleteMessages: Bool? = nil, canInviteUsers: Bool? = nil, canRestrictMembers: Bool? = nil, canPinMessages: Bool? = nil, canPromoteMembers: Bool? = nil) {
             self.chatId = chatId
             self.userId = userId
+            self.isAnonymous = isAnonymous
             self.canChangeInfo = canChangeInfo
             self.canPostMessages = canPostMessages
             self.canEditMessages = canEditMessages

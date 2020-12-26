@@ -16,6 +16,8 @@ public final class InputMediaDocument: Encodable {
         case thumb = "thumb"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
+        case disableContentTypeDetection = "disable_content_type_detection"
     }
 
     /// Type of the result, must be document
@@ -33,11 +35,19 @@ public final class InputMediaDocument: Encodable {
     /// Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     public var parseMode: String?
 
-    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil) {
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
+    /// Optional. Disables automatic server-side content type detection for files uploaded using multipart/form-data. Always true, if the document is sent as part of an album.
+    public var disableContentTypeDetection: Bool?
+
+    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, disableContentTypeDetection: Bool? = nil) {
         self.type = type
         self.media = media
         self.thumb = thumb
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
+        self.disableContentTypeDetection = disableContentTypeDetection
     }
 }

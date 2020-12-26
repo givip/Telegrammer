@@ -3,8 +3,24 @@
 
 public extension Bot {
 
+    /// Parameters container struct for `deleteWebhook` method
+    struct DeleteWebhookParams: JSONEncodable {
+
+        /// Pass True to drop all pending updates
+        var dropPendingUpdates: Bool?
+
+        /// Custom keys for coding/decoding `DeleteWebhookParams` struct
+        enum CodingKeys: String, CodingKey {
+            case dropPendingUpdates = "drop_pending_updates"
+        }
+
+        public init(dropPendingUpdates: Bool? = nil) {
+            self.dropPendingUpdates = dropPendingUpdates
+        }
+    }
+
     /**
-     Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success. Requires no parameters.
+     Use this method to remove webhook integration if you decide to switch back to getUpdates. Returns True on success.
 
      SeeAlso Telegram Bot API Reference:
      [DeleteWebhookParams](https://core.telegram.org/bots/api#deletewebhook)
@@ -15,9 +31,11 @@ public extension Bot {
      - Returns: Future of `Bool` type
      */
     @discardableResult
-    func deleteWebhook() throws -> Future<Bool> {
+    func deleteWebhook(params: DeleteWebhookParams? = nil) throws -> Future<Bool> {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
         return try client
-            .request(endpoint: "deleteWebhook")
+            .request(endpoint: "deleteWebhook", body: body, headers: headers)
             .flatMapThrowing { (container) -> Bool in
                 return try self.processContainer(container)
         }

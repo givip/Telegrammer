@@ -16,6 +16,7 @@ public final class InputMediaVideo: Encodable {
         case thumb = "thumb"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case width = "width"
         case height = "height"
         case duration = "duration"
@@ -37,6 +38,9 @@ public final class InputMediaVideo: Encodable {
     /// Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Video width
     public var width: Int?
 
@@ -49,12 +53,13 @@ public final class InputMediaVideo: Encodable {
     /// Optional. Pass True, if the uploaded video is suitable for streaming
     public var supportsStreaming: Bool?
 
-    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, width: Int? = nil, height: Int? = nil, duration: Int? = nil, supportsStreaming: Bool? = nil) {
+    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, width: Int? = nil, height: Int? = nil, duration: Int? = nil, supportsStreaming: Bool? = nil) {
         self.type = type
         self.media = media
         self.thumb = thumb
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.width = width
         self.height = height
         self.duration = duration

@@ -17,6 +17,7 @@ public final class Video: Codable {
         case height = "height"
         case duration = "duration"
         case thumb = "thumb"
+        case fileName = "file_name"
         case mimeType = "mime_type"
         case fileSize = "file_size"
     }
@@ -39,19 +40,23 @@ public final class Video: Codable {
     /// Optional. Video thumbnail
     public var thumb: PhotoSize?
 
+    /// Optional. Original filename as defined by sender
+    public var fileName: String?
+
     /// Optional. Mime type of a file as defined by sender
     public var mimeType: String?
 
     /// Optional. File size
     public var fileSize: Int?
 
-    public init (fileId: String, fileUniqueId: String, width: Int, height: Int, duration: Int, thumb: PhotoSize? = nil, mimeType: String? = nil, fileSize: Int? = nil) {
+    public init (fileId: String, fileUniqueId: String, width: Int, height: Int, duration: Int, thumb: PhotoSize? = nil, fileName: String? = nil, mimeType: String? = nil, fileSize: Int? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId
         self.width = width
         self.height = height
         self.duration = duration
         self.thumb = thumb
+        self.fileName = fileName
         self.mimeType = mimeType
         self.fileSize = fileSize
     }

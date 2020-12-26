@@ -70,6 +70,9 @@ def make_swift_type_name(var_name, var_type)
         if var_type == 'InputMediaPhoto and InputMediaVideo' then
             return "[InputMediaPhotoAndVideo]"
         end
+        if var_type == 'InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo' then
+            return "InputMedia"
+        end
 		return "[#{var_type}]"
 	end
 
@@ -139,6 +142,12 @@ def deduce_result_type(description)
 	
 	type_name = description[/An (.+) objects is returned/, 1]
 	return type_name unless type_name.nil?
+
+    type_name = description[/Returns the (.+) of the sent message on success./, 1]
+    return type_name unless type_name.nil?
+
+    type_name = description[/On success, an array of (.+)s that were sent is returned./, 1]
+    return "[#{type_name}]" unless type_name.nil?
 
 	type_name = description[/returns an (.+) objects/, 1]
 	return type_name unless type_name.nil?

@@ -18,6 +18,7 @@ public final class InlineQueryResultCachedPhoto: Codable {
         case description = "description"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case replyMarkup = "reply_markup"
         case inputMessageContent = "input_message_content"
     }
@@ -43,13 +44,16 @@ public final class InlineQueryResultCachedPhoto: Codable {
     /// Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Inline keyboard attached to the message
     public var replyMarkup: InlineKeyboardMarkup?
 
     /// Optional. Content of the message to be sent instead of the photo
     public var inputMessageContent: InputMessageContent?
 
-    public init (type: String, id: String, photoFileId: String, title: String? = nil, description: String? = nil, caption: String? = nil, parseMode: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
+    public init (type: String, id: String, photoFileId: String, title: String? = nil, description: String? = nil, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id
         self.photoFileId = photoFileId
@@ -57,6 +61,7 @@ public final class InlineQueryResultCachedPhoto: Codable {
         self.description = description
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.replyMarkup = replyMarkup
         self.inputMessageContent = inputMessageContent
     }
