@@ -151,7 +151,7 @@ public final class Message: Codable {
     /// Optional. Message is a shared contact, information about the contact
     public var contact: Contact?
 
-    /// Optional. Message is a dice with random value from 1 to 6
+    /// Optional. Message is a dice with random value
     public var dice: Dice?
 
     /// Optional. Message is a game, information about the game. More about games »

@@ -71,7 +71,7 @@ def make_swift_type_name(var_name, var_type)
             return "[InputMediaPhotoAndVideo]"
         end
         if var_type == 'InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo' then
-            return "InputMedia"
+            return "[InputMedia]"
         end
 		return "[#{var_type}]"
 	end

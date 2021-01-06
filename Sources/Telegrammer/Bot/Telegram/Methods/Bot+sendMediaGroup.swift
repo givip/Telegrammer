@@ -10,7 +10,7 @@ public extension Bot {
         var chatId: ChatId
 
         /// A JSON-serialized array describing messages to be sent, must include 2-10 items
-        var media: InputMedia
+        var media: [InputMedia]
 
         /// Sends messages silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
@@ -30,7 +30,7 @@ public extension Bot {
             case allowSendingWithoutReply = "allow_sending_without_reply"
         }
 
-        public init(chatId: ChatId, media: InputMedia, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil) {
+        public init(chatId: ChatId, media: [InputMedia], disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil) {
             self.chatId = chatId
             self.media = media
             self.disableNotification = disableNotification
