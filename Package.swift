@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "Telegrammer",
     platforms: [
-        .macOS(.v10_14)
+        .macOS(.v10_15)
     ],
     products: [
         .library(name: "Telegrammer", targets: ["Telegrammer"]),
