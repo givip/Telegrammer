@@ -8,13 +8,13 @@
 import Foundation
 
 public enum Day: Int {
+    case sunday = 1
     case monday
     case tuesday
     case wednesday
     case thursday
     case friday
     case saturday
-    case sunday
 
     static var todayWeekDay: Day? {
         let todayDate = Date()
