@@ -35,7 +35,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to stop updating a live location message before live_period expires. On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+     Use this method to stop updating a live location message before live_period expires. On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned.
 
      SeeAlso Telegram Bot API Reference:
      [StopMessageLiveLocationParams](https://core.telegram.org/bots/api#stopmessagelivelocation)
@@ -56,3 +56,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to stop updating a live location message before live_period expires. On success, if the message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [StopMessageLiveLocationParams](https://core.telegram.org/bots/api#stopmessagelivelocation)
+     
+     - Parameters:
+         - params: Parameters container, see `StopMessageLiveLocationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
+    @discardableResult
+    func stopMessageLiveLocation(params: StopMessageLiveLocationParams? = nil) async throws -> MessageOrBool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "stopMessageLiveLocation", body: body, headers: headers))
+    }
+}
+#endif

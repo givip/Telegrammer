@@ -9,18 +9,28 @@ public extension Bot {
         /// A JSON-serialized list of bot commands to be set as the list of the bot's commands. At most 100 commands can be specified.
         var commands: [BotCommand]
 
+        /// A JSON-serialized object, describing scope of users for which the commands are relevant. Defaults to BotCommandScopeDefault.
+        var scope: BotCommandScope?
+
+        /// A two-letter ISO 639-1 language code. If empty, commands will be applied to all users from the given scope, for whose language there are no dedicated commands
+        var languageCode: String?
+
         /// Custom keys for coding/decoding `SetMyCommandsParams` struct
         enum CodingKeys: String, CodingKey {
             case commands = "commands"
+            case scope = "scope"
+            case languageCode = "language_code"
         }
 
-        public init(commands: [BotCommand]) {
+        public init(commands: [BotCommand], scope: BotCommandScope? = nil, languageCode: String? = nil) {
             self.commands = commands
+            self.scope = scope
+            self.languageCode = languageCode
         }
     }
 
     /**
-     Use this method to change the list of the bot's commands. Returns True on success.
+     Use this method to change the list of the bot's commands. See https://core.telegram.org/bots#commands for more details about bot commands. Returns True on success.
 
      SeeAlso Telegram Bot API Reference:
      [SetMyCommandsParams](https://core.telegram.org/bots/api#setmycommands)
@@ -41,3 +51,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to change the list of the bot's commands. See https://core.telegram.org/bots#commands for more details about bot commands. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetMyCommandsParams](https://core.telegram.org/bots/api#setmycommands)
+     
+     - Parameters:
+         - params: Parameters container, see `SetMyCommandsParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func setMyCommands(params: SetMyCommandsParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "setMyCommands", body: body, headers: headers))
+    }
+}
+#endif

@@ -6,8 +6,8 @@ public extension Bot {
     /// Parameters container struct for `sendInvoice` method
     struct SendInvoiceParams: JSONEncodable {
 
-        /// Unique identifier for the target private chat
-        var chatId: Int64
+        /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
+        var chatId: ChatId
 
         /// Product name, 1-32 characters
         var title: String
@@ -21,14 +21,20 @@ public extension Bot {
         /// Payments provider token, obtained via Botfather
         var providerToken: String
 
-        /// Unique deep-linking parameter that can be used to generate this invoice when used as a start parameter
-        var startParameter: String
-
         /// Three-letter ISO 4217 currency code, see more on currencies
         var currency: String
 
         /// Price breakdown, a JSON-serialized list of components (e.g. product price, tax, discount, delivery cost, delivery tax, bonus, etc.)
         var prices: [LabeledPrice]
+
+        /// The maximum accepted amount for tips in the smallest units of the currency (integer, not float/double). For example, for a maximum tip of US$ 1.45 pass max_tip_amount = 145. See the exp parameter in currencies.json, it shows the number of digits past the decimal point for each currency (2 for the majority of currencies). Defaults to 0
+        var maxTipAmount: Int?
+
+        /// A JSON-serialized array of suggested amounts of tips in the smallest units of the currency (integer, not float/double). At most 4 suggested tip amounts can be specified. The suggested tip amounts must be positive, passed in a strictly increased order and must not exceed max_tip_amount.
+        var suggestedTipAmounts: [Int]?
+
+        /// Unique deep-linking parameter. If left empty, forwarded copies of the sent message will have a Pay button, allowing multiple users to pay directly from the forwarded message, using the same invoice. If non-empty, forwarded copies of the sent message will have a URL button with a deep link to the bot (instead of a Pay button), with the value used as the start parameter
+        var startParameter: String?
 
         /// A JSON-serialized data about the invoice, which will be shared with the payment provider. A detailed description of required fields should be provided by the payment provider.
         var providerData: String?
@@ -85,9 +91,11 @@ public extension Bot {
             case description = "description"
             case payload = "payload"
             case providerToken = "provider_token"
-            case startParameter = "start_parameter"
             case currency = "currency"
             case prices = "prices"
+            case maxTipAmount = "max_tip_amount"
+            case suggestedTipAmounts = "suggested_tip_amounts"
+            case startParameter = "start_parameter"
             case providerData = "provider_data"
             case photoUrl = "photo_url"
             case photoSize = "photo_size"
@@ -106,15 +114,17 @@ public extension Bot {
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: Int64, title: String, description: String, payload: String, providerToken: String, startParameter: String, currency: String, prices: [LabeledPrice], providerData: String? = nil, photoUrl: String? = nil, photoSize: Int? = nil, photoWidth: Int? = nil, photoHeight: Int? = nil, needName: Bool? = nil, needPhoneNumber: Bool? = nil, needEmail: Bool? = nil, needShippingAddress: Bool? = nil, sendPhoneNumberToProvider: Bool? = nil, sendEmailToProvider: Bool? = nil, isFlexible: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
+        public init(chatId: ChatId, title: String, description: String, payload: String, providerToken: String, currency: String, prices: [LabeledPrice], maxTipAmount: Int? = nil, suggestedTipAmounts: [Int]? = nil, startParameter: String? = nil, providerData: String? = nil, photoUrl: String? = nil, photoSize: Int? = nil, photoWidth: Int? = nil, photoHeight: Int? = nil, needName: Bool? = nil, needPhoneNumber: Bool? = nil, needEmail: Bool? = nil, needShippingAddress: Bool? = nil, sendPhoneNumberToProvider: Bool? = nil, sendEmailToProvider: Bool? = nil, isFlexible: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
             self.chatId = chatId
             self.title = title
             self.description = description
             self.payload = payload
             self.providerToken = providerToken
-            self.startParameter = startParameter
             self.currency = currency
             self.prices = prices
+            self.maxTipAmount = maxTipAmount
+            self.suggestedTipAmounts = suggestedTipAmounts
+            self.startParameter = startParameter
             self.providerData = providerData
             self.photoUrl = photoUrl
             self.photoSize = photoSize
@@ -156,3 +166,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send invoices. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendInvoiceParams](https://core.telegram.org/bots/api#sendinvoice)
+     
+     - Parameters:
+         - params: Parameters container, see `SendInvoiceParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendInvoice(params: SendInvoiceParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendInvoice", body: body, headers: headers))
+    }
+}
+#endif

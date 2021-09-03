@@ -42,7 +42,7 @@ public final class WebhookInfo: Codable {
     /// Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     public var maxConnections: Int?
 
-    /// Optional. A list of update types the bot is subscribed to. Defaults to all update types
+    /// Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
     public var allowedUpdates: [String]?
 
     public init (url: String, hasCustomCertificate: Bool, pendingUpdateCount: Int, ipAddress: String? = nil, lastErrorDate: Int? = nil, lastErrorMessage: String? = nil, maxConnections: Int? = nil, allowedUpdates: [String]? = nil) {

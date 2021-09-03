@@ -35,7 +35,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to forward messages of any kind. On success, the sent Message is returned.
+     Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent Message is returned.
 
      SeeAlso Telegram Bot API Reference:
      [ForwardMessageParams](https://core.telegram.org/bots/api#forwardmessage)
@@ -56,3 +56,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to forward messages of any kind. Service messages can't be forwarded. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [ForwardMessageParams](https://core.telegram.org/bots/api#forwardmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `ForwardMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func forwardMessage(params: ForwardMessageParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "forwardMessage", body: body, headers: headers))
+    }
+}
+#endif

@@ -64,3 +64,29 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send answers to callback queries sent from inline keyboards. The answer will be displayed to the user as a notification at the top of the chat screen or as an alert. On success, True is returned.
+     Alternatively, the user can be redirected to the specified Game URL. For this option to work, you must first create a game for your bot via @Botfather and accept the terms. Otherwise, you may use links like t.me/your_bot?start=XXXX that open your bot with a parameter.
+
+     SeeAlso Telegram Bot API Reference:
+     [AnswerCallbackQueryParams](https://core.telegram.org/bots/api#answercallbackquery)
+     
+     - Parameters:
+         - params: Parameters container, see `AnswerCallbackQueryParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func answerCallbackQuery(params: AnswerCallbackQueryParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "answerCallbackQuery", body: body, headers: headers))
+    }
+}
+#endif

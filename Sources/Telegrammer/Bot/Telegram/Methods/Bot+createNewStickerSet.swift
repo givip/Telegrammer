@@ -76,3 +76,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to create a new sticker set owned by a user. The bot will be able to edit the sticker set thus created. You must use exactly one of the fields png_sticker or tgs_sticker. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [CreateNewStickerSetParams](https://core.telegram.org/bots/api#createnewstickerset)
+     
+     - Parameters:
+         - params: Parameters container, see `CreateNewStickerSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func createNewStickerSet(params: CreateNewStickerSetParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "createNewStickerSet", body: body, headers: headers))
+    }
+}
+#endif

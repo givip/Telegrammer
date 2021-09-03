@@ -65,7 +65,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to copy messages of any kind. The method is analogous to the method forwardMessages, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+     Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
 
      SeeAlso Telegram Bot API Reference:
      [CopyMessageParams](https://core.telegram.org/bots/api#copymessage)
@@ -86,3 +86,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to copy messages of any kind. Service messages and invoice messages can't be copied. The method is analogous to the method forwardMessage, but the copied message doesn't have a link to the original message. Returns the MessageId of the sent message on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [CopyMessageParams](https://core.telegram.org/bots/api#copymessage)
+     
+     - Parameters:
+         - params: Parameters container, see `CopyMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageId` type
+     */
+    @discardableResult
+    func copyMessage(params: CopyMessageParams) async throws -> MessageId {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "copyMessage", body: body, headers: headers))
+    }
+}
+#endif

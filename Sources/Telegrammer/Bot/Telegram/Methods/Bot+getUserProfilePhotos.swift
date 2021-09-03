@@ -51,3 +51,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get a list of profile pictures for a user. Returns a UserProfilePhotos object.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetUserProfilePhotosParams](https://core.telegram.org/bots/api#getuserprofilephotos)
+     
+     - Parameters:
+         - params: Parameters container, see `GetUserProfilePhotosParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `UserProfilePhotos` type
+     */
+    @discardableResult
+    func getUserProfilePhotos(params: GetUserProfilePhotosParams) async throws -> UserProfilePhotos {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getUserProfilePhotos", body: body, headers: headers))
+    }
+}
+#endif

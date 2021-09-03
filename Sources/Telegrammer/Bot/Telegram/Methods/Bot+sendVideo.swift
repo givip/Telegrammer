@@ -106,3 +106,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send video files, Telegram clients support mp4 videos (other formats may be sent as Document). On success, the sent Message is returned. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVideoParams](https://core.telegram.org/bots/api#sendvideo)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVideoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendVideo(params: SendVideoParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendVideo", body: body, headers: headers))
+    }
+}
+#endif

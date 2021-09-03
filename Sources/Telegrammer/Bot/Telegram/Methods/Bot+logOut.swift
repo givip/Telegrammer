@@ -23,3 +23,26 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to log out from the cloud Bot API server before launching the bot locally. You must log out the bot before running it locally, otherwise there is no guarantee that the bot will receive updates. After a successful call, you can immediately log in on a local server, but will not be able to log in back to the cloud Bot API server for 10 minutes. Returns True on success. Requires no parameters.
+
+     SeeAlso Telegram Bot API Reference:
+     [LogOutParams](https://core.telegram.org/bots/api#logout)
+     
+     - Parameters:
+         - params: Parameters container, see `LogOutParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func logOut() async throws -> Bool {
+        return try self.processContainer(try await client.request(endpoint: "logOut"))
+    }
+}
+#endif

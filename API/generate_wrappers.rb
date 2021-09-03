@@ -73,6 +73,9 @@ def make_swift_type_name(var_name, var_type)
         if var_type == 'InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo' then
             return "[InputMedia]"
         end
+				if var_type == 'Integer' then
+					return "[Int]"
+				end
 		return "[#{var_type}]"
 	end
 
@@ -165,8 +168,10 @@ def deduce_result_type(description)
 	return "#{type_name}OrBoolean" unless type_name.nil?
 
 	type_name = description[/(\w+) is returned/, 1]
-	return type_name unless type_name.nil?
-
+    if type_name != 'list' then
+        return type_name unless type_name.nil?
+    end
+    
 	type_name = description[/Returns a (.+) object/, 1]
 	return type_name unless type_name.nil?
 
@@ -218,14 +223,16 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
         return "FileInfo"
 	when ['Integer', true]
 		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
-							(type_name == 'User' && var_name == 'id')
+							(type_name == 'User' && var_name == 'id') ||
+                            (type_name == 'Chat' && var_name == 'id')
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}?"
 	when ['Integer', false]
 		is64bit = var_name.include?("user_id") ||
                   var_name.include?("chat_id") ||
                   var_desc.include?("64 bit integer") ||
-                  (type_name == 'User' && var_name == 'id')
+                  (type_name == 'User' && var_name == 'id') ||
+                  (type_name == 'Chat' && var_name == 'id')
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}"
 	when ['Float number', true], ['Float', true]
@@ -240,6 +247,16 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
 		else 
 			return "Bool"
 		end
+    when ['Integer or String', true]
+        if var_name.include?('chat_id') then
+            return 'ChatId'
+        end
+        return 'String'
+    when ['Integer or String', false]
+        if var_name.include?('chat_id') then
+            return 'ChatId?'
+        end
+        return 'String?'
 	else
 		two_d_array_prefix = 'Array of Array of '
 		array_prefix = 'Array of '

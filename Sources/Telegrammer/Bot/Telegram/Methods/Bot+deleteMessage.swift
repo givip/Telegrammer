@@ -54,3 +54,36 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to delete a message, including service messages, with the following limitations:
+     - A message can only be deleted if it was sent less than 48 hours ago.
+     - A dice message in a private chat can only be deleted if it was sent more than 24 hours ago.
+     - Bots can delete outgoing messages in private chats, groups, and supergroups.
+     - Bots can delete incoming messages in private chats.
+     - Bots granted can_post_messages permissions can delete outgoing messages in channels.
+     - If the bot is an administrator of a group, it can delete any message there.
+     - If the bot has can_delete_messages permission in a supergroup or a channel, it can delete any message there.
+     Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [DeleteMessageParams](https://core.telegram.org/bots/api#deletemessage)
+     
+     - Parameters:
+         - params: Parameters container, see `DeleteMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func deleteMessage(params: DeleteMessageParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "deleteMessage", body: body, headers: headers))
+    }
+}
+#endif

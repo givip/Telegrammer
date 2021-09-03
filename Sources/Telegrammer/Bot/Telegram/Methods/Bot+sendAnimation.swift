@@ -101,3 +101,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound). On success, the sent Message is returned. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendAnimationParams](https://core.telegram.org/bots/api#sendanimation)
+     
+     - Parameters:
+         - params: Parameters container, see `SendAnimationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendAnimation(params: SendAnimationParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendAnimation", body: body, headers: headers))
+    }
+}
+#endif

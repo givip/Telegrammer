@@ -102,3 +102,29 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send audio files, if you want Telegram clients to display them in the music player. Your audio must be in the .MP3 or .M4A format. On success, the sent Message is returned. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+     For sending voice messages, use the sendVoice method instead.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendAudioParams](https://core.telegram.org/bots/api#sendaudio)
+     
+     - Parameters:
+         - params: Parameters container, see `SendAudioParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendAudio(params: SendAudioParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendAudio", body: body, headers: headers))
+    }
+}
+#endif

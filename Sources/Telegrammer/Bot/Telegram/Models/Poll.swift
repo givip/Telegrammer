@@ -29,7 +29,7 @@ public final class Poll: Codable {
     /// Unique poll identifier
     public var id: String
 
-    /// Poll question, 1-255 characters
+    /// Poll question, 1-300 characters
     public var question: String
 
     /// List of poll options

@@ -71,3 +71,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to edit captions of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageCaptionParams](https://core.telegram.org/bots/api#editmessagecaption)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageCaptionParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
+    @discardableResult
+    func editMessageCaption(params: EditMessageCaptionParams? = nil) async throws -> MessageOrBool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "editMessageCaption", body: body, headers: headers))
+    }
+}
+#endif

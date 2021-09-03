@@ -57,3 +57,29 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get data for high score tables. Will return the score of the specified user and several of their neighbors in a game. On success, returns an Array of GameHighScore objects.
+     This method will currently return scores for the target user, plus two of their closest neighbors on each side. Will also return the top three users if the user and his neighbors are not among them. Please note that this behavior is subject to change.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetGameHighScoresParams](https://core.telegram.org/bots/api#getgamehighscores)
+     
+     - Parameters:
+         - params: Parameters container, see `GetGameHighScoresParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `[GameHighScore]` type
+     */
+    @discardableResult
+    func getGameHighScores(params: GetGameHighScoresParams) async throws -> [GameHighScore] {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getGameHighScores", body: body, headers: headers))
+    }
+}
+#endif

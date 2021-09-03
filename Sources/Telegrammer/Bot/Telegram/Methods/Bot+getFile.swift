@@ -41,3 +41,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get basic info about a file and prepare it for downloading. For the moment, bots can download files of up to 20MB in size. On success, a File object is returned. The file can then be downloaded via the link https://api.telegram.org/file/bot<token>/<file_path>, where <file_path> is taken from the response. It is guaranteed that the link will be valid for at least 1 hour. When the link expires, a new one can be requested by calling getFile again.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetFileParams](https://core.telegram.org/bots/api#getfile)
+     
+     - Parameters:
+         - params: Parameters container, see `GetFileParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `File` type
+     */
+    @discardableResult
+    func getFile(params: GetFileParams) async throws -> File {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getFile", body: body, headers: headers))
+    }
+}
+#endif

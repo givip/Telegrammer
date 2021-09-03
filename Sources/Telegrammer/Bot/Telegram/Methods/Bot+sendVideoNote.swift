@@ -81,3 +81,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     As of v.4.0, Telegram clients support rounded square mp4 videos of up to 1 minute long. Use this method to send video messages. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVideoNoteParams](https://core.telegram.org/bots/api#sendvideonote)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVideoNoteParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendVideoNote(params: SendVideoNoteParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendVideoNote", body: body, headers: headers))
+    }
+}
+#endif

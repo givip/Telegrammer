@@ -46,3 +46,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to remove a message from the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [UnpinChatMessageParams](https://core.telegram.org/bots/api#unpinchatmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `UnpinChatMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func unpinChatMessage(params: UnpinChatMessageParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "unpinChatMessage", body: body, headers: headers))
+    }
+}
+#endif

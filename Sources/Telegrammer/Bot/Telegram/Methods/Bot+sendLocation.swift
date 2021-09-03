@@ -91,3 +91,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send point on the map. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendLocationParams](https://core.telegram.org/bots/api#sendlocation)
+     
+     - Parameters:
+         - params: Parameters container, see `SendLocationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendLocation(params: SendLocationParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendLocation", body: body, headers: headers))
+    }
+}
+#endif

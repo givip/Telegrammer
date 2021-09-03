@@ -53,6 +53,7 @@ public final class Message: Codable {
         case groupChatCreated = "group_chat_created"
         case supergroupChatCreated = "supergroup_chat_created"
         case channelChatCreated = "channel_chat_created"
+        case messageAutoDeleteTimerChanged = "message_auto_delete_timer_changed"
         case migrateToChatId = "migrate_to_chat_id"
         case migrateFromChatId = "migrate_from_chat_id"
         case pinnedMessage = "pinned_message"
@@ -61,6 +62,10 @@ public final class Message: Codable {
         case connectedWebsite = "connected_website"
         case passportData = "passport_data"
         case proximityAlertTriggered = "proximity_alert_triggered"
+        case voiceChatScheduled = "voice_chat_scheduled"
+        case voiceChatStarted = "voice_chat_started"
+        case voiceChatEnded = "voice_chat_ended"
+        case voiceChatParticipantsInvited = "voice_chat_participants_invited"
         case replyMarkup = "reply_markup"
     }
 
@@ -190,10 +195,13 @@ public final class Message: Codable {
     /// Optional. Service message: the channel has been created. This field can't be received in a message coming through updates, because bot can't be a member of a channel when it is created. It can only be found in reply_to_message if someone replies to a very first message in a channel.
     public var channelChatCreated: Bool?
 
-    /// Optional. The group has been migrated to a supergroup with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    /// Optional. Service message: auto-delete timer settings changed in the chat
+    public var messageAutoDeleteTimerChanged: MessageAutoDeleteTimerChanged?
+
+    /// Optional. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     public var migrateToChatId: Int64?
 
-    /// Optional. The supergroup has been migrated from a group with the specified identifier. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    /// Optional. The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     public var migrateFromChatId: Int64?
 
     /// Optional. Specified message was pinned. Note that the Message object in this field will not contain further reply_to_message fields even if it is itself a reply.
@@ -214,10 +222,22 @@ public final class Message: Codable {
     /// Optional. Service message. A user in the chat triggered another user's proximity alert while sharing Live Location.
     public var proximityAlertTriggered: ProximityAlertTriggered?
 
+    /// Optional. Service message: voice chat scheduled
+    public var voiceChatScheduled: VoiceChatScheduled?
+
+    /// Optional. Service message: voice chat started
+    public var voiceChatStarted: VoiceChatStarted?
+
+    /// Optional. Service message: voice chat ended
+    public var voiceChatEnded: VoiceChatEnded?
+
+    /// Optional. Service message: new participants invited to a voice chat
+    public var voiceChatParticipantsInvited: VoiceChatParticipantsInvited?
+
     /// Optional. Inline keyboard attached to the message. login_url buttons are represented as ordinary url buttons.
     public var replyMarkup: InlineKeyboardMarkup?
 
-    public init (messageId: Int, from: User? = nil, senderChat: Chat? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, viaBot: User? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, animation: Animation? = nil, audio: Audio? = nil, document: Document? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, videoNote: VideoNote? = nil, voice: Voice? = nil, caption: String? = nil, captionEntities: [MessageEntity]? = nil, contact: Contact? = nil, dice: Dice? = nil, game: Game? = nil, poll: Poll? = nil, venue: Venue? = nil, location: Location? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, proximityAlertTriggered: ProximityAlertTriggered? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
+    public init (messageId: Int, from: User? = nil, senderChat: Chat? = nil, date: Int, chat: Chat, forwardFrom: User? = nil, forwardFromChat: Chat? = nil, forwardFromMessageId: Int? = nil, forwardSignature: String? = nil, forwardSenderName: String? = nil, forwardDate: Int? = nil, replyToMessage: Message? = nil, viaBot: User? = nil, editDate: Int? = nil, mediaGroupId: String? = nil, authorSignature: String? = nil, text: String? = nil, entities: [MessageEntity]? = nil, animation: Animation? = nil, audio: Audio? = nil, document: Document? = nil, photo: [PhotoSize]? = nil, sticker: Sticker? = nil, video: Video? = nil, videoNote: VideoNote? = nil, voice: Voice? = nil, caption: String? = nil, captionEntities: [MessageEntity]? = nil, contact: Contact? = nil, dice: Dice? = nil, game: Game? = nil, poll: Poll? = nil, venue: Venue? = nil, location: Location? = nil, newChatMembers: [User]? = nil, leftChatMember: User? = nil, newChatTitle: String? = nil, newChatPhoto: [PhotoSize]? = nil, deleteChatPhoto: Bool? = nil, groupChatCreated: Bool? = nil, supergroupChatCreated: Bool? = nil, channelChatCreated: Bool? = nil, messageAutoDeleteTimerChanged: MessageAutoDeleteTimerChanged? = nil, migrateToChatId: Int64? = nil, migrateFromChatId: Int64? = nil, pinnedMessage: Message? = nil, invoice: Invoice? = nil, successfulPayment: SuccessfulPayment? = nil, connectedWebsite: String? = nil, passportData: PassportData? = nil, proximityAlertTriggered: ProximityAlertTriggered? = nil, voiceChatScheduled: VoiceChatScheduled? = nil, voiceChatStarted: VoiceChatStarted? = nil, voiceChatEnded: VoiceChatEnded? = nil, voiceChatParticipantsInvited: VoiceChatParticipantsInvited? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
         self.messageId = messageId
         self.from = from
         self.senderChat = senderChat
@@ -260,6 +280,7 @@ public final class Message: Codable {
         self.groupChatCreated = groupChatCreated
         self.supergroupChatCreated = supergroupChatCreated
         self.channelChatCreated = channelChatCreated
+        self.messageAutoDeleteTimerChanged = messageAutoDeleteTimerChanged
         self.migrateToChatId = migrateToChatId
         self.migrateFromChatId = migrateFromChatId
         self.pinnedMessage = pinnedMessage
@@ -268,6 +289,10 @@ public final class Message: Codable {
         self.connectedWebsite = connectedWebsite
         self.passportData = passportData
         self.proximityAlertTriggered = proximityAlertTriggered
+        self.voiceChatScheduled = voiceChatScheduled
+        self.voiceChatStarted = voiceChatStarted
+        self.voiceChatEnded = voiceChatEnded
+        self.voiceChatParticipantsInvited = voiceChatParticipantsInvited
         self.replyMarkup = replyMarkup
     }
 }

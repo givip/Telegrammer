@@ -3,8 +3,29 @@
 
 public extension Bot {
 
+    /// Parameters container struct for `getMyCommands` method
+    struct GetMyCommandsParams: JSONEncodable {
+
+        /// A JSON-serialized object, describing scope of users. Defaults to BotCommandScopeDefault.
+        var scope: BotCommandScope?
+
+        /// A two-letter ISO 639-1 language code or an empty string
+        var languageCode: String?
+
+        /// Custom keys for coding/decoding `GetMyCommandsParams` struct
+        enum CodingKeys: String, CodingKey {
+            case scope = "scope"
+            case languageCode = "language_code"
+        }
+
+        public init(scope: BotCommandScope? = nil, languageCode: String? = nil) {
+            self.scope = scope
+            self.languageCode = languageCode
+        }
+    }
+
     /**
-     Use this method to get the current list of the bot's commands. Requires no parameters. Returns Array of BotCommand on success.
+     Use this method to get the current list of the bot's commands for the given scope and user language. Returns Array of BotCommand on success. If commands aren't set, an empty list is returned.
 
      SeeAlso Telegram Bot API Reference:
      [GetMyCommandsParams](https://core.telegram.org/bots/api#getmycommands)
@@ -15,11 +36,38 @@ public extension Bot {
      - Returns: Future of `[BotCommand]` type
      */
     @discardableResult
-    func getMyCommands() throws -> Future<[BotCommand]> {
+    func getMyCommands(params: GetMyCommandsParams? = nil) throws -> Future<[BotCommand]> {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
         return try client
-            .request(endpoint: "getMyCommands")
+            .request(endpoint: "getMyCommands", body: body, headers: headers)
             .flatMapThrowing { (container) -> [BotCommand] in
                 return try self.processContainer(container)
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get the current list of the bot's commands for the given scope and user language. Returns Array of BotCommand on success. If commands aren't set, an empty list is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetMyCommandsParams](https://core.telegram.org/bots/api#getmycommands)
+     
+     - Parameters:
+         - params: Parameters container, see `GetMyCommandsParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `[BotCommand]` type
+     */
+    @discardableResult
+    func getMyCommands(params: GetMyCommandsParams? = nil) async throws -> [BotCommand] {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getMyCommands", body: body, headers: headers))
+    }
+}
+#endif

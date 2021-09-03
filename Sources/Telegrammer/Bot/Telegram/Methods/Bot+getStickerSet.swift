@@ -41,3 +41,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get a sticker set. On success, a StickerSet object is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetStickerSetParams](https://core.telegram.org/bots/api#getstickerset)
+     
+     - Parameters:
+         - params: Parameters container, see `GetStickerSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `StickerSet` type
+     */
+    @discardableResult
+    func getStickerSet(params: GetStickerSetParams) async throws -> StickerSet {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getStickerSet", body: body, headers: headers))
+    }
+}
+#endif
