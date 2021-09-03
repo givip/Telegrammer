@@ -53,7 +53,17 @@ public class ConversationHandler: Handler {
     public func check(update: Update) -> Bool {
         return true
     }
-
+    
+    #if compiler(>=5.5)
+    @available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+    public func handle(update: Update, dispatcher: Dispatcher) async {
+        do {
+            try await callback(update, nil)
+        } catch {
+            log.error(error.logMessage)
+        }
+    }
+    #else
     public func handle(update: Update, dispatcher: Dispatcher) {
         do {
             try callback(update, nil)
@@ -61,4 +71,5 @@ public class ConversationHandler: Handler {
             log.error(error.logMessage)
         }
     }
+    #endif
 }

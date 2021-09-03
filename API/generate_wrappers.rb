@@ -504,7 +504,36 @@ def generate_method(f, node)
               "#{FOUR}return try self.processContainer(container)\n"\
               "#{TWO}}\n"\
 			  "#{ONE}}\n"\
-			  "}\n"
+              "}\n"
+    
+    # Concuurency Support
+    concurrecy_start = "\n"
+    concurrecy_start << "// MARK: Concurrency Support\n"
+    concurrecy_start << "#if compiler(>=5.5)\n"
+    concurrecy_start << "@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)\n"
+    concurrecy_start << "public extension Bot {\n\n"
+    
+    concurrecy_end = "#endif"
+    
+    out.write concurrecy_start
+    out.write method_description
+    out.write "#{ONE}@discardableResult\n"
+    
+    if all_params.empty? then
+        out.write "#{ONE}func #{method_name}() async throws -> #{result_type} {\n"
+    else
+        out.write "#{ONE}func #{method_name}#{params_block} async throws -> #{result_type} {\n"
+
+        out.write "#{TWO}let body = try httpBody(for: params)\n"
+        out.write "#{TWO}let headers = httpHeaders(for: params)\n"
+        body_param = ", body: body, headers: headers"
+    end
+    
+    out.write "#{TWO}return try self.processContainer(try await client.request(endpoint: \"#{method_name}\"#{body_param}))\n"\
+              "#{ONE}}\n"\
+              "}\n"\
+              "#{concurrecy_end}\n"
+    
 	}
 
 end
