@@ -21,6 +21,15 @@ public extension Bot {
         /// Longitude of new location
         var longitude: Float
 
+        /// The radius of uncertainty for the location, measured in meters; 0-1500
+        var horizontalAccuracy: Float?
+
+        /// Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified.
+        var heading: Int?
+
+        /// Maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.
+        var proximityAlertRadius: Int?
+
         /// A JSON-serialized object for a new inline keyboard.
         var replyMarkup: InlineKeyboardMarkup?
 
@@ -31,21 +40,27 @@ public extension Bot {
             case inlineMessageId = "inline_message_id"
             case latitude = "latitude"
             case longitude = "longitude"
+            case horizontalAccuracy = "horizontal_accuracy"
+            case heading = "heading"
+            case proximityAlertRadius = "proximity_alert_radius"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId? = nil, messageId: Int? = nil, inlineMessageId: String? = nil, latitude: Float, longitude: Float, replyMarkup: InlineKeyboardMarkup? = nil) {
+        public init(chatId: ChatId? = nil, messageId: Int? = nil, inlineMessageId: String? = nil, latitude: Float, longitude: Float, horizontalAccuracy: Float? = nil, heading: Int? = nil, proximityAlertRadius: Int? = nil, replyMarkup: InlineKeyboardMarkup? = nil) {
             self.chatId = chatId
             self.messageId = messageId
             self.inlineMessageId = inlineMessageId
             self.latitude = latitude
             self.longitude = longitude
+            self.horizontalAccuracy = horizontalAccuracy
+            self.heading = heading
+            self.proximityAlertRadius = proximityAlertRadius
             self.replyMarkup = replyMarkup
         }
     }
 
     /**
-     Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message was sent by the bot, the edited Message is returned, otherwise True is returned.
+     Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
      SeeAlso Telegram Bot API Reference:
      [EditMessageLiveLocationParams](https://core.telegram.org/bots/api#editmessagelivelocation)
@@ -66,3 +81,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageLiveLocationParams](https://core.telegram.org/bots/api#editmessagelivelocation)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageLiveLocationParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
+    @discardableResult
+    func editMessageLiveLocation(params: EditMessageLiveLocationParams) async throws -> MessageOrBool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "editMessageLiveLocation", body: body, headers: headers))
+    }
+}
+#endif

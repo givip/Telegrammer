@@ -9,7 +9,7 @@ public extension Bot {
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
-        /// Poll question, 1-255 characters
+        /// Poll question, 1-300 characters
         var question: String
 
         /// A JSON-serialized list of answer options, 2-10 strings 1-100 characters each
@@ -33,6 +33,9 @@ public extension Bot {
         /// Mode for parsing entities in the explanation. See formatting options for more details.
         var explanationParseMode: ParseMode?
 
+        /// List of special entities that appear in the poll explanation, which can be specified instead of parse_mode
+        var explanationEntities: [MessageEntity]?
+
         /// Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date.
         var openPeriod: Int?
 
@@ -48,6 +51,9 @@ public extension Bot {
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
 
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
+
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
@@ -62,15 +68,17 @@ public extension Bot {
             case correctOptionId = "correct_option_id"
             case explanation = "explanation"
             case explanationParseMode = "explanation_parse_mode"
+            case explanationEntities = "explanation_entities"
             case openPeriod = "open_period"
             case closeDate = "close_date"
             case isClosed = "is_closed"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, question: String, options: [String], isAnonymous: Bool? = nil, type: String? = nil, allowsMultipleAnswers: Bool? = nil, correctOptionId: Int? = nil, explanation: String? = nil, explanationParseMode: ParseMode? = nil, openPeriod: Int? = nil, closeDate: Int? = nil, isClosed: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, question: String, options: [String], isAnonymous: Bool? = nil, type: String? = nil, allowsMultipleAnswers: Bool? = nil, correctOptionId: Int? = nil, explanation: String? = nil, explanationParseMode: ParseMode? = nil, explanationEntities: [MessageEntity]? = nil, openPeriod: Int? = nil, closeDate: Int? = nil, isClosed: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.question = question
             self.options = options
@@ -80,11 +88,13 @@ public extension Bot {
             self.correctOptionId = correctOptionId
             self.explanation = explanation
             self.explanationParseMode = explanationParseMode
+            self.explanationEntities = explanationEntities
             self.openPeriod = openPeriod
             self.closeDate = closeDate
             self.isClosed = isClosed
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -111,3 +121,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send a native poll. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendPollParams](https://core.telegram.org/bots/api#sendpoll)
+     
+     - Parameters:
+         - params: Parameters container, see `SendPollParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendPoll(params: SendPollParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendPoll", body: body, headers: headers))
+    }
+}
+#endif

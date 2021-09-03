@@ -16,6 +16,7 @@ public final class InlineQueryResultDocument: Codable {
         case title = "title"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case documentUrl = "document_url"
         case mimeType = "mime_type"
         case description = "description"
@@ -41,6 +42,9 @@ public final class InlineQueryResultDocument: Codable {
     /// Optional. Mode for parsing entities in the document caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// A valid URL for the file
     public var documentUrl: String
 
@@ -65,12 +69,13 @@ public final class InlineQueryResultDocument: Codable {
     /// Optional. Thumbnail height
     public var thumbHeight: Int?
 
-    public init (type: String, id: String, title: String, caption: String? = nil, parseMode: String? = nil, documentUrl: String, mimeType: String, description: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
+    public init (type: String, id: String, title: String, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, documentUrl: String, mimeType: String, description: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id
         self.title = title
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.documentUrl = documentUrl
         self.mimeType = mimeType
         self.description = description

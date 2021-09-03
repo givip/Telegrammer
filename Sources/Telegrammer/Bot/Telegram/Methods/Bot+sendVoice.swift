@@ -18,6 +18,9 @@ public extension Bot {
         /// Mode for parsing entities in the voice message caption. See formatting options for more details.
         var parseMode: ParseMode?
 
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        var captionEntities: [MessageEntity]?
+
         /// Duration of the voice message in seconds
         var duration: Int?
 
@@ -26,6 +29,9 @@ public extension Bot {
 
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
 
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
@@ -36,20 +42,24 @@ public extension Bot {
             case voice = "voice"
             case caption = "caption"
             case parseMode = "parse_mode"
+            case captionEntities = "caption_entities"
             case duration = "duration"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, voice: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, duration: Int? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, voice: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, captionEntities: [MessageEntity]? = nil, duration: Int? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.voice = voice
             self.caption = caption
             self.parseMode = parseMode
+            self.captionEntities = captionEntities
             self.duration = duration
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -76,3 +86,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send audio files, if you want Telegram clients to display the file as a playable voice message. For this to work, your audio must be in an .OGG file encoded with OPUS (other formats may be sent as Audio or Document). On success, the sent Message is returned. Bots can currently send voice messages of up to 50 MB in size, this limit may be changed in the future.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendVoiceParams](https://core.telegram.org/bots/api#sendvoice)
+     
+     - Parameters:
+         - params: Parameters container, see `SendVoiceParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendVoice(params: SendVoiceParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendVoice", body: body, headers: headers))
+    }
+}
+#endif

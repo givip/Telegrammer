@@ -15,6 +15,9 @@ public extension Bot {
         /// Mode for parsing entities in the message text. See formatting options for more details.
         var parseMode: ParseMode?
 
+        /// List of special entities that appear in message text, which can be specified instead of parse_mode
+        var entities: [MessageEntity]?
+
         /// Disables link previews for links in this message
         var disableWebPagePreview: Bool?
 
@@ -24,6 +27,9 @@ public extension Bot {
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
 
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
+
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
@@ -32,19 +38,23 @@ public extension Bot {
             case chatId = "chat_id"
             case text = "text"
             case parseMode = "parse_mode"
+            case entities = "entities"
             case disableWebPagePreview = "disable_web_page_preview"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, text: String, parseMode: ParseMode? = nil, disableWebPagePreview: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, text: String, parseMode: ParseMode? = nil, entities: [MessageEntity]? = nil, disableWebPagePreview: Bool? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.text = text
             self.parseMode = parseMode
+            self.entities = entities
             self.disableWebPagePreview = disableWebPagePreview
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -71,3 +81,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send text messages. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendMessageParams](https://core.telegram.org/bots/api#sendmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `SendMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendMessage(params: SendMessageParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendMessage", body: body, headers: headers))
+    }
+}
+#endif

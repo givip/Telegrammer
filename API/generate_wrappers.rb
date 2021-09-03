@@ -70,6 +70,12 @@ def make_swift_type_name(var_name, var_type)
         if var_type == 'InputMediaPhoto and InputMediaVideo' then
             return "[InputMediaPhotoAndVideo]"
         end
+        if var_type == 'InputMediaAudio, InputMediaDocument, InputMediaPhoto and InputMediaVideo' then
+            return "[InputMedia]"
+        end
+				if var_type == 'Integer' then
+					return "[Int]"
+				end
 		return "[#{var_type}]"
 	end
 
@@ -140,6 +146,12 @@ def deduce_result_type(description)
 	type_name = description[/An (.+) objects is returned/, 1]
 	return type_name unless type_name.nil?
 
+    type_name = description[/Returns the (.+) of the sent message on success./, 1]
+    return type_name unless type_name.nil?
+
+    type_name = description[/On success, an array of (.+)s that were sent is returned./, 1]
+    return "[#{type_name}]" unless type_name.nil?
+
 	type_name = description[/returns an (.+) objects/, 1]
 	return type_name unless type_name.nil?
     
@@ -156,8 +168,10 @@ def deduce_result_type(description)
 	return "#{type_name}OrBoolean" unless type_name.nil?
 
 	type_name = description[/(\w+) is returned/, 1]
-	return type_name unless type_name.nil?
-
+    if type_name != 'list' then
+        return type_name unless type_name.nil?
+    end
+    
 	type_name = description[/Returns a (.+) object/, 1]
 	return type_name unless type_name.nil?
 
@@ -209,14 +223,16 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
         return "FileInfo"
 	when ['Integer', true]
 		is64bit = var_name.include?("user_id") || var_name.include?("chat_id") || var_desc.include?("64 bit integer") ||
-							(type_name == 'User' && var_name == 'id')
+							(type_name == 'User' && var_name == 'id') ||
+                            (type_name == 'Chat' && var_name == 'id')
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}?"
 	when ['Integer', false]
 		is64bit = var_name.include?("user_id") ||
                   var_name.include?("chat_id") ||
                   var_desc.include?("64 bit integer") ||
-                  (type_name == 'User' && var_name == 'id')
+                  (type_name == 'User' && var_name == 'id') ||
+                  (type_name == 'Chat' && var_name == 'id')
 		suffix = is64bit ? '64' : ''
 		return "Int#{suffix}"
 	when ['Float number', true], ['Float', true]
@@ -231,6 +247,16 @@ def convert_type(var_name, var_desc, var_type, type_name, var_optional)
 		else 
 			return "Bool"
 		end
+    when ['Integer or String', true]
+        if var_name.include?('chat_id') then
+            return 'ChatId'
+        end
+        return 'String'
+    when ['Integer or String', false]
+        if var_name.include?('chat_id') then
+            return 'ChatId?'
+        end
+        return 'String?'
 	else
 		two_d_array_prefix = 'Array of Array of '
 		array_prefix = 'Array of '
@@ -495,7 +521,36 @@ def generate_method(f, node)
               "#{FOUR}return try self.processContainer(container)\n"\
               "#{TWO}}\n"\
 			  "#{ONE}}\n"\
-			  "}\n"
+              "}\n"
+    
+    # Concuurency Support
+    concurrecy_start = "\n"
+    concurrecy_start << "// MARK: Concurrency Support\n"
+    concurrecy_start << "#if compiler(>=5.5)\n"
+    concurrecy_start << "@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)\n"
+    concurrecy_start << "public extension Bot {\n\n"
+    
+    concurrecy_end = "#endif"
+    
+    out.write concurrecy_start
+    out.write method_description
+    out.write "#{ONE}@discardableResult\n"
+    
+    if all_params.empty? then
+        out.write "#{ONE}func #{method_name}() async throws -> #{result_type} {\n"
+    else
+        out.write "#{ONE}func #{method_name}#{params_block} async throws -> #{result_type} {\n"
+
+        out.write "#{TWO}let body = try httpBody(for: params)\n"
+        out.write "#{TWO}let headers = httpHeaders(for: params)\n"
+        body_param = ", body: body, headers: headers"
+    end
+    
+    out.write "#{TWO}return try self.processContainer(try await client.request(endpoint: \"#{method_name}\"#{body_param}))\n"\
+              "#{ONE}}\n"\
+              "}\n"\
+              "#{concurrecy_end}\n"
+    
 	}
 
 end

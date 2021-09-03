@@ -41,3 +41,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get a list of administrators in a chat. On success, returns an Array of ChatMember objects that contains information about all chat administrators except other bots. If the chat is a group or a supergroup and no administrators were appointed, only the creator will be returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetChatAdministratorsParams](https://core.telegram.org/bots/api#getchatadministrators)
+     
+     - Parameters:
+         - params: Parameters container, see `GetChatAdministratorsParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `[ChatMember]` type
+     */
+    @discardableResult
+    func getChatAdministrators(params: GetChatAdministratorsParams) async throws -> [ChatMember] {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getChatAdministrators", body: body, headers: headers))
+    }
+}
+#endif

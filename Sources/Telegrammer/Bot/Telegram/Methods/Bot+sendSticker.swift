@@ -18,6 +18,9 @@ public extension Bot {
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
 
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
+
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
@@ -27,14 +30,16 @@ public extension Bot {
             case sticker = "sticker"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, sticker: FileInfo, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, sticker: FileInfo, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.sticker = sticker
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -61,3 +66,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send static .WEBP or animated .TGS stickers. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendStickerParams](https://core.telegram.org/bots/api#sendsticker)
+     
+     - Parameters:
+         - params: Parameters container, see `SendStickerParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendSticker(params: SendStickerParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendSticker", body: body, headers: headers))
+    }
+}
+#endif

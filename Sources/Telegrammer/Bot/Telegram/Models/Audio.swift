@@ -16,6 +16,7 @@ public final class Audio: Codable {
         case duration = "duration"
         case performer = "performer"
         case title = "title"
+        case fileName = "file_name"
         case mimeType = "mime_type"
         case fileSize = "file_size"
         case thumb = "thumb"
@@ -36,6 +37,9 @@ public final class Audio: Codable {
     /// Optional. Title of the audio as defined by sender or by audio tags
     public var title: String?
 
+    /// Optional. Original filename as defined by sender
+    public var fileName: String?
+
     /// Optional. MIME type of the file as defined by sender
     public var mimeType: String?
 
@@ -45,12 +49,13 @@ public final class Audio: Codable {
     /// Optional. Thumbnail of the album cover to which the music file belongs
     public var thumb: PhotoSize?
 
-    public init (fileId: String, fileUniqueId: String, duration: Int, performer: String? = nil, title: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
+    public init (fileId: String, fileUniqueId: String, duration: Int, performer: String? = nil, title: String? = nil, fileName: String? = nil, mimeType: String? = nil, fileSize: Int? = nil, thumb: PhotoSize? = nil) {
         self.fileId = fileId
         self.fileUniqueId = fileUniqueId
         self.duration = duration
         self.performer = performer
         self.title = title
+        self.fileName = fileName
         self.mimeType = mimeType
         self.fileSize = fileSize
         self.thumb = thumb

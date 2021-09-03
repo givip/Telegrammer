@@ -102,7 +102,7 @@ class JobQueueTests: XCTestCase {
 
         var performed = false
 
-        _ = queue.worker.next()
+        queue.worker.next()
             .submit { () -> Void in
                 performed = true
             }

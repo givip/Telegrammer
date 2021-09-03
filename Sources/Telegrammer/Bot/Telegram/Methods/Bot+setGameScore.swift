@@ -50,7 +50,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to set the score of the specified user in a game. On success, if the message was sent by the bot, returns the edited Message, otherwise returns True. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+     Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
 
      SeeAlso Telegram Bot API Reference:
      [SetGameScoreParams](https://core.telegram.org/bots/api#setgamescore)
@@ -58,16 +58,41 @@ public extension Bot {
      - Parameters:
          - params: Parameters container, see `SetGameScoreParams` struct
      - Throws: Throws on errors
-     - Returns: Future of `Bool` type
+     - Returns: Future of `MessageOrBool` type
      */
     @discardableResult
-    func setGameScore(params: SetGameScoreParams) throws -> Future<Bool> {
+    func setGameScore(params: SetGameScoreParams) throws -> Future<MessageOrBool> {
         let body = try httpBody(for: params)
         let headers = httpHeaders(for: params)
         return try client
             .request(endpoint: "setGameScore", body: body, headers: headers)
-            .flatMapThrowing { (container) -> Bool in
+            .flatMapThrowing { (container) -> MessageOrBool in
                 return try self.processContainer(container)
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to set the score of the specified user in a game message. On success, if the message is not an inline message, the Message is returned, otherwise True is returned. Returns an error, if the new score is not greater than the user's current score in the chat and force is False.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetGameScoreParams](https://core.telegram.org/bots/api#setgamescore)
+     
+     - Parameters:
+         - params: Parameters container, see `SetGameScoreParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
+    @discardableResult
+    func setGameScore(params: SetGameScoreParams) async throws -> MessageOrBool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "setGameScore", body: body, headers: headers))
+    }
+}
+#endif

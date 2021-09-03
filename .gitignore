@@ -11,6 +11,9 @@ xcuserdata
 *.xcodeproj
 DerivedData/
 .DS_Store
+.swiftpm
+.ruby-version
+.vscode/
 
 # End of https://www.gitignore.io/api/vapor
 api.html

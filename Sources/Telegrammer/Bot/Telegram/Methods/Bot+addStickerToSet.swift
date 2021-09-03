@@ -66,3 +66,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to add a new sticker to a set created by the bot. You must use exactly one of the fields png_sticker or tgs_sticker. Animated stickers can be added to animated sticker sets and only to them. Animated sticker sets can have up to 50 stickers. Static sticker sets can have up to 120 stickers. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [AddStickerToSetParams](https://core.telegram.org/bots/api#addstickertoset)
+     
+     - Parameters:
+         - params: Parameters container, see `AddStickerToSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func addStickerToSet(params: AddStickerToSetParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "addStickerToSet", body: body, headers: headers))
+    }
+}
+#endif

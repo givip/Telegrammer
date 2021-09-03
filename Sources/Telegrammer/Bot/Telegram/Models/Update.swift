@@ -24,6 +24,8 @@ public final class Update: Codable {
         case preCheckoutQuery = "pre_checkout_query"
         case poll = "poll"
         case pollAnswer = "poll_answer"
+        case myChatMember = "my_chat_member"
+        case chatMember = "chat_member"
     }
 
     /// The update's unique identifier. Update identifiers start from a certain positive number and increase sequentially. This ID becomes especially handy if you're using Webhooks, since it allows you to ignore repeated updates or to restore the correct update sequence, should they get out of order. If there are no new updates for at least a week, then identifier of the next update will be chosen randomly instead of sequentially.
@@ -62,7 +64,13 @@ public final class Update: Codable {
     /// Optional. A user changed their answer in a non-anonymous poll. Bots receive new votes only in polls that were sent by the bot itself.
     public var pollAnswer: PollAnswer?
 
-    public init (updateId: Int, message: Message? = nil, editedMessage: Message? = nil, channelPost: Message? = nil, editedChannelPost: Message? = nil, inlineQuery: InlineQuery? = nil, chosenInlineResult: ChosenInlineResult? = nil, callbackQuery: CallbackQuery? = nil, shippingQuery: ShippingQuery? = nil, preCheckoutQuery: PreCheckoutQuery? = nil, poll: Poll? = nil, pollAnswer: PollAnswer? = nil) {
+    /// Optional. The bot's chat member status was updated in a chat. For private chats, this update is received only when the bot is blocked or unblocked by the user.
+    public var myChatMember: ChatMemberUpdated?
+
+    /// Optional. A chat member's status was updated in a chat. The bot must be an administrator in the chat and must explicitly specify “chat_member” in the list of allowed_updates to receive these updates.
+    public var chatMember: ChatMemberUpdated?
+
+    public init (updateId: Int, message: Message? = nil, editedMessage: Message? = nil, channelPost: Message? = nil, editedChannelPost: Message? = nil, inlineQuery: InlineQuery? = nil, chosenInlineResult: ChosenInlineResult? = nil, callbackQuery: CallbackQuery? = nil, shippingQuery: ShippingQuery? = nil, preCheckoutQuery: PreCheckoutQuery? = nil, poll: Poll? = nil, pollAnswer: PollAnswer? = nil, myChatMember: ChatMemberUpdated? = nil, chatMember: ChatMemberUpdated? = nil) {
         self.updateId = updateId
         self.message = message
         self.editedMessage = editedMessage
@@ -75,5 +83,7 @@ public final class Update: Codable {
         self.preCheckoutQuery = preCheckoutQuery
         self.poll = poll
         self.pollAnswer = pollAnswer
+        self.myChatMember = myChatMember
+        self.chatMember = chatMember
     }
 }

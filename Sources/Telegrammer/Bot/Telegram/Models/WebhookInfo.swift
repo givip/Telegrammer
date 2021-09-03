@@ -14,6 +14,7 @@ public final class WebhookInfo: Codable {
         case url = "url"
         case hasCustomCertificate = "has_custom_certificate"
         case pendingUpdateCount = "pending_update_count"
+        case ipAddress = "ip_address"
         case lastErrorDate = "last_error_date"
         case lastErrorMessage = "last_error_message"
         case maxConnections = "max_connections"
@@ -29,6 +30,9 @@ public final class WebhookInfo: Codable {
     /// Number of updates awaiting delivery
     public var pendingUpdateCount: Int
 
+    /// Optional. Currently used webhook IP address
+    public var ipAddress: String?
+
     /// Optional. Unix time for the most recent error that happened when trying to deliver an update via webhook
     public var lastErrorDate: Int?
 
@@ -38,13 +42,14 @@ public final class WebhookInfo: Codable {
     /// Optional. Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery
     public var maxConnections: Int?
 
-    /// Optional. A list of update types the bot is subscribed to. Defaults to all update types
+    /// Optional. A list of update types the bot is subscribed to. Defaults to all update types except chat_member
     public var allowedUpdates: [String]?
 
-    public init (url: String, hasCustomCertificate: Bool, pendingUpdateCount: Int, lastErrorDate: Int? = nil, lastErrorMessage: String? = nil, maxConnections: Int? = nil, allowedUpdates: [String]? = nil) {
+    public init (url: String, hasCustomCertificate: Bool, pendingUpdateCount: Int, ipAddress: String? = nil, lastErrorDate: Int? = nil, lastErrorMessage: String? = nil, maxConnections: Int? = nil, allowedUpdates: [String]? = nil) {
         self.url = url
         self.hasCustomCertificate = hasCustomCertificate
         self.pendingUpdateCount = pendingUpdateCount
+        self.ipAddress = ipAddress
         self.lastErrorDate = lastErrorDate
         self.lastErrorMessage = lastErrorMessage
         self.maxConnections = maxConnections

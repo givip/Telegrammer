@@ -92,3 +92,44 @@ extension HTTPClient.Body {
         return .string("")
     }
 }
+
+#if compiler(>=5.5)
+// MARK: Concurrency Support
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+extension BotClient {
+
+    /// Sends request to api.telegram.org, and receive TelegramContainer object
+    ///
+    /// - Parameters:
+    ///   - endpoint: Telegram method endpoint
+    ///   - body: Body of request (optional)
+    ///   - headers: Custom header of request (By default "Content-Type" : "application/json")
+    ///   - client: custom client, if not metioned, uses default
+    /// - Returns: Container with response
+    /// - Throws: Errors
+    func request<T: Codable>(
+        endpoint: String,
+        body: HTTPClient.Body? = nil,
+        headers: HTTPHeaders = .empty
+    ) async throws -> TelegramContainer<T> {
+        let url = apiUrl(endpoint: endpoint)
+        let request = try HTTPClient.Request(
+            url: url,
+            method: .POST,
+            headers: headers,
+            body: body
+        )
+
+        log.info("Sending request:\n\(request.description)")
+        
+        return try await withCheckedThrowingContinuation {
+            client
+                .execute(request: request)
+                .flatMapThrowing({ (response) -> TelegramContainer<T> in
+                    return try self.decode(response: response)
+                })
+                .whenComplete($0.resume(with: ))
+        }
+    }
+}
+#endif

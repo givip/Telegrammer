@@ -20,6 +20,7 @@ public final class InlineQueryResultVideo: Codable {
         case title = "title"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case videoWidth = "video_width"
         case videoHeight = "video_height"
         case videoDuration = "video_duration"
@@ -52,6 +53,9 @@ public final class InlineQueryResultVideo: Codable {
     /// Optional. Mode for parsing entities in the video caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Video width
     public var videoWidth: Int?
 
@@ -70,7 +74,7 @@ public final class InlineQueryResultVideo: Codable {
     /// Optional. Content of the message to be sent instead of the video. This field is required if InlineQueryResultVideo is used to send an HTML-page as a result (e.g., a YouTube video).
     public var inputMessageContent: InputMessageContent?
 
-    public init (type: String, id: String, videoUrl: String, mimeType: String, thumbUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, videoWidth: Int? = nil, videoHeight: Int? = nil, videoDuration: Int? = nil, description: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
+    public init (type: String, id: String, videoUrl: String, mimeType: String, thumbUrl: String, title: String, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, videoWidth: Int? = nil, videoHeight: Int? = nil, videoDuration: Int? = nil, description: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil) {
         self.type = type
         self.id = id
         self.videoUrl = videoUrl
@@ -79,6 +83,7 @@ public final class InlineQueryResultVideo: Codable {
         self.title = title
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.videoWidth = videoWidth
         self.videoHeight = videoHeight
         self.videoDuration = videoDuration

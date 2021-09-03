@@ -46,3 +46,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to upload a .PNG file with a sticker for later use in createNewStickerSet and addStickerToSet methods (can be used multiple times). Returns the uploaded File on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [UploadStickerFileParams](https://core.telegram.org/bots/api#uploadstickerfile)
+     
+     - Parameters:
+         - params: Parameters container, see `UploadStickerFileParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `File` type
+     */
+    @discardableResult
+    func uploadStickerFile(params: UploadStickerFileParams) async throws -> File {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "uploadStickerFile", body: body, headers: headers))
+    }
+}
+#endif

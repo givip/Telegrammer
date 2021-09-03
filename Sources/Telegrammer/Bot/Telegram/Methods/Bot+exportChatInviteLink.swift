@@ -20,7 +20,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to generate a new invite link for a chat; any previously generated link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+     Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
 
      SeeAlso Telegram Bot API Reference:
      [ExportChatInviteLinkParams](https://core.telegram.org/bots/api#exportchatinvitelink)
@@ -41,3 +41,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to generate a new primary invite link for a chat; any previously generated primary link is revoked. The bot must be an administrator in the chat for this to work and must have the appropriate admin rights. Returns the new invite link as String on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [ExportChatInviteLinkParams](https://core.telegram.org/bots/api#exportchatinvitelink)
+     
+     - Parameters:
+         - params: Parameters container, see `ExportChatInviteLinkParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `String` type
+     */
+    @discardableResult
+    func exportChatInviteLink(params: ExportChatInviteLinkParams) async throws -> String {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "exportChatInviteLink", body: body, headers: headers))
+    }
+}
+#endif

@@ -12,7 +12,7 @@ public extension Bot {
         /// Identifier of a message to pin
         var messageId: Int
 
-        /// Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels.
+        /// Pass True, if it is not necessary to send a notification to all chat members about the new pinned message. Notifications are always disabled in channels and private chats.
         var disableNotification: Bool?
 
         /// Custom keys for coding/decoding `PinChatMessageParams` struct
@@ -30,7 +30,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to pin a message in a group, a supergroup, or a channel. The bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in the supergroup or 'can_edit_messages' admin right in the channel. Returns True on success.
+     Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
 
      SeeAlso Telegram Bot API Reference:
      [PinChatMessageParams](https://core.telegram.org/bots/api#pinchatmessage)
@@ -51,3 +51,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to add a message to the list of pinned messages in a chat. If the chat is not a private chat, the bot must be an administrator in the chat for this to work and must have the 'can_pin_messages' admin right in a supergroup or 'can_edit_messages' admin right in a channel. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [PinChatMessageParams](https://core.telegram.org/bots/api#pinchatmessage)
+     
+     - Parameters:
+         - params: Parameters container, see `PinChatMessageParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func pinChatMessage(params: PinChatMessageParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "pinChatMessage", body: body, headers: headers))
+    }
+}
+#endif

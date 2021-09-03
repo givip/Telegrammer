@@ -18,16 +18,20 @@ public final class Chat: Codable {
         case firstName = "first_name"
         case lastName = "last_name"
         case photo = "photo"
+        case bio = "bio"
         case description = "description"
         case inviteLink = "invite_link"
         case pinnedMessage = "pinned_message"
         case permissions = "permissions"
         case slowModeDelay = "slow_mode_delay"
+        case messageAutoDeleteTime = "message_auto_delete_time"
         case stickerSetName = "sticker_set_name"
         case canSetStickerSet = "can_set_sticker_set"
+        case linkedChatId = "linked_chat_id"
+        case location = "location"
     }
 
-    /// Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
+    /// Unique identifier for this chat. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier.
     public var id: Int64
 
     /// Type of chat, can be either “private”, “group”, “supergroup” or “channel”
@@ -48,13 +52,16 @@ public final class Chat: Codable {
     /// Optional. Chat photo. Returned only in getChat.
     public var photo: ChatPhoto?
 
+    /// Optional. Bio of the other party in a private chat. Returned only in getChat.
+    public var bio: String?
+
     /// Optional. Description, for groups, supergroups and channel chats. Returned only in getChat.
     public var description: String?
 
-    /// Optional. Chat invite link, for groups, supergroups and channel chats. Each administrator in a chat generates their own invite links, so the bot must first generate the link using exportChatInviteLink. Returned only in getChat.
+    /// Optional. Primary invite link, for groups, supergroups and channel chats. Returned only in getChat.
     public var inviteLink: String?
 
-    /// Optional. Pinned message, for groups, supergroups and channels. Returned only in getChat.
+    /// Optional. The most recent pinned message (by sending date). Returned only in getChat.
     public var pinnedMessage: Message?
 
     /// Optional. Default chat member permissions, for groups and supergroups. Returned only in getChat.
@@ -63,13 +70,22 @@ public final class Chat: Codable {
     /// Optional. For supergroups, the minimum allowed delay between consecutive messages sent by each unpriviledged user. Returned only in getChat.
     public var slowModeDelay: Int?
 
+    /// Optional. The time after which all messages sent to the chat will be automatically deleted; in seconds. Returned only in getChat.
+    public var messageAutoDeleteTime: Int?
+
     /// Optional. For supergroups, name of group sticker set. Returned only in getChat.
     public var stickerSetName: String?
 
     /// Optional. True, if the bot can change the group sticker set. Returned only in getChat.
     public var canSetStickerSet: Bool?
 
-    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, slowModeDelay: Int? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil) {
+    /// Optional. Unique identifier for the linked chat, i.e. the discussion group identifier for a channel and vice versa; for supergroups and channel chats. This identifier may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier. Returned only in getChat.
+    public var linkedChatId: Int64?
+
+    /// Optional. For supergroups, the location to which the supergroup is connected. Returned only in getChat.
+    public var location: ChatLocation?
+
+    public init (id: Int64, type: ChatType, title: String? = nil, username: String? = nil, firstName: String? = nil, lastName: String? = nil, photo: ChatPhoto? = nil, bio: String? = nil, description: String? = nil, inviteLink: String? = nil, pinnedMessage: Message? = nil, permissions: ChatPermissions? = nil, slowModeDelay: Int? = nil, messageAutoDeleteTime: Int? = nil, stickerSetName: String? = nil, canSetStickerSet: Bool? = nil, linkedChatId: Int64? = nil, location: ChatLocation? = nil) {
         self.id = id
         self.type = type
         self.title = title
@@ -77,12 +93,16 @@ public final class Chat: Codable {
         self.firstName = firstName
         self.lastName = lastName
         self.photo = photo
+        self.bio = bio
         self.description = description
         self.inviteLink = inviteLink
         self.pinnedMessage = pinnedMessage
         self.permissions = permissions
         self.slowModeDelay = slowModeDelay
+        self.messageAutoDeleteTime = messageAutoDeleteTime
         self.stickerSetName = stickerSetName
         self.canSetStickerSet = canSetStickerSet
+        self.linkedChatId = linkedChatId
+        self.location = location
     }
 }

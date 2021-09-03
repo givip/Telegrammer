@@ -27,6 +27,9 @@ public extension Bot {
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
 
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
+
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
 
@@ -39,10 +42,11 @@ public extension Bot {
             case vcard = "vcard"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, phoneNumber: String, firstName: String, lastName: String? = nil, vcard: String? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.phoneNumber = phoneNumber
             self.firstName = firstName
@@ -50,6 +54,7 @@ public extension Bot {
             self.vcard = vcard
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -76,3 +81,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send phone contacts. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendContactParams](https://core.telegram.org/bots/api#sendcontact)
+     
+     - Parameters:
+         - params: Parameters container, see `SendContactParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendContact(params: SendContactParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendContact", body: body, headers: headers))
+    }
+}
+#endif

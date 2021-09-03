@@ -105,7 +105,15 @@ private extension Dispatcher {
     func submit(update: Update) {
         handlersQueue.next(for: update).forEach { (handler) in
             worker.next().execute {
+                #if compiler(>=5.5)
+                if #available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *) {
+                    Task {
+                        await handler.handle(update: update, dispatcher: self)
+                    }
+                }
+                #else
                 handler.handle(update: update, dispatcher: self)
+                #endif
             }
         }
     }

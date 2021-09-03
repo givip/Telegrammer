@@ -15,6 +15,7 @@ public final class InputMediaPhoto: Encodable {
         case media = "media"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
     }
 
     /// Type of the result, must be photo
@@ -29,10 +30,14 @@ public final class InputMediaPhoto: Encodable {
     /// Optional. Mode for parsing entities in the photo caption. See formatting options for more details.
     public var parseMode: String?
 
-    public init (type: String, media: String, caption: String? = nil, parseMode: String? = nil) {
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
+    public init (type: String, media: String, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil) {
         self.type = type
         self.media = media
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
     }
 }

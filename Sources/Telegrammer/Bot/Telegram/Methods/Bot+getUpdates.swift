@@ -15,7 +15,7 @@ public extension Bot {
         /// Timeout in seconds for long polling. Defaults to 0, i.e. usual short polling. Should be positive, short polling should be used for testing purposes only.
         var timeout: Int?
 
-        /// A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all updates regardless of type (default). If not specified, the previous setting will be used.
+        /// A JSON-serialized list of the update types you want your bot to receive. For example, specify [“message”, “edited_channel_post”, “callback_query”] to only receive updates of these types. See Update for a complete list of available update types. Specify an empty list to receive all update types except chat_member (default). If not specified, the previous setting will be used.
         /// 
         /// Please note that this parameter doesn't affect updates created before the call to the getUpdates, so unwanted updates may be received for a short period of time.
         var allowedUpdates: [String]?
@@ -58,3 +58,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to receive incoming updates using long polling (wiki). An Array of Update objects is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetUpdatesParams](https://core.telegram.org/bots/api#getupdates)
+     
+     - Parameters:
+         - params: Parameters container, see `GetUpdatesParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `[Update]` type
+     */
+    @discardableResult
+    func getUpdates(params: GetUpdatesParams? = nil) async throws -> [Update] {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getUpdates", body: body, headers: headers))
+    }
+}
+#endif

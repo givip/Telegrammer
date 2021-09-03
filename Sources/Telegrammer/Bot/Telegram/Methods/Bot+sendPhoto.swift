@@ -9,7 +9,7 @@ public extension Bot {
         /// Unique identifier for the target chat or username of the target channel (in the format @channelusername)
         var chatId: ChatId
 
-        /// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. More info on Sending Files »
+        /// Photo to send. Pass a file_id as String to send a photo that exists on the Telegram servers (recommended), pass an HTTP URL as a String for Telegram to get a photo from the Internet, or upload a new photo using multipart/form-data. The photo must be at most 10 MB in size. The photo's width and height must not exceed 10000 in total. Width and height ratio must be at most 20. More info on Sending Files »
         var photo: FileInfo
 
         /// Photo caption (may also be used when resending photos by file_id), 0-1024 characters after entities parsing
@@ -18,11 +18,17 @@ public extension Bot {
         /// Mode for parsing entities in the photo caption. See formatting options for more details.
         var parseMode: ParseMode?
 
+        /// List of special entities that appear in the caption, which can be specified instead of parse_mode
+        var captionEntities: [MessageEntity]?
+
         /// Sends the message silently. Users will receive a notification with no sound.
         var disableNotification: Bool?
 
         /// If the message is a reply, ID of the original message
         var replyToMessageId: Int?
+
+        /// Pass True, if the message should be sent even if the specified replied-to message is not found
+        var allowSendingWithoutReply: Bool?
 
         /// Additional interface options. A JSON-serialized object for an inline keyboard, custom reply keyboard, instructions to remove reply keyboard or to force a reply from the user.
         var replyMarkup: ReplyMarkup?
@@ -33,18 +39,22 @@ public extension Bot {
             case photo = "photo"
             case caption = "caption"
             case parseMode = "parse_mode"
+            case captionEntities = "caption_entities"
             case disableNotification = "disable_notification"
             case replyToMessageId = "reply_to_message_id"
+            case allowSendingWithoutReply = "allow_sending_without_reply"
             case replyMarkup = "reply_markup"
         }
 
-        public init(chatId: ChatId, photo: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, replyMarkup: ReplyMarkup? = nil) {
+        public init(chatId: ChatId, photo: FileInfo, caption: String? = nil, parseMode: ParseMode? = nil, captionEntities: [MessageEntity]? = nil, disableNotification: Bool? = nil, replyToMessageId: Int? = nil, allowSendingWithoutReply: Bool? = nil, replyMarkup: ReplyMarkup? = nil) {
             self.chatId = chatId
             self.photo = photo
             self.caption = caption
             self.parseMode = parseMode
+            self.captionEntities = captionEntities
             self.disableNotification = disableNotification
             self.replyToMessageId = replyToMessageId
+            self.allowSendingWithoutReply = allowSendingWithoutReply
             self.replyMarkup = replyMarkup
         }
     }
@@ -71,3 +81,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to send photos. On success, the sent Message is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [SendPhotoParams](https://core.telegram.org/bots/api#sendphoto)
+     
+     - Parameters:
+         - params: Parameters container, see `SendPhotoParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Message` type
+     */
+    @discardableResult
+    func sendPhoto(params: SendPhotoParams) async throws -> Message {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "sendPhoto", body: body, headers: headers))
+    }
+}
+#endif

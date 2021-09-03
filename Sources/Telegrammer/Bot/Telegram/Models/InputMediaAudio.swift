@@ -16,6 +16,7 @@ public final class InputMediaAudio: Encodable {
         case thumb = "thumb"
         case caption = "caption"
         case parseMode = "parse_mode"
+        case captionEntities = "caption_entities"
         case duration = "duration"
         case performer = "performer"
         case title = "title"
@@ -36,6 +37,9 @@ public final class InputMediaAudio: Encodable {
     /// Optional. Mode for parsing entities in the audio caption. See formatting options for more details.
     public var parseMode: String?
 
+    /// Optional. List of special entities that appear in the caption, which can be specified instead of parse_mode
+    public var captionEntities: [MessageEntity]?
+
     /// Optional. Duration of the audio in seconds
     public var duration: Int?
 
@@ -45,12 +49,13 @@ public final class InputMediaAudio: Encodable {
     /// Optional. Title of the audio
     public var title: String?
 
-    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil) {
+    public init (type: String, media: String, thumb: FileInfo? = nil, caption: String? = nil, parseMode: String? = nil, captionEntities: [MessageEntity]? = nil, duration: Int? = nil, performer: String? = nil, title: String? = nil) {
         self.type = type
         self.media = media
         self.thumb = thumb
         self.caption = caption
         self.parseMode = parseMode
+        self.captionEntities = captionEntities
         self.duration = duration
         self.performer = performer
         self.title = title

@@ -35,7 +35,7 @@ public extension Bot {
     }
 
     /**
-     Use this method to edit only the reply markup of messages. On success, if edited message is sent by the bot, the edited Message is returned, otherwise True is returned.
+     Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
 
      SeeAlso Telegram Bot API Reference:
      [EditMessageReplyMarkupParams](https://core.telegram.org/bots/api#editmessagereplymarkup)
@@ -56,3 +56,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to edit only the reply markup of messages. On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+
+     SeeAlso Telegram Bot API Reference:
+     [EditMessageReplyMarkupParams](https://core.telegram.org/bots/api#editmessagereplymarkup)
+     
+     - Parameters:
+         - params: Parameters container, see `EditMessageReplyMarkupParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `MessageOrBool` type
+     */
+    @discardableResult
+    func editMessageReplyMarkup(params: EditMessageReplyMarkupParams? = nil) async throws -> MessageOrBool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "editMessageReplyMarkup", body: body, headers: headers))
+    }
+}
+#endif

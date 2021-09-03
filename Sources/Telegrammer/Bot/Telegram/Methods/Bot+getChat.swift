@@ -41,3 +41,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to get up to date information about the chat (current name of the user for one-on-one conversations, current username of a user, group or channel, etc.). Returns a Chat object on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [GetChatParams](https://core.telegram.org/bots/api#getchat)
+     
+     - Parameters:
+         - params: Parameters container, see `GetChatParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Chat` type
+     */
+    @discardableResult
+    func getChat(params: GetChatParams) async throws -> Chat {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "getChat", body: body, headers: headers))
+    }
+}
+#endif

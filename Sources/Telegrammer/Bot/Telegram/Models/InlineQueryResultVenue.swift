@@ -19,6 +19,8 @@ public final class InlineQueryResultVenue: Codable {
         case address = "address"
         case foursquareId = "foursquare_id"
         case foursquareType = "foursquare_type"
+        case googlePlaceId = "google_place_id"
+        case googlePlaceType = "google_place_type"
         case replyMarkup = "reply_markup"
         case inputMessageContent = "input_message_content"
         case thumbUrl = "thumb_url"
@@ -50,6 +52,12 @@ public final class InlineQueryResultVenue: Codable {
     /// Optional. Foursquare type of the venue, if known. (For example, “arts_entertainment/default”, “arts_entertainment/aquarium” or “food/icecream”.)
     public var foursquareType: String?
 
+    /// Optional. Google Places identifier of the venue
+    public var googlePlaceId: String?
+
+    /// Optional. Google Places type of the venue. (See supported types.)
+    public var googlePlaceType: String?
+
     /// Optional. Inline keyboard attached to the message
     public var replyMarkup: InlineKeyboardMarkup?
 
@@ -65,7 +73,7 @@ public final class InlineQueryResultVenue: Codable {
     /// Optional. Thumbnail height
     public var thumbHeight: Int?
 
-    public init (type: String, id: String, latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
+    public init (type: String, id: String, latitude: Float, longitude: Float, title: String, address: String, foursquareId: String? = nil, foursquareType: String? = nil, googlePlaceId: String? = nil, googlePlaceType: String? = nil, replyMarkup: InlineKeyboardMarkup? = nil, inputMessageContent: InputMessageContent? = nil, thumbUrl: String? = nil, thumbWidth: Int? = nil, thumbHeight: Int? = nil) {
         self.type = type
         self.id = id
         self.latitude = latitude
@@ -74,6 +82,8 @@ public final class InlineQueryResultVenue: Codable {
         self.address = address
         self.foursquareId = foursquareId
         self.foursquareType = foursquareType
+        self.googlePlaceId = googlePlaceId
+        self.googlePlaceType = googlePlaceType
         self.replyMarkup = replyMarkup
         self.inputMessageContent = inputMessageContent
         self.thumbUrl = thumbUrl

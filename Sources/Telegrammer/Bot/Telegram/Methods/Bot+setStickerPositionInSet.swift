@@ -46,3 +46,28 @@ public extension Bot {
         }
     }
 }
+
+// MARK: Concurrency Support
+#if compiler(>=5.5)
+@available(macOS 12.0, iOS 15.0, watchOS 8.0, tvOS 15.0, *)
+public extension Bot {
+
+    /**
+     Use this method to move a sticker in a set created by the bot to a specific position. Returns True on success.
+
+     SeeAlso Telegram Bot API Reference:
+     [SetStickerPositionInSetParams](https://core.telegram.org/bots/api#setstickerpositioninset)
+     
+     - Parameters:
+         - params: Parameters container, see `SetStickerPositionInSetParams` struct
+     - Throws: Throws on errors
+     - Returns: Future of `Bool` type
+     */
+    @discardableResult
+    func setStickerPositionInSet(params: SetStickerPositionInSetParams) async throws -> Bool {
+        let body = try httpBody(for: params)
+        let headers = httpHeaders(for: params)
+        return try self.processContainer(try await client.request(endpoint: "setStickerPositionInSet", body: body, headers: headers))
+    }
+}
+#endif
