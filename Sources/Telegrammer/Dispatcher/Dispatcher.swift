@@ -28,6 +28,8 @@ public class Dispatcher {
 
     /// Queue which keep all added handlers and gives appropriates
     public var handlersQueue: HandlersQueue
+ 
+    private var prevData: Data?
 
     public init(bot: Bot, worker: Worker = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)) {
         self.bot = bot
@@ -63,15 +65,31 @@ public class Dispatcher {
      - bytebuffer: Array of Telegram updates
      */
     public func enqueue(bytebuffer: ByteBuffer) {
-        guard let data = bytebuffer.getBytes(at: 0, length: bytebuffer.writerIndex) else {
+        guard let dataArr = bytebuffer.getBytes(at: 0, length: bytebuffer.writerIndex) else {
             return
         }
-        do {
-            let update = try JSONDecoder().decode(Update.self, from: Data(data))
-            enqueue(updates: [update])
-        } catch {
-            log.error(error.logMessage)
+        let data = Data(dataArr)
+
+        if enqueue(from: data) {
+            return
+        } else if let prevData = prevData, enqueue(from: prevData + data) {
+            return
+        } else {
+            if prevData != nil {
+                prevData?.append(data)
+            } else {
+                prevData = Data(data)
+            }
         }
+    }
+
+    private func enqueue(from data: Data) -> Bool {
+        if let update = try? JSONDecoder().decode(Update.self, from: data) {
+            enqueue(updates: [ update ])
+            prevData = nil
+            return true
+        }
+        return false
     }
 }
 
